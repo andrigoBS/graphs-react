@@ -1,12 +1,6 @@
-class Graph{
+export default class Graph{
     constructor() {
         this.vertexes = {};
-    }
-
-    showVertex(){
-        for(let key in this.vertexes){
-            console.log(this.vertexes[key])
-        }
     }
 
     addVertex(element){
@@ -29,7 +23,7 @@ class Graph{
     }
 
     removeBow(id){
-        getLink(this.vertexes, id, (element, key, keyNodes) => {
+        walkLinksId(this.vertexes, id, (element, key, keyNodes) => {
             delete this.vertexes[key].nodes[keyNodes];
             return true;
         });
@@ -42,7 +36,7 @@ class Graph{
 
     removeEdge(id){
         let count = 0;
-        getLink(this.vertexes, id, (element, key, keyNodes) => {
+        walkLinksId(this.vertexes, id, (element, key, keyNodes) => {
             delete this.vertexes[key].nodes[keyNodes];
             count++;
             return count === 2;
@@ -54,13 +48,13 @@ class Graph{
     }
 
     getWeight(id){
-        getLink(this.vertexes, id, (element, key, keyNodes) => {
+        walkLinksId(this.vertexes, id, (element, key, keyNodes) => {
             return element.weight;
         });
     }
 
     getVerticesOfLink(id){
-        getLink(this.vertexes, id, (element, key, keyNodes) => {
+        walkLinksId(this.vertexes, id, (element, key, keyNodes) => {
             return [key, keyNodes];
         });
     }
@@ -77,22 +71,28 @@ class Graph{
     }
 
     getIncidenceMatrix(){
-        // let matrix = [];
-        // let verticesKeys = Object.keys(this.vertexes);
-        // TypeLink[] linksKeys = (TypeLink[]) links.keySet().toArray();
-        // for (int i = 0; i < verticesKeys.length; i++) {
-        //     for (int j = 0; j < linksKeys.length; j++) {
-        //         VertexLink link = links.get(linksKeys[j]);
-        //         if(link.initialVertex.equals(verticesKeys[i])){
-        //             matrix[i][j] = 1;
-        //         }else if(link.finalVertex.equals(verticesKeys[i])){
-        //             matrix[i][j] = link.isDriving? -1 : 1;
-        //         }else{
-        //             matrix[i][j] = 0;
-        //         }
-        //     }
-        // }
-        // return matrix;
+        let matrix = [];
+        let verticesKeys = Object.keys(this.vertexes);
+        let linksId = getLinksId(this.vertexes);
+        for (let i = 0; i < verticesKeys.length; i++) {
+            matrix[i] = [];
+            for(let final in verticesKeys){
+                for (let j = 0; j < linksId.length; j++) {
+                    let isInitial = this.vertexes[verticesKeys[i]].nodes[final].id === linksId[j];
+                    let nodeFinal = this.vertexes[final].nodes[verticesKeys[i]];
+                    let isFinal = nodeFinal && nodeFinal.id === linksId[j];
+
+                    if(isInitial){
+                        matrix[i][j] = 1;
+                    }else if(isFinal){
+                        matrix[i][j] = -1;
+                    }else{
+                        matrix[i][j] = 0;
+                    }
+                }
+            }
+        }
+        return matrix;
     }
 }
 
@@ -111,15 +111,27 @@ class Node{
     }
 }
 
-const getLink = (vertexes, id, callback) => {
+const walkLinksId = (vertexes, id, callback) => {
+    walkLinks(vertexes, (element, key, keyNodes) => {
+        if(vertexes[key].nodes[keyNodes].id === id){
+            return callback(vertexes[key].nodes[keyNodes], key, keyNodes);
+        }
+    })
+}
+
+const getLinksId = (vertexes) => {
+    let links = [];
+    walkLinks(vertexes, (element, key, keyNodes) => {
+        if(!links.includes(element.id)) links.push(element.id);
+    });
+    return links;
+}
+
+const walkLinks = (vertexes, callback) => {
     for(let key in vertexes){
         for(let keyNodes in vertexes[key].nodes){
-            if(vertexes[key].nodes[keyNodes].id === id){
-                let stop = callback(vertexes[key].nodes[keyNodes], key, keyNodes);
-                if(stop) return;
-            }
+            let stop = callback(vertexes[key].nodes[keyNodes], key, keyNodes);
+            if(stop) return;
         }
     }
 }
-
-export default Graph;
