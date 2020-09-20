@@ -71,23 +71,25 @@ export default class Graph{
     }
 
     getIncidenceMatrix(){
-        let matrix = [];
         let verticesKeys = Object.keys(this.vertexes);
         let linksId = getLinksId(this.vertexes);
+        let matrix = [];
         for (let i = 0; i < verticesKeys.length; i++) {
-            matrix[i] = [];
-            for(let final in verticesKeys){
-                for (let j = 0; j < linksId.length; j++) {
-                    let isInitial = this.vertexes[verticesKeys[i]].nodes[final].id === linksId[j];
-                    let nodeFinal = this.vertexes[final].nodes[verticesKeys[i]];
-                    let isFinal = nodeFinal && nodeFinal.id === linksId[j];
-
-                    if(isInitial){
-                        matrix[i][j] = 1;
-                    }else if(isFinal){
-                        matrix[i][j] = -1;
-                    }else{
-                        matrix[i][j] = 0;
+            matrix[i] = Array(linksId.length);
+            for(let j = 0; j < linksId.length; j++) {
+                matrix[i][j] = 0;
+            }
+        }
+        for (let i = 0; i < verticesKeys.length; i++) {
+            for(let j = 0; j < verticesKeys.length; j++) {
+                if (this.isAdjacent(verticesKeys[i], verticesKeys[j])) {
+                    let idInit = this.vertexes[verticesKeys[i]].nodes[verticesKeys[j]].id;
+                    let linkIndex = linksId.indexOf(idInit);
+                    matrix[i][linkIndex] = 1;
+                    if (this.isAdjacent(verticesKeys[j], verticesKeys[i])){
+                        matrix[j][linkIndex] = 1;
+                    }else {
+                        matrix[j][linkIndex] = -1;
                     }
                 }
             }
