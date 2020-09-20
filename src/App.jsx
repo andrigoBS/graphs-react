@@ -20,10 +20,12 @@ function App() {
         graph.addVertex("D");
         graph.addBow("D","C",1,"DC");
         graph.addBow("D","B",3,"DB");
-        graph.removeBow("CB");
+        //graph.removeBow("CB");
         // graph.removeEdge("AB");
         graph.removeVertex("A");
-        graph.showVertex();
+        console.log(graph);
+        console.log(graph.getIncidenceMatrix());
+        //graph.showVertex();
     };
   return (
       <div >
@@ -32,7 +34,7 @@ function App() {
               <GraphSpace/>
           </div>
 
-          <div >
+          <div>
               <button onClick={handleOnClick}>teste</button>
           </div>
 
