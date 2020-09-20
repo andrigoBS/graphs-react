@@ -1,5 +1,5 @@
 import React from 'react';
-import Graph from "./graph/Graph";
+import Graph from "./api/graph/Graph";
 import TopBar from "./component/topbar/TopBar";
 import Typography from "@material-ui/core/Typography";
 import GraphSpace from "./component/graphspace/GraphSpace";
