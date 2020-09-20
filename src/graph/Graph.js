@@ -23,14 +23,10 @@ class Graph{
     }
 
     removeBow(id){
-        for(let key in this.vertexes){
-            for(let keyNodes in this.vertexes[key].nodes){
-                if(this.vertexes[key].nodes[keyNodes].id === id){
-                    delete this.vertexes[key].nodes[keyNodes];
-                    return;
-                }
-            }
-        }
+        getLink(this.vertexes, id, (element, key, keyNodes) => {
+            delete this.vertexes[key].nodes[keyNodes];
+            return true;
+        });
     }
 
     addEdge(element1, element2, weight, id){
@@ -39,13 +35,58 @@ class Graph{
     }
 
     removeEdge(id){
-        for(let key in this.vertexes){
-            for(let keyNodes in this.vertexes[key].nodes){
-                if(this.vertexes[key].nodes[keyNodes].id === id){
-                    delete this.vertexes[key].nodes[keyNodes];
-                }
+        let count = 0;
+        getLink(this.vertexes, id, (element, key, keyNodes) => {
+            delete this.vertexes[key].nodes[keyNodes];
+            count++;
+            return count === 2;
+        });
+    }
+
+    isAdjacent(element1, element2){
+        return !!this.vertexes[element1].nodes[element2];
+    }
+
+    getWeight(id){
+        getLink(this.vertexes, id, (element, key, keyNodes) => {
+            return element.weight;
+        });
+    }
+
+    getVerticesOfLink(id){
+        getLink(this.vertexes, id, (element, key, keyNodes) => {
+            return [key, keyNodes];
+        });
+    }
+
+    getAdjacentMatrix(){
+        let matrix = [];
+        let keys = Object.keys(this.vertexes);
+        for(let i = 0; keys.length; i++){
+            matrix[i] = [];
+            for(let j = 0; j < keys.length; j++){
+                matrix[i][j] = i !== j && this.isAdjacent(keys[i], keys[j])? 1 : 0;
             }
         }
+    }
+
+    getIncidenceMatrix(){
+        // let matrix = [];
+        // let verticesKeys = Object.keys(this.vertexes);
+        // TypeLink[] linksKeys = (TypeLink[]) links.keySet().toArray();
+        // for (int i = 0; i < verticesKeys.length; i++) {
+        //     for (int j = 0; j < linksKeys.length; j++) {
+        //         VertexLink link = links.get(linksKeys[j]);
+        //         if(link.initialVertex.equals(verticesKeys[i])){
+        //             matrix[i][j] = 1;
+        //         }else if(link.finalVertex.equals(verticesKeys[i])){
+        //             matrix[i][j] = link.isDriving? -1 : 1;
+        //         }else{
+        //             matrix[i][j] = 0;
+        //         }
+        //     }
+        // }
+        // return matrix;
     }
 }
 
@@ -61,6 +102,17 @@ class Node{
         this.id = id;
         this.weight = weight;
         this.finalVertex = finalVertex;
+    }
+}
+
+const getLink = (vertexes, id, callback) => {
+    for(let key in vertexes){
+        for(let keyNodes in vertexes[key].nodes){
+            if(vertexes[key].nodes[keyNodes].id === id){
+                let stop = callback(vertexes[key].nodes[keyNodes], key, keyNodes);
+                if(stop) return;
+            }
+        }
     }
 }
 
