@@ -2,10 +2,13 @@ import React from 'react';
 import Graph from "./graph/Graph";
 import TopBar from "./component/topbar/TopBar";
 import Typography from "@material-ui/core/Typography";
+import GraphSpace from "./component/graphspace/GraphSpace";
+import {makeStyles} from "@material-ui/core/styles";
 
 
 function App() {
     let graph = new Graph();
+
 
     const handleOnClick = () => {
         graph.addVertex("A");
@@ -23,12 +26,10 @@ function App() {
         graph.showVertex();
     };
   return (
-      <div>
+      <div >
           <TopBar/>
-          <div  >
-              <h1 >
-                  Graphs - React
-              </h1>
+          <GraphSpace/>
+          <div >
               <button onClick={handleOnClick}>teste</button>
           </div>
 

@@ -12,7 +12,13 @@ const useStyle = makeStyles(theme =>({
 
     color:{
         backgroundColor:'#9c27b0'
+    },
+
+    font:{
+        fontFamily: 'Lucida Bright',
+        fontWeight:'bold'
     }
+
 }));
 
 const TopBar = () =>{
@@ -21,7 +27,7 @@ const TopBar = () =>{
         <div className={styles.size}>
             <AppBar position="absolute" className={styles.color}>
                 <Toolbar variant="dense">
-                    <Typography variant="h6" color="inherit">
+                    <Typography className={styles.font} variant="h5" color="inherit">
                          Graphs React
                     </Typography>
                 </Toolbar>
