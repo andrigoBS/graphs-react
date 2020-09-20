@@ -1,5 +1,7 @@
 import React from 'react';
 import Graph from "./graph/Graph";
+import TopBar from "./component/topbar/TopBar";
+import Typography from "@material-ui/core/Typography";
 
 
 function App() {
@@ -22,10 +24,14 @@ function App() {
     };
   return (
       <div>
-          <h1>
-              Graphs - React
-          </h1>
-          <button onClick={handleOnClick}>teste</button>
+          <TopBar/>
+          <div  >
+              <h1 >
+                  Graphs - React
+              </h1>
+              <button onClick={handleOnClick}>teste</button>
+          </div>
+
       </div>
   );
 }
