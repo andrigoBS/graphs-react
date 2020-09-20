@@ -28,7 +28,10 @@ function App() {
   return (
       <div >
           <TopBar/>
-          <GraphSpace/>
+          <div align={"center"}>
+              <GraphSpace/>
+          </div>
+
           <div >
               <button onClick={handleOnClick}>teste</button>
           </div>
