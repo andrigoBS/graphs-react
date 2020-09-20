@@ -3,6 +3,12 @@ class Graph{
         this.vertexes = {};
     }
 
+    showVertex(){
+        for(let key in this.vertexes){
+            console.log(this.vertexes[key])
+        }
+    }
+
     addVertex(element){
         this.vertexes[element] = new Vertex(element);
     }
