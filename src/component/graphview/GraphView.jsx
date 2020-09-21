@@ -20,7 +20,7 @@ const GraphView = ({graph, width, height}) => {
             <ForceGraphLink link={{ source: link.initialVertex, target: link.finalVertex }}/> :
             <ForceGraphArrowLink link={{ source: link.initialVertex, target: link.finalVertex }}/>)}
     </ForceGraph>
-}
+};
 
 
 export default GraphView;
