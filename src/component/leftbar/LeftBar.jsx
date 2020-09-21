@@ -44,22 +44,41 @@ const useStyles = makeStyles(theme =>({
     },
 
     marginTopOpen:{
-        marginTop:'15px'
+        marginTop:'20px',
+        backgroundColor:'#9c27b0',
     },
 
 
-    // colorOpen:{
-    //     backgroundColor:'#fdefff',
-    // },
+    colorOpen:{
+        backgroundColor:'#9c27b0',
+        weight:'5px'
+    },
 
     colorClose:{
-        backgroundColor:'#ffffff'
+
     },
 
-    optionsFont:{
-      color:'#7e7e7e',
-        fontSize: 15
+    partsFont:{
+        fontFamily: "Helvetica",
+        color:'#a2a2a2',
+        fontSize: 12
+    },
+
+    optionsFontClose:{
+      color:'#838383',
+        fontSize: 21,
+        fontFamily:"Oswald",
+        fontWeight: 'normal'
+    },
+
+    optionsFontOpen:{
+        color:'#838383',
+        fontSize: 19,
+        fontFamily:"Oswald",
+        fontWeight: 'bold'
     }
+
+
 
 }));
 const LeftBar = () =>{
@@ -81,11 +100,14 @@ const LeftBar = () =>{
                 <Toolbar/>
                 <div >
                     <List>
+                        <ListItem>
+                            <h5 className={styles.partsFont}>ADICIONAR</h5>
+                        </ListItem>
 
-                        <Divider/>
-                        <ListItem className={addVertex ? styles.colorOpen :styles.colorClose} button onClick={handleOnClickAddVertex}>
+                        <Divider className={addVertex ? styles.colorOpen :styles.colorClose}/>
+                        <ListItem  button onClick={handleOnClickAddVertex}>
                             <div className={styles.margins}>
-                                <h5 className={styles.optionsFont}>ADICIONAR VERTICE</h5>
+                                <h1 className={addVertex ? styles.optionsFontOpen : styles.optionsFontClose}>Vertice</h1>
                             </div>
                         </ListItem>
 
@@ -105,6 +127,7 @@ const LeftBar = () =>{
 
                                     <div align={"center"}>
                                         <Button
+
                                             color={"primary"}
                                             onClick={handleOnClickAddVertex}
                                             size={"small"}
@@ -119,14 +142,15 @@ const LeftBar = () =>{
                         <Divider className={addVertex ? styles.marginTopOpen : styles.marginTopClose}/>
                         <ListItem button>
                             <div className={styles.margins} align={"center"}>
-                                <h5 className={styles.optionsFont}>ADICIONAR ARESTA</h5>
+                                <h1 className={addVertex ? styles.optionsFontOpen : styles.optionsFontClose}>Aresta</h1>
                             </div>
-
                         </ListItem>
 
 
                         <ListItem button>
-                            ADICIONAR ARCO
+                            <div className={styles.margins} align={"center"}>
+                                <h1 className={addVertex ? styles.optionsFontOpen : styles.optionsFontClose}>Arco</h1>
+                            </div>
                         </ListItem>
                     </List>
                 </div>
