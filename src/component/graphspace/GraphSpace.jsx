@@ -4,9 +4,14 @@ import Paper from "@material-ui/core/Paper";
 import CardContent from "@material-ui/core/CardContent";
 import Collapse from '@material-ui/core/Collapse';
 import Typography from "@material-ui/core/Typography";
+import {GrTest} from "react-icons/gr";
+import IconButton from "@material-ui/core/IconButton";
 import { CgMoreO } from "react-icons/cg";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
+import Graph from "../../api/graph/Graph";
+
+
 
 const useStyles = makeStyles(theme => ({
     size:{
@@ -14,13 +19,37 @@ const useStyles = makeStyles(theme => ({
     },
 
     buttonColor:{
+        marginBottom: '1%',
+        marginRight:'3%',
         color:'#918f8e',
-        fontSize:13
+        fontSize:13,
+    },
+
+    divPosition:{
+        marginTop: '1%'
     }
 }));
 
 const GraphSpace = () =>{
     let styles = useStyles();
+    let graph = new Graph();
+
+
+    const handleOnClick = () => {
+        graph.addVertex("A");
+        graph.addVertex("B");
+        graph.addVertex("C");
+        graph.addEdge("A","B",2,"AB");
+        graph.addEdge("A","C",6,"AC");
+        graph.addBow("C","B",5,"CB");
+        graph.addVertex("D");
+        graph.addBow("D","C",1,"DC");
+        graph.addBow("D","B",3,"DB");
+        graph.removeBow("CB");
+        // graph.removeEdge("AB");
+        graph.removeVertex("A");
+        graph.showVertex();
+    };
 
     const [expanded, setExpanded] = React.useState(false);
 
@@ -31,15 +60,19 @@ const GraphSpace = () =>{
         <div align={"center"} className={styles.size} >
             <Paper variant={"outlined"}>
                 <h1>Grafo</h1>
-                <div align={"right"}>
+
+                <Divider/>
+                <div className={styles.divPosition} align={"right"}>
+                    <Button className={styles.buttonColor} onClick={handleOnClick} startIcon={<GrTest/>}>
+                        Testar
+                    </Button>
                     <Button className={styles.buttonColor} onClick={handleExpandClick} startIcon={ <CgMoreO />}>
                         Ver detalhes
                     </Button>
                 </div>
-
-                <Collapse in={expanded} timeout="auto" unmountOnExit >
+                <Divider/>
+                <Collapse in={expanded} timeout="auto" unmountOnExit  addEndListener={""}>
                     <CardContent>
-                        <Divider/>
                         <br/>
                         <Typography paragraph>Method:</Typography>
                         <Typography paragraph>
