@@ -29,6 +29,12 @@ const useStyles = makeStyles(theme => ({
 
     divPosition:{
         marginTop: '1%'
+    },
+
+    font:{
+        color:'#918f8e',
+        fontWeigth: 'bold',
+        fontFamily: 'Lucida Bright',
     }
 }));
 
@@ -61,7 +67,7 @@ const GraphSpace = () =>{
     return(
         <div align={"center"} className={styles.size} >
             <Paper variant={"outlined"}>
-                <h1>Grafo</h1>
+                <h1 className={styles.font}>Grafo</h1>
                 <GraphView graph={graph} width={600} height={300}/>
                 <Divider/>
                 <div className={styles.divPosition} align={"right"}>
