@@ -102,6 +102,28 @@ export default class Graph{
         }
         return matrix;
     }
+
+    getVertexAndLinks(){
+        let verticesKeys = Object.keys(this.vertexes);
+        let nodes = [];
+        for (let i = 0; i < verticesKeys.length; i++){
+            let node = this.vertexes[verticesKeys[i]];
+            nodes[i] = {element: node.element};
+        }
+        let links = [];
+        let ids = [];
+        walkLinks(this.vertexes, (element, key, keyNodes) => {
+            if (ids.includes(element.id)) {
+                links[ids.indexOf(element.id)].directed = false;
+            } else {
+                ids.push(element.id);
+                element.initialVertex = key;
+                element.directed = true;
+                links.push(element);
+            }
+        });
+        return {nodes, links};
+    }
 }
 
 class Vertex{
