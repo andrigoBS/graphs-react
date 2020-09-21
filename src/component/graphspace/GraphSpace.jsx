@@ -45,9 +45,9 @@ const GraphSpace = () =>{
     graph.addVertex("D");
     graph.addBow("D","C",1,"DC");
     graph.addBow("D","B",3,"DB");
-    graph.removeBow("CB");
+   // graph.removeBow("CB");
     // graph.removeEdge("AB");
-    graph.removeVertex("A");
+  //  graph.removeVertex("A");
 
     const handleOnClick = () => {
         graph.showVertex();
@@ -62,7 +62,7 @@ const GraphSpace = () =>{
         <div align={"center"} className={styles.size} >
             <Paper variant={"outlined"}>
                 <h1>Grafo</h1>
-                <GraphView graph={graph} width={500} height={500}/>
+                <GraphView graph={graph} width={600} height={300}/>
                 <Divider/>
                 <div className={styles.divPosition} align={"right"}>
                     <Button className={styles.buttonColor} onClick={handleOnClick} startIcon={<GrTest/>}>

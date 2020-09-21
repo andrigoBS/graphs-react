@@ -14,11 +14,11 @@ const GraphView = ({graph, width, height}) => {
 
     console.log(nodes, links);
 
-    return <ForceGraph simulationOptions={{ height: height, width: width }}>
+    return <ForceGraph zoom simulationOptions={{ height: height, width: width, animate: true }}>
         {nodes.map(node => <ForceGraphNode node={{ id: node.element, label: node.element }} fill={node.color} />)}
         {links.map(link => link.directed?
-            <ForceGraphLink link={{ source: link.initialVertex, target: link.finalVertex }}/> :
-            <ForceGraphArrowLink link={{ source: link.initialVertex, target: link.finalVertex }}/>)}
+            <ForceGraphArrowLink link={{ source: link.initialVertex, target: link.finalVertex }}/> :
+            <ForceGraphLink link={{ source: link.initialVertex, target: link.finalVertex }}/>)}
     </ForceGraph>
 };
 
