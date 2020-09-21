@@ -7,8 +7,7 @@ import ListItem from "@material-ui/core/ListItem";
 import Collapse from "@material-ui/core/Collapse";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import Paper from "@material-ui/core/Paper";
-import { BiCircle } from "react-icons/bi";
+import { BiCircle,BiSearchAlt } from "react-icons/bi";
 import { AiOutlineMinus } from "react-icons/ai";
 import Divider from "@material-ui/core/Divider";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
@@ -16,6 +15,10 @@ import {ThemeProvider} from "@material-ui/styles";
 import {purple} from "@material-ui/core/colors";
 import {HiOutlineArrowNarrowRight} from "react-icons/hi";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
+import { SiMatrix } from "react-icons/si";
+import FormGroup from "@material-ui/core/FormGroup";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 const drawerWidth = 250;
 const useStyles = makeStyles(theme =>({
@@ -102,6 +105,27 @@ const theme = createMuiTheme({
 const LeftBar = () =>{
     let styles = useStyles();
 
+    const [state, setState] = React.useState({
+        gilad: true,
+        jason: false,
+        antoine: false,
+    });
+
+
+    const handleChange2 = (event) => {
+        setState2({ ...state2, [event.target.name]: event.target.checked });
+    };
+
+    const [state2, setState2] = React.useState({
+        gilad: true,
+        jason: false,
+        antoine: false,
+    });
+
+
+    const handleChange = (event) => {
+        setState({ ...state, [event.target.name]: event.target.checked });
+    };
     const [addVertex,setAddVertex] = React.useState(false);
 
     const handleOnClickAddVertex = () => {
@@ -118,6 +142,18 @@ const LeftBar = () =>{
 
     const handleOnClickAddBow = () => {
         setAddBow(!addBow);
+    };
+
+    const [showMatrixOptions,setShowMatrixOptions] = React.useState(false);
+
+    const handleOnClickShowMatrixOptions = () => {
+        setShowMatrixOptions(!showMatrixOptions);
+    };
+
+    const [searchOptions,setSearchOptions] = React.useState(false);
+
+    const handleOnClickSearchOptions = () => {
+        setSearchOptions(!searchOptions);
     };
 
     const [removeVertex,setRemoveVertex] = React.useState(false);
@@ -445,6 +481,67 @@ const LeftBar = () =>{
                             </Collapse>
                         </ListItem>
                         <Divider className={removeBow ? styles.marginTopOpen : styles.marginTopClose}/>
+
+                        <ListItem>
+                            <h5 className={styles.partsFont}>EXIBIR</h5>
+                        </ListItem>
+
+                        <Divider className={showMatrixOptions ? styles.colorOpen :styles.colorClose}/>
+
+                        <ListItem  button onClick={handleOnClickShowMatrixOptions}>
+                            <ListItemIcon>
+                                <SiMatrix/>
+                            </ListItemIcon>
+                            <div className={styles.margins}>
+                                <h1 className={showMatrixOptions ? styles.optionsFontOpen : styles.optionsFontClose}>Matrizes</h1>
+                            </div>
+                        </ListItem>
+
+                        <ListItem >
+                            <Collapse in={showMatrixOptions}>
+                                <div>
+                                    <FormGroup>
+                                        <FormControlLabel
+                                            control={<Checkbox checked={state.gilad} name="Matriz de Incidência" onChange={handleChange}/>}
+                                            label="Matriz de Incidência"
+                                        />
+                                        <FormControlLabel
+                                            control={<Checkbox checked={state.jason} name="Matriz de Adjacência" />}
+                                            label="Matriz de Adjacência"
+                                        />
+                                    </FormGroup>
+                                </div>
+                            </Collapse>
+                        </ListItem>
+                        <Divider hidden={searchOptions} className={showMatrixOptions ? styles.marginTopOpen : styles.marginTopClose}/>
+
+                        <Divider hidden={!searchOptions} className={searchOptions ? showMatrixOptions ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
+                        <ListItem  button onClick={handleOnClickSearchOptions}>
+                            <ListItemIcon>
+                                <BiSearchAlt/>
+                            </ListItemIcon>
+                            <div className={styles.margins}>
+                                <h1 className={searchOptions ? styles.optionsFontOpen : styles.optionsFontClose}>Busca</h1>
+                            </div>
+                        </ListItem>
+
+                        <ListItem >
+                            <Collapse in={searchOptions}>
+                                <div>
+                                    <FormGroup>
+                                        <FormControlLabel
+                                            control={<Checkbox checked={state2.gilad} name="Largura" onChange={handleChange2}/>}
+                                            label="Largura"
+                                        />
+                                        <FormControlLabel
+                                            control={<Checkbox checked={state2.jason} name="Profundidade" onChange={handleChange2}/>}
+                                            label="Profundidade"
+                                        />
+                                    </FormGroup>
+                                </div>
+                            </Collapse>
+                        </ListItem>
+                        <Divider  className={searchOptions ? styles.marginTopOpen : styles.marginTopClose}/>
 
                     </List>
                 </div>
