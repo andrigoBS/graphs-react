@@ -120,6 +120,24 @@ const LeftBar = () =>{
         setAddBow(!addBow);
     };
 
+    const [removeVertex,setRemoveVertex] = React.useState(false);
+
+    const handleOnClickRemoveVertex = () => {
+        setRemoveVertex(!removeVertex);
+    };
+
+    const [removeEdge,setRemoveEdge] = React.useState(false);
+
+    const handleOnClickRemoveEdge = () => {
+        setRemoveEdge(!removeEdge);
+    };
+
+    const [removeBow,setRemoveBow] = React.useState(false);
+
+    const handleOnClickRemoveBow = () => {
+        setRemoveBow(!removeBow);
+    };
+
     return(
         <div >
             <Drawer
@@ -305,6 +323,129 @@ const LeftBar = () =>{
                             </Collapse>
                         </ListItem>
                         <Divider className={addBow ? styles.marginTopOpen : styles.marginTopClose}/>
+
+
+                        <ListItem>
+                            <h5 className={styles.partsFont}>REMOVER</h5>
+                        </ListItem>
+
+                        <Divider className={removeVertex ? styles.colorOpen :styles.colorClose}/>
+                        <ListItem  button onClick={handleOnClickRemoveVertex}>
+                            <ListItemIcon>
+                                <BiCircle/>
+                            </ListItemIcon>
+                            <div className={styles.margins}>
+                                <h1 className={removeVertex ? styles.optionsFontOpen : styles.optionsFontClose}>Vertice</h1>
+                            </div>
+                        </ListItem>
+
+                        <ListItem >
+                            <Collapse in={removeVertex}>
+                                <div>
+                                    <ThemeProvider theme={theme}>
+                                        <TextField
+                                            id="removeVertexName"
+                                            label="Nome"
+                                            type="text"
+                                            variant="outlined"
+                                            size={"small"}
+                                            className={styles.distance}
+                                            color={"primary"}
+                                        />
+                                    </ThemeProvider>
+                                </div>
+
+                                <div align={"center"}>
+                                    <Button
+                                        color={"primary"}
+                                        onClick={handleOnClickRemoveVertex}
+                                        size={"small"}
+                                        className={styles.buttonStyle} >
+                                        Remover
+                                    </Button>
+                                </div>
+                            </Collapse>
+                        </ListItem>
+                        <Divider hidden={removeEdge} className={removeVertex ? styles.marginTopOpen : styles.marginTopClose}/>
+
+                        <Divider hidden={!removeEdge} className={removeEdge ? removeVertex ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
+                        <ListItem button onClick={handleOnClickRemoveEdge}>
+                            <ListItemIcon>
+                                <HiOutlineArrowNarrowRight/>
+                            </ListItemIcon>
+                            <div className={styles.margins} align={"center"}>
+                                <h1 className={removeEdge ? styles.optionsFontOpen : styles.optionsFontClose}>Aresta</h1>
+                            </div>
+                        </ListItem>
+
+                        <ListItem >
+                            <Collapse in={removeEdge}>
+                                <div>
+                                    <ThemeProvider theme={theme}>
+                                        <TextField
+                                            id="removeEdgeName"
+                                            label="Nome"
+                                            type="text"
+                                            variant="outlined"
+                                            size={"small"}
+                                            className={styles.distance}
+                                            color={"primary"}
+                                        />
+                                    </ThemeProvider>
+                                </div>
+
+                                <div align={"center"}>
+                                    <Button
+                                        color={"primary"}
+                                        onClick={handleOnClickRemoveEdge}
+                                        size={"small"}
+                                        className={styles.buttonStyle} >
+                                        Remover
+                                    </Button>
+                                </div>
+                            </Collapse>
+                        </ListItem>
+                        <Divider hidden={removeBow} className={removeEdge ? styles.marginTopOpen : styles.marginTopClose}/>
+
+                        <Divider hidden={!removeBow} className={removeBow ? removeEdge ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
+                        <ListItem button onClick={handleOnClickRemoveBow}>
+                            <ListItemIcon>
+                                <AiOutlineMinus/>
+                            </ListItemIcon>
+                            <div className={styles.margins} align={"center"}>
+                                <h1 className={removeBow ? styles.optionsFontOpen : styles.optionsFontClose}>Arco</h1>
+                            </div>
+                        </ListItem>
+
+                        <ListItem >
+                            <Collapse in={removeBow}>
+                                <div>
+                                    <ThemeProvider theme={theme}>
+                                        <TextField
+                                            id="removeBowName"
+                                            label="Nome"
+                                            type="text"
+                                            variant="outlined"
+                                            size={"small"}
+                                            className={styles.distance}
+                                            color={"primary"}
+                                        />
+                                    </ThemeProvider>
+                                </div>
+
+                                <div align={"center"}>
+                                    <Button
+                                        color={"primary"}
+                                        onClick={handleOnClickRemoveBow}
+                                        size={"small"}
+                                        className={styles.buttonStyle} >
+                                        Remover
+                                    </Button>
+                                </div>
+                            </Collapse>
+                        </ListItem>
+                        <Divider className={removeBow ? styles.marginTopOpen : styles.marginTopClose}/>
+
                     </List>
                 </div>
 
