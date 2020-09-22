@@ -1,26 +1,43 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { ForceGraph, ForceGraphNode, ForceGraphLink, ForceGraphArrowLink } from 'react-vis-force';
+import {makeStyles} from "@material-ui/core/styles";
+
+const style = makeStyles(theme => ({
+    fontNode: {
+        fontSize: "9px",
+    }
+}));
 
 const GraphView = ({graph, width, height}) => {
+    const classes = style();
     let graphView = graph.getVertexAndLinks();
-    console.log(graph, graphView);
-    let nodes = [];
-    for (let i = 0; i < graphView.nodes.length; i++){
-        let node = graphView.nodes[i];
-        node.color = "#9c27b0";
-        nodes[i] = node;
-    }
+    let nodes = graphView.nodes;
     let links = graphView.links;
 
-    console.log(nodes, links);
+    let [textProps, setTextProps] = useState({text: "", x:"0", y:"0"});
 
-    return <ForceGraph zoom simulationOptions={{ height: height, width: width, animate: true }}>
-        {nodes.map(node => <ForceGraphNode node={{ id: node.element, label: node.element }} fill={node.color} />)}
+    const linkEnter = (event, link) => {
+        event.preventDefault();
+        let line = event.target;
+        let x = (line.x1.baseVal.value + line.x2.baseVal.value)/2;
+        let y = (line.y1.baseVal.value + line.y2.baseVal.value)/2;
+        let newProps = {text: link.id, x:x+"", y:y+""};
+        console.log(newProps);
+        setTextProps(newProps);
+    }
+
+    return <ForceGraph zoom
+                       simulationOptions={{ height: height, width: width, animate: true }}
+                       labelOffset={{x(node){return -3;}, y(node){return 3;}}}
+                       className={classes.fontNode}>
+        {nodes.map(node => <ForceGraphNode node={{ id: node.element, label: node.element }} fill={"#9c27b0"} showLabel />)}
         {links.map(link => link.directed?
-            <ForceGraphArrowLink link={{ source: link.initialVertex, target: link.finalVertex }}/> :
-            <ForceGraphLink link={{ source: link.initialVertex, target: link.finalVertex }}/>)}
+            <ForceGraphArrowLink link={{source: link.initialVertex, target: link.finalVertex}}
+                                 onMouseEnter={event => linkEnter(event, link)}/> :
+            <ForceGraphLink link={{source: link.initialVertex, target: link.finalVertex}}
+                            onMouseEnter={event => linkEnter(event, link)}/>)}
+        <text className="rv-force__label" zoomable x={textProps.x} y={textProps.y}>{textProps.text}</text>
     </ForceGraph>
 };
-
 
 export default GraphView;
