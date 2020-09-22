@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
     },
 
     font:{
-        color:'#918f8e',
+        color:'#7f7d7c',
         fontWeigth: 'bold',
         fontFamily: 'Lucida Bright',
     }
