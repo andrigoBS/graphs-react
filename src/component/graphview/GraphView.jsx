@@ -4,7 +4,10 @@ import {makeStyles} from "@material-ui/core/styles";
 
 const style = makeStyles(theme => ({
     fontNode: {
-        fontSize: "9px",
+        fontSize: "8px",
+    },
+    fontLink: {
+        fontSize: "5px",
     }
 }));
 
@@ -19,9 +22,10 @@ const GraphView = ({graph, width, height}) => {
     const linkEnter = (event, link) => {
         event.preventDefault();
         let line = event.target;
-        let x = (line.x1.baseVal.value + line.x2.baseVal.value)/2;
+        let x = (line.x1.baseVal.value + line.x2.baseVal.value)/2 - 5;
         let y = (line.y1.baseVal.value + line.y2.baseVal.value)/2;
-        let newProps = {text: link.id, x:x+"", y:y+""};
+        let text = link.id + "(" + link.weight + ")";
+        let newProps = {text: text, x:x+"", y:y+""};
         console.log(newProps);
         setTextProps(newProps);
     }
@@ -36,7 +40,7 @@ const GraphView = ({graph, width, height}) => {
                                  onMouseEnter={event => linkEnter(event, link)}/> :
             <ForceGraphLink link={{source: link.initialVertex, target: link.finalVertex}}
                             onMouseEnter={event => linkEnter(event, link)}/>)}
-        <text className="rv-force__label" zoomable x={textProps.x} y={textProps.y}>{textProps.text}</text>
+        <text className={classes.fontLink} zoomable x={textProps.x} y={textProps.y}>{textProps.text}</text>
     </ForceGraph>
 };
 
