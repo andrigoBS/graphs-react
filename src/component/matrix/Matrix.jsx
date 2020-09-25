@@ -60,6 +60,6 @@ const Matrix = ({heads, lines, data}) => {
             </Table>
         </TableContainer>
     );
-}
+};
 
 export default Matrix;

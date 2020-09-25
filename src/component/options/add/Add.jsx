@@ -5,8 +5,7 @@ import Divider from "@material-ui/core/Divider";
 import AddVertex from "./AddVertex";
 import AddEdge from "./AddEdge";
 import AddBow from "./AddBow";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import {purple} from "@material-ui/core/colors";
+
 
 const useStyles = makeStyles(theme =>({
     marginTopClose:{
@@ -42,11 +41,6 @@ const useStyles = makeStyles(theme =>({
 
 }));
 
-const theme = createMuiTheme({
-    palette: {
-        primary: purple,
-    },
-});
 
 const Add = ({graph}) =>{
     let styles = useStyles();
@@ -55,23 +49,23 @@ const Add = ({graph}) =>{
 
     const handleOnClickAdd = (name) => {
         setAdds({ ...adds, [name]: !adds[name]});
-    }
+    };
 
     const handleAddVertex = (vertex) => {
         console.log(vertex);
         handleOnClickAdd("addVertex");
         graph.addVertex(vertex);
-    }
+    };
 
     const handleAddEdge = (edge) => {
         console.log(edge);
         handleOnClickAdd("addEdge");
-    }
+    };
 
     const handleAddBow = (bow) => {
         console.log(bow);
         handleOnClickAdd("addBow");
-    }
+    };
 
     let {addVertex, addBow, addEdge} = adds;
 
@@ -84,7 +78,6 @@ const Add = ({graph}) =>{
             <Divider className={addVertex ? styles.colorOpen :styles.colorClose}/>
             <AddVertex addVertex={addVertex}
                        handleOnClickAddVertex={() => handleOnClickAdd("addVertex")}
-                       theme={theme}
                        onAddVertex={handleAddVertex}/>
             <Divider hidden={addEdge} className={addVertex? styles.marginTopOpen : styles.marginTopClose}/>
 
@@ -92,7 +85,6 @@ const Add = ({graph}) =>{
                      className={addEdge ? addVertex ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
             <AddEdge addEdge={addEdge}
                      handleOnClickAddEdge={() => handleOnClickAdd("addEdge")}
-                     theme={theme}
                      onAddEdge={handleAddEdge}/>
             <Divider hidden={addBow} className={addEdge ? styles.marginTopOpen : styles.marginTopClose}/>
 
@@ -100,7 +92,6 @@ const Add = ({graph}) =>{
                      className={addBow ? addEdge ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
             <AddBow addBow={addBow}
                     handleOnClickAddBow={() => handleOnClickAdd("addBow")}
-                    theme={theme}
                     onAddBow={handleAddBow}/>
             <Divider className={addBow ? styles.marginTopOpen : styles.marginTopClose}/>
         </div>

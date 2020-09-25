@@ -16,7 +16,7 @@ const useStyle = makeStyles(theme =>({
     },
 
     color:{
-        backgroundColor:'#9c27b0',
+        backgroundColor:theme.palette.primary,
         zIndex: theme.zIndex.drawer + 1,
     },
 

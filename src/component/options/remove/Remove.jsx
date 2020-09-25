@@ -42,11 +42,6 @@ const useStyles = makeStyles(theme =>({
     },
 }));
 
-const theme = createMuiTheme({
-    palette: {
-        primary: purple,
-    },
-});
 
 const Remove = () =>{
     let styles = useStyles();
@@ -76,15 +71,15 @@ const Remove = () =>{
             </ListItem>
 
             <Divider className={removeVertex ? styles.colorOpen :styles.colorClose}/>
-            <RemoveVertex removeVertex={removeVertex} handleOnClickRemoveVertex={handleOnClickRemoveVertex} theme={theme}/>
+            <RemoveVertex removeVertex={removeVertex} handleOnClickRemoveVertex={handleOnClickRemoveVertex} />
             <Divider hidden={removeEdge} className={removeVertex ? styles.marginTopOpen : styles.marginTopClose}/>
 
             <Divider hidden={!removeEdge} className={removeEdge ? removeVertex ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
-            <RemoveEdge removeEdge={removeEdge} handleOnClickRemoveEdge={handleOnClickRemoveEdge} theme={theme}/>
+            <RemoveEdge removeEdge={removeEdge} handleOnClickRemoveEdge={handleOnClickRemoveEdge}/>
             <Divider hidden={removeBow} className={removeEdge ? styles.marginTopOpen : styles.marginTopClose}/>
 
             <Divider hidden={!removeBow} className={removeBow ? removeEdge ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
-            <RemoveBow removeBow={removeBow} handleOnClickRemoveBow={handleOnClickRemoveBow} theme={theme}/>
+            <RemoveBow removeBow={removeBow} handleOnClickRemoveBow={handleOnClickRemoveBow}/>
             <Divider className={removeBow ? styles.marginTopOpen : styles.marginTopClose}/>
         </div>
     )

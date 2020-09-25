@@ -13,7 +13,6 @@ const useStyles = makeStyles(theme =>({
         marginTop:'12px',
         marginLeft:'10px',
         marginRight:'10px',
-        color:'#9c27b0',
     },
 
     optionsFontClose:{
@@ -38,10 +37,9 @@ const useStyles = makeStyles(theme =>({
 
     buttonStyle:{
         marginTop: '10px',
-        color:'#9c27b0',
     },
 }));
-const RemoveVertex = ({removeVertex,handleOnClickRemoveVertex,theme}) =>{
+const RemoveVertex = ({removeVertex,handleOnClickRemoveVertex}) =>{
     let styles = useStyles();
     return(
         <div>
@@ -57,7 +55,6 @@ const RemoveVertex = ({removeVertex,handleOnClickRemoveVertex,theme}) =>{
             <ListItem >
                 <Collapse in={removeVertex}>
                     <div>
-                        <ThemeProvider theme={theme}>
                             <TextField
                                 id="removeVertexName"
                                 label="Nome"
@@ -67,7 +64,6 @@ const RemoveVertex = ({removeVertex,handleOnClickRemoveVertex,theme}) =>{
                                 className={styles.distance}
                                 color={"primary"}
                             />
-                        </ThemeProvider>
                     </div>
 
                     <div align={"center"}>

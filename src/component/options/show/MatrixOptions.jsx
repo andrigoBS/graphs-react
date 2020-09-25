@@ -49,11 +49,11 @@ const MatrixOptions = ({showMatrixOptions,handleOnClickShowMatrixOptions,state})
                     <div>
                         <FormGroup>
                             <FormControlLabel
-                                control={<Checkbox checked={state.gilad} name="Matriz de Incidência"/>}
+                                control={<Checkbox color={"primary"} checked={state.gilad} name="Matriz de Incidência"/>}
                                 label="Matriz de Incidência"
                             />
                             <FormControlLabel
-                                control={<Checkbox checked={state.jason} name="Matriz de Adjacência" />}
+                                control={<Checkbox color={"primary"} checked={state.jason} name="Matriz de Adjacência" />}
                                 label="Matriz de Adjacência"
                             />
                         </FormGroup>

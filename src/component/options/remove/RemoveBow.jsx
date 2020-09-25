@@ -7,14 +7,12 @@ import {ThemeProvider} from "@material-ui/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { AiOutlineMinus } from "react-icons/ai";
-import List from "@material-ui/core/List";
 
 const useStyles = makeStyles(theme =>({
     distance:{
         marginTop:'12px',
         marginLeft:'10px',
         marginRight:'10px',
-        color:'#9c27b0',
     },
 
     optionsFontClose:{
@@ -39,10 +37,9 @@ const useStyles = makeStyles(theme =>({
 
     buttonStyle:{
         marginTop: '10px',
-        color:'#9c27b0',
     },
 }));
-const RemoveBow = ({removeBow,handleOnClickRemoveBow,theme}) =>{
+const RemoveBow = ({removeBow,handleOnClickRemoveBow}) =>{
     let styles = useStyles();
     return(
         <div>
@@ -58,7 +55,7 @@ const RemoveBow = ({removeBow,handleOnClickRemoveBow,theme}) =>{
             <ListItem >
                 <Collapse in={removeBow}>
                     <div>
-                        <ThemeProvider theme={theme}>
+
                             <TextField
                                 id="removeBowName"
                                 label="Nome"
@@ -68,7 +65,6 @@ const RemoveBow = ({removeBow,handleOnClickRemoveBow,theme}) =>{
                                 className={styles.distance}
                                 color={"primary"}
                             />
-                        </ThemeProvider>
                     </div>
 
                     <div align={"center"}>

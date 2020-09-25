@@ -13,7 +13,6 @@ const useStyles = makeStyles(theme =>({
         marginTop:'12px',
         marginLeft:'10px',
         marginRight:'10px',
-        color:'#9c27b0',
     },
 
     optionsFontClose:{
@@ -38,11 +37,10 @@ const useStyles = makeStyles(theme =>({
 
     buttonStyle:{
         marginTop: '10px',
-        color:'#9c27b0',
     },
 }));
 
-const AddBow = ({addBow, handleOnClickAddBow, theme, onAddBow}) =>{
+const AddBow = ({addBow, handleOnClickAddBow, onAddBow}) =>{
     let styles = useStyles();
 
     let [bow, setBow] = useState(
@@ -56,12 +54,12 @@ const AddBow = ({addBow, handleOnClickAddBow, theme, onAddBow}) =>{
     const save = (event) => {
         event.preventDefault();
         setBow({...bow, [event.target.id]: event.target.value});
-    }
+    };
 
     const onClick = (event) => {
         event.preventDefault();
         onAddBow(bow);
-    }
+    };
 
     return(
         <div>
@@ -77,7 +75,6 @@ const AddBow = ({addBow, handleOnClickAddBow, theme, onAddBow}) =>{
             <ListItem>
                 <Collapse in={addBow}>
                     <div>
-                        <ThemeProvider theme={theme}>
                             <TextField
                                 id="nameBow"
                                 label="Nome"
@@ -118,7 +115,6 @@ const AddBow = ({addBow, handleOnClickAddBow, theme, onAddBow}) =>{
                                 color={"primary"}
                                 onChange={save}
                             />
-                        </ThemeProvider>
                     </div>
 
                     <div align={"center"}>

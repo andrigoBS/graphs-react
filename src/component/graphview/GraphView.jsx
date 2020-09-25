@@ -18,21 +18,21 @@ const nodeLabelRelativePosition = {
     y(node){
         return 3;
     }
-}
+};
 
 const createNodeView = (node) => {
     return {
         id: node.element,
         label: node.element
     };
-}
+};
 
 const createLinkView = (link) => {
     return {
         source: link.initialVertex,
         target: link.finalVertex
     };
-}
+};
 
 const GraphView = ({nodes, links, height}) => {
     const graphConfig = {
@@ -53,7 +53,7 @@ const GraphView = ({nodes, links, height}) => {
         let text = link.id + "(" + link.weight + ")";
         let newProps = {text: text, x:x+"", y:y+""};
         setTextProps(newProps);
-    }
+    };
 
     return <ForceGraph zoom
                        simulationOptions={graphConfig}

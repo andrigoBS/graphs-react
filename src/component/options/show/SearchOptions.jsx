@@ -50,11 +50,11 @@ const SearchOptions = ({searchOptions,handleOnClickSearchOptions,state}) =>{
                     <div>
                         <FormGroup>
                             <FormControlLabel
-                                control={<Checkbox checked={state.gilad} name="Largura" />}
+                                control={<Checkbox color={"primary"} checked={state.gilad} name="Largura" />}
                                 label="Largura"
                             />
                             <FormControlLabel
-                                control={<Checkbox checked={state.jason} name="Profundidade" />}
+                                control={<Checkbox color={"primary"} checked={state.jason} name="Profundidade" />}
                                 label="Profundidade"
                             />
                         </FormGroup>

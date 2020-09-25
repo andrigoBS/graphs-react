@@ -13,7 +13,6 @@ const useStyles = makeStyles(theme =>({
         marginTop:'12px',
         marginLeft:'10px',
         marginRight:'10px',
-        color:'#9c27b0',
     },
 
     optionsFontClose:{
@@ -38,11 +37,10 @@ const useStyles = makeStyles(theme =>({
 
     buttonStyle:{
         marginTop: '10px',
-        color:'#9c27b0',
     },
 }));
 
-const AddEdge = ({addEdge, handleOnClickAddEdge, theme, onAddEdge}) =>{
+const AddEdge = ({addEdge, handleOnClickAddEdge, onAddEdge}) =>{
     let styles = useStyles();
 
     let [edge, setEdge] = useState(
@@ -56,12 +54,12 @@ const AddEdge = ({addEdge, handleOnClickAddEdge, theme, onAddEdge}) =>{
     const save = (event) => {
         event.preventDefault();
         setEdge({ ...edge, [event.target.id]: event.target.value});
-    }
+    };
 
     const onClick = (event) => {
         event.preventDefault();
         onAddEdge(edge);
-    }
+    };
 
     return(
         <div>
@@ -77,7 +75,6 @@ const AddEdge = ({addEdge, handleOnClickAddEdge, theme, onAddEdge}) =>{
             <ListItem >
                 <Collapse in={addEdge}>
                     <div>
-                        <ThemeProvider theme={theme}>
                             <TextField
                                 id="nameEdge"
                                 label="Nome"
@@ -118,7 +115,6 @@ const AddEdge = ({addEdge, handleOnClickAddEdge, theme, onAddEdge}) =>{
                                 color={"primary"}
                                 onChange={save}
                             />
-                        </ThemeProvider>
                     </div>
 
                     <div align={"center"}>

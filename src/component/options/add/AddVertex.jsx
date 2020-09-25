@@ -13,7 +13,6 @@ const useStyles = makeStyles(theme =>({
         marginTop:'12px',
         marginLeft:'10px',
         marginRight:'10px',
-        color:'#9c27b0',
     },
 
     optionsFontClose:{
@@ -38,22 +37,21 @@ const useStyles = makeStyles(theme =>({
 
     buttonStyle:{
         marginTop: '10px',
-        color:'#9c27b0',
     },
 
 }));
-const AddVertex = ({addVertex, handleOnClickAddVertex, theme, onAddVertex}) =>{
+const AddVertex = ({addVertex, handleOnClickAddVertex, onAddVertex}) =>{
     let [vertex, setVertex] = useState("");
 
     const saveVertex = (event) => {
         event.preventDefault();
         setVertex(event.target.value);
-    }
+    };
 
     const onClick = (event) => {
         event.preventDefault();
         onAddVertex(vertex);
-    }
+    };
 
     let styles = useStyles();
     return(
@@ -70,7 +68,6 @@ const AddVertex = ({addVertex, handleOnClickAddVertex, theme, onAddVertex}) =>{
             <ListItem >
                 <Collapse in={addVertex}>
                     <div>
-                        <ThemeProvider theme={theme}>
                             <TextField
                                 id="vertexName"
                                 label="Nome"
@@ -81,7 +78,6 @@ const AddVertex = ({addVertex, handleOnClickAddVertex, theme, onAddVertex}) =>{
                                 color={"primary"}
                                 onChange={saveVertex}
                             />
-                        </ThemeProvider>
                     </div>
 
                     <div align={"center"}>
