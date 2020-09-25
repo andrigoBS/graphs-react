@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 
     font:{
         color:'#7f7d7c',
-        fontWeigth: 'bold',
+        fontWeight: 'bold',
         fontFamily: 'Lucida Bright',
     },
 

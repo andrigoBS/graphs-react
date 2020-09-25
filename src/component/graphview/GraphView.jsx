@@ -8,9 +8,6 @@ const style = makeStyles(theme => ({
     },
     fontLink: {
         fontSize: "5px",
-    },
-    nodeColor: {
-        color: theme.palette.primary
     }
 }));
 

@@ -6,7 +6,6 @@ import AddVertex from "./AddVertex";
 import AddEdge from "./AddEdge";
 import AddBow from "./AddBow";
 
-
 const useStyles = makeStyles(theme =>({
     marginTopClose:{
         marginTop:'-14px'

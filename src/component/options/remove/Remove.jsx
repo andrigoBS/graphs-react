@@ -5,8 +5,6 @@ import Divider from "@material-ui/core/Divider";
 import RemoveVertex from "./RemoveVertex";
 import RemoveEdge from "./RemoveEdge";
 import RemoveBow from "./RemoveBow";
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
-import {purple} from "@material-ui/core/colors";
 
 const useStyles = makeStyles(theme =>({
 

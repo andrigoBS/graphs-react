@@ -36,8 +36,6 @@ const useStyles = makeStyles({
 const Matrix = ({heads, lines, data}) => {
     const classes = useStyles();
 
-    console.log(heads, lines, data);
-
     return (
         <TableContainer component={Paper} className={classes.table}>
             <Table aria-label="customized table" size="small">
