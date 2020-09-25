@@ -4,6 +4,9 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Drawer from "@material-ui/core/Drawer";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import { BiNetworkChart } from "react-icons/bi";
 
 const drawerWidth = 250;
 
@@ -24,6 +27,9 @@ const useStyle = makeStyles(theme =>({
 
     drawerPaper: {
         width: drawerWidth,
+    },
+    iconSpace:{
+        marginLeft:'9px'
     }
 }));
 
@@ -34,9 +40,15 @@ const ToolBar = ({children}) =>{
             <div className={styles.size}>
                 <AppBar position="fixed" className={styles.color}>
                     <Toolbar variant="dense">
-                        <Typography className={styles.font} variant="h5" color="inherit">
-                            Graphs React
-                        </Typography>
+                        <List>
+                            <ListItem>
+                                <Typography className={styles.font} variant="h5" color="inherit">
+                                    Graphs React
+                                </Typography>
+                                <BiNetworkChart className={styles.iconSpace} size={28}/>
+                            </ListItem>
+                        </List>
+
                     </Toolbar>
                 </AppBar>
             </div>
