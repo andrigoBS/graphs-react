@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme =>({
 }));
 
 
-const Add = ({graph}) =>{
+const Add = ({graph, update}) =>{
     let styles = useStyles();
 
     const [adds, setAdds] = React.useState({addVertex: false, addBow: false, addEdge: false});
@@ -54,16 +54,21 @@ const Add = ({graph}) =>{
         console.log(vertex);
         handleOnClickAdd("addVertex");
         graph.addVertex(vertex);
+        update();
     };
 
     const handleAddEdge = (edge) => {
         console.log(edge);
         handleOnClickAdd("addEdge");
+        graph.addEdge(edge.initialEdge, edge.finalEdge, edge.weightEdge, edge.nameEdge);
+        update();
     };
 
     const handleAddBow = (bow) => {
         console.log(bow);
         handleOnClickAdd("addBow");
+        graph.addBow(bow.initialBow, bow.finalBow, bow.weightBow, bow.nameBow);
+        update();
     };
 
     let {addVertex, addBow, addEdge} = adds;

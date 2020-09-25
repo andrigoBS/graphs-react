@@ -46,18 +46,16 @@ const MatrixOptions = ({showMatrixOptions,handleOnClickShowMatrixOptions,state})
 
             <ListItem >
                 <Collapse in={showMatrixOptions}>
-                    <div>
-                        <FormGroup>
-                            <FormControlLabel
-                                control={<Checkbox color={"primary"} checked={state.gilad} name="Matriz de Incidência"/>}
-                                label="Matriz de Incidência"
-                            />
-                            <FormControlLabel
-                                control={<Checkbox color={"primary"} checked={state.jason} name="Matriz de Adjacência" />}
-                                label="Matriz de Adjacência"
-                            />
-                        </FormGroup>
-                    </div>
+                    <FormGroup>
+                        <FormControlLabel
+                            control={<Checkbox color={"primary"} checked={state.gilad} name="Matriz de Incidência"/>}
+                            label="Matriz de Incidência"
+                        />
+                        <FormControlLabel
+                            control={<Checkbox color={"primary"} checked={state.jason} name="Matriz de Adjacência" />}
+                            label="Matriz de Adjacência"
+                        />
+                    </FormGroup>
                 </Collapse>
             </ListItem>
         </div>

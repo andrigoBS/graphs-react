@@ -32,7 +32,10 @@ function App() {
     const [showAdjacent, setShowAdjacent] = useState(true);
     const [showIncidence, setShowIncidence] = useState(true);
 
-    const graph = new Graph();
+    const update = () => {};
+
+    let graph = new Graph();
+
     graph.addVertex("A");
     graph.addVertex("B");
     graph.addVertex("C");
@@ -51,7 +54,7 @@ function App() {
       <React.Fragment>
           <ToolBar>
               <List>
-                  <Add graph={graph}/>
+                  <Add graph={graph} update={update}/>
                   <Remove/>
                   <Show activeAdjacent={setShowAdjacent} activeIncidence={setShowIncidence}/>
               </List>
