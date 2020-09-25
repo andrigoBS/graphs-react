@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import { ForceGraph, ForceGraphNode, ForceGraphLink, ForceGraphArrowLink } from 'react-vis-force';
-import {makeStyles} from "@material-ui/core/styles";
+import { ForceGraph, ForceGraphNode, ForceGraphLink, ForceGraphArrowLink, updateSimulation} from 'react-vis-force';
+import {makeStyles, useTheme} from "@material-ui/core";
 
 const style = makeStyles(theme => ({
     fontNode: {
@@ -9,6 +9,9 @@ const style = makeStyles(theme => ({
     fontLink: {
         fontSize: "5px",
     },
+    nodeColor: {
+        color: theme.palette.primary
+    }
 }));
 
 const nodeLabelRelativePosition = {
@@ -43,6 +46,8 @@ const GraphView = ({nodes, links, height}) => {
 
     const classes = style();
 
+    const theme = useTheme();
+
     let [textProps, setTextProps] = useState({text: "", x:"0", y:"0"});
 
     const linkEnter = (event, link) => {
@@ -55,11 +60,26 @@ const GraphView = ({nodes, links, height}) => {
         setTextProps(newProps);
     };
 
+    const onUpdateSimulation = (simulation, options) => {
+        const pxToFloat = (px) => {
+            return px.includes("px")? parseFloat(px.substring(0, px.length-2)) : px;
+        };
+
+        let forceGraph = document.getElementsByClassName("rv-force__svg")[0];
+        let {height, width} = getComputedStyle(forceGraph);
+
+        options.height = pxToFloat(height);
+        options.width = pxToFloat(width);
+
+        return updateSimulation(simulation, options);
+    };
+
     return <ForceGraph zoom
                        simulationOptions={graphConfig}
                        labelOffset={nodeLabelRelativePosition}
-                       className={classes.fontNode}>
-        {nodes.map(node => <ForceGraphNode node={createNodeView(node)} fill={"#9c27b0"} showLabel />)}
+                       className={classes.fontNode}
+                       updateSimulation={onUpdateSimulation}>
+        {nodes.map(node => <ForceGraphNode node={createNodeView(node)} fill={theme.palette.primary.main} showLabel />)}
         {links.map(link => link.directed?
             <ForceGraphArrowLink link={createLinkView(link)} onMouseEnter={event => linkEnter(event, link)}/> :
             <ForceGraphLink link={createLinkView(link)} onMouseEnter={event => linkEnter(event, link)}/>)}

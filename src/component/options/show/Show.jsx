@@ -13,18 +13,18 @@ const useStyles = makeStyles(theme =>({
 
     marginTopSecondOpen:{
         marginTop:'-15px',
-        backgroundColor:'#9c27b0',
+        backgroundColor: theme.palette.primary.main,
     },
 
 
     marginTopOpen:{
         marginTop:'20px',
-        backgroundColor:'#9c27b0',
+        backgroundColor: theme.palette.primary.main,
     },
 
 
     colorOpen:{
-        backgroundColor:'#9c27b0',
+        backgroundColor: theme.palette.primary.main,
     },
 
     colorClose:{

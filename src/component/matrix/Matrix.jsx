@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
-        backgroundColor: "#9c27b0",
+        backgroundColor: theme.palette.primary.main,
         color: theme.palette.common.white,
     },
     body: {
