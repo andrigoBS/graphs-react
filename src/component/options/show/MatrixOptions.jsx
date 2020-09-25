@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme =>({
     },
 
 }));
-const MatrixOptions = ({showMatrixOptions,handleOnClickShowMatrixOptions,state}) =>{
+const MatrixOptions = ({showMatrixOptions,handleOnClickShowMatrixOptions,activeAdjacent,activeIncidence}) =>{
     let styles = useStyles();
     return(
         <div>
@@ -46,16 +46,18 @@ const MatrixOptions = ({showMatrixOptions,handleOnClickShowMatrixOptions,state})
 
             <ListItem >
                 <Collapse in={showMatrixOptions}>
-                    <FormGroup>
-                        <FormControlLabel
-                            control={<Checkbox color={"primary"} checked={state.gilad} name="Matriz de Incidência"/>}
-                            label="Matriz de Incidência"
-                        />
-                        <FormControlLabel
-                            control={<Checkbox color={"primary"} checked={state.jason} name="Matriz de Adjacência" />}
-                            label="Matriz de Adjacência"
-                        />
-                    </FormGroup>
+                    <div>
+                        <FormGroup>
+                            <FormControlLabel
+                                control={<Checkbox color={"primary"} checked={activeIncidence} name="Matriz de Incidência"/>}
+                                label="Matriz de Incidência"
+                            />
+                            <FormControlLabel
+                                control={<Checkbox color={"primary"} checked={activeAdjacent} name="Matriz de Adjacência" />}
+                                label="Matriz de Adjacência"
+                            />
+                        </FormGroup>
+                    </div>
                 </Collapse>
             </ListItem>
         </div>
