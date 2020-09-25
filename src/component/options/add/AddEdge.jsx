@@ -1,12 +1,12 @@
-import React from "react";
+import React, {useState} from "react";
+import {makeStyles} from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Collapse from "@material-ui/core/Collapse";
-import { ThemeProvider} from "@material-ui/styles";
+import {ThemeProvider} from "@material-ui/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { AiOutlineMinus } from "react-icons/ai";
-import {makeStyles} from "@material-ui/core/styles";
+import {HiOutlineArrowNarrowRight} from "react-icons/hi";
 
 const useStyles = makeStyles(theme =>({
     distance:{
@@ -42,58 +42,81 @@ const useStyles = makeStyles(theme =>({
     },
 }));
 
-const AddBow = ({addBow,handleOnClickAddBow,theme}) =>{
+const AddEdge = ({addEdge, handleOnClickAddEdge, theme, onAddEdge}) =>{
     let styles = useStyles();
+
+    let [edge, setEdge] = useState(
+        {
+            nameEdge: "",
+            initialEdge: "",
+            finalEdge: "",
+            weightEdge: 0
+        });
+
+    const save = (event) => {
+        event.preventDefault();
+        setEdge({ ...edge, [event.target.id]: event.target.value});
+    }
+
+    const onClick = (event) => {
+        event.preventDefault();
+        onAddEdge(edge);
+    }
+
     return(
         <div>
-            <ListItem button onClick={handleOnClickAddBow}>
+            <ListItem button onClick={handleOnClickAddEdge}>
                 <ListItemIcon>
-                    <AiOutlineMinus/>
+                    <HiOutlineArrowNarrowRight/>
                 </ListItemIcon>
                 <div className={styles.margins} align={"center"}>
-                    <h1 className={addBow ? styles.optionsFontOpen : styles.optionsFontClose}>Arco</h1>
+                    <h1 className={addEdge ? styles.optionsFontOpen : styles.optionsFontClose}>Aresta</h1>
                 </div>
             </ListItem>
 
-            <ListItem>
-                <Collapse in={addBow}>
+            <ListItem >
+                <Collapse in={addEdge}>
                     <div>
                         <ThemeProvider theme={theme}>
                             <TextField
-                                id="bowName"
+                                id="nameEdge"
                                 label="Nome"
                                 type="text"
                                 variant="outlined"
                                 size={"small"}
                                 className={styles.distance}
                                 color={"primary"}
+                                onChange={save}
                             />
                             <TextField
-                                id="bowBegin"
+                                id="initialEdge"
                                 label="Inicio"
                                 type="text"
                                 variant="outlined"
                                 size={"small"}
                                 className={styles.distance}
                                 color={"primary"}
+                                onChange={save}
                             />
                             <TextField
-                                id="bowEnd"
+                                id="finalEdge"
                                 label="Fim"
                                 type="text"
                                 variant="outlined"
                                 size={"small"}
                                 className={styles.distance}
                                 color={"primary"}
+                                onChange={save}
                             />
                             <TextField
-                                id="bowWeight"
+                                id="weightEdge"
                                 label="Peso"
                                 type="text"
                                 variant="outlined"
                                 size={"small"}
                                 className={styles.distance}
                                 color={"primary"}
+                                onChange={save}
                             />
                         </ThemeProvider>
                     </div>
@@ -101,7 +124,7 @@ const AddBow = ({addBow,handleOnClickAddBow,theme}) =>{
                     <div align={"center"}>
                         <Button
                             color={"primary"}
-                            onClick={handleOnClickAddBow}
+                            onClick={onClick}
                             size={"small"}
                             className={styles.buttonStyle} >
                             Adicionar
@@ -112,4 +135,5 @@ const AddBow = ({addBow,handleOnClickAddBow,theme}) =>{
         </div>
     )
 };
-export default AddBow;
+
+export default AddEdge;

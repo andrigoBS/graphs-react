@@ -3,12 +3,6 @@ export default class Graph{
         this.vertexes = {};
     }
 
-    showVertex(){
-        for (let key in this.vertexes){
-            console.log(this.vertexes[key])
-        }
-    }
-
     addVertex(element){
         this.vertexes[element] = new Vertex(element);
     }
@@ -50,7 +44,7 @@ export default class Graph{
     }
 
     isAdjacent(element1, element2){
-        return !!this.vertexes[element1].nodes[element2];
+        return this.vertexes[element1] && this.vertexes[element1].nodes[element2];
     }
 
     getWeight(id){
@@ -59,21 +53,16 @@ export default class Graph{
         });
     }
 
-    getVerticesOfLink(id){
-        walkLinksId(this.vertexes, id, (element, key, keyNodes) => {
-            return [key, keyNodes];
-        });
-    }
-
     getAdjacentMatrix(){
         let matrix = [];
         let keys = Object.keys(this.vertexes);
-        for(let i = 0; keys.length; i++){
+        for(let i = 0; i < keys.length; i++){
             matrix[i] = [];
             for(let j = 0; j < keys.length; j++){
                 matrix[i][j] = i !== j && this.isAdjacent(keys[i], keys[j])? 1 : 0;
             }
         }
+        return matrix;
     }
 
     getIncidenceMatrix(){

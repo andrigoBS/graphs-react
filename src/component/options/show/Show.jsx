@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme =>({
 }));
 
 
-const Show = () =>{
+const Show = ({activeAdjacent, activeIncidence}) =>{
     let styles = useStyles();
 
     const handleChange = (event) => {

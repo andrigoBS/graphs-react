@@ -86,7 +86,6 @@ const Remove = () =>{
             <Divider hidden={!removeBow} className={removeBow ? removeEdge ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
             <RemoveBow removeBow={removeBow} handleOnClickRemoveBow={handleOnClickRemoveBow} theme={theme}/>
             <Divider className={removeBow ? styles.marginTopOpen : styles.marginTopClose}/>
-
         </div>
     )
 };

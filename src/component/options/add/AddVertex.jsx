@@ -1,12 +1,12 @@
-import React from "react";
-import {makeStyles} from "@material-ui/core/styles";
+import { BiCircle } from "react-icons/bi";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Collapse from "@material-ui/core/Collapse";
 import {ThemeProvider} from "@material-ui/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import {HiOutlineArrowNarrowRight} from "react-icons/hi";
+import React, {useState} from "react";
+import {makeStyles} from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme =>({
     distance:{
@@ -40,61 +40,46 @@ const useStyles = makeStyles(theme =>({
         marginTop: '10px',
         color:'#9c27b0',
     },
+
 }));
+const AddVertex = ({addVertex, handleOnClickAddVertex, theme, onAddVertex}) =>{
+    let [vertex, setVertex] = useState("");
 
-const AddEdge = ({addEdge,handleOnClickAddEdge,theme}) =>{
+    const saveVertex = (event) => {
+        event.preventDefault();
+        setVertex(event.target.value);
+    }
+
+    const onClick = (event) => {
+        event.preventDefault();
+        onAddVertex(vertex);
+    }
+
     let styles = useStyles();
-
     return(
         <div>
-            <ListItem button onClick={handleOnClickAddEdge}>
+            <ListItem button onClick={handleOnClickAddVertex}>
                 <ListItemIcon>
-                    <HiOutlineArrowNarrowRight/>
+                    <BiCircle/>
                 </ListItemIcon>
-                <div className={styles.margins} align={"center"}>
-                    <h1 className={addEdge ? styles.optionsFontOpen : styles.optionsFontClose}>Aresta</h1>
+                <div className={styles.margins}>
+                    <h1 className={addVertex ? styles.optionsFontOpen : styles.optionsFontClose}>Vertice</h1>
                 </div>
             </ListItem>
 
             <ListItem >
-                <Collapse in={addEdge}>
+                <Collapse in={addVertex}>
                     <div>
                         <ThemeProvider theme={theme}>
                             <TextField
-                                id="edgeName"
+                                id="vertexName"
                                 label="Nome"
                                 type="text"
                                 variant="outlined"
                                 size={"small"}
                                 className={styles.distance}
                                 color={"primary"}
-                            />
-                            <TextField
-                                id="edgeBegin"
-                                label="Inicio"
-                                type="text"
-                                variant="outlined"
-                                size={"small"}
-                                className={styles.distance}
-                                color={"primary"}
-                            />
-                            <TextField
-                                id="edgeEnd"
-                                label="Fim"
-                                type="text"
-                                variant="outlined"
-                                size={"small"}
-                                className={styles.distance}
-                                color={"primary"}
-                            />
-                            <TextField
-                                id="edgeWeight"
-                                label="Peso"
-                                type="text"
-                                variant="outlined"
-                                size={"small"}
-                                className={styles.distance}
-                                color={"primary"}
+                                onChange={saveVertex}
                             />
                         </ThemeProvider>
                     </div>
@@ -102,7 +87,7 @@ const AddEdge = ({addEdge,handleOnClickAddEdge,theme}) =>{
                     <div align={"center"}>
                         <Button
                             color={"primary"}
-                            onClick={handleOnClickAddEdge}
+                            onClick={onClick}
                             size={"small"}
                             className={styles.buttonStyle} >
                             Adicionar
@@ -114,4 +99,4 @@ const AddEdge = ({addEdge,handleOnClickAddEdge,theme}) =>{
     )
 };
 
-export default AddEdge;
+export default AddVertex;
