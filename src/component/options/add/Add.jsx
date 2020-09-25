@@ -7,7 +7,6 @@ import AddEdge from "./AddEdge";
 import AddBow from "./AddBow";
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import {purple} from "@material-ui/core/colors";
-import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(theme =>({
     marginTopClose:{
@@ -50,7 +49,6 @@ const theme = createMuiTheme({
 });
 
 const Add = ({graph}) =>{
-    let history = useHistory();
     let styles = useStyles();
 
     const [adds, setAdds] = React.useState({addVertex: false, addBow: false, addEdge: false});
@@ -63,7 +61,6 @@ const Add = ({graph}) =>{
         console.log(vertex);
         handleOnClickAdd("addVertex");
         graph.addVertex(vertex);
-        history.push("/");
     }
 
     const handleAddEdge = (edge) => {

@@ -11,7 +11,36 @@ const style = makeStyles(theme => ({
     },
 }));
 
+const nodeLabelRelativePosition = {
+    x(node){
+        return -3;
+    },
+    y(node){
+        return 3;
+    }
+}
+
+const createNodeView = (node) => {
+    return {
+        id: node.element,
+        label: node.element
+    };
+}
+
+const createLinkView = (link) => {
+    return {
+        source: link.initialVertex,
+        target: link.finalVertex
+    };
+}
+
 const GraphView = ({nodes, links, height}) => {
+    const graphConfig = {
+        width: "85%",
+        height: height,
+        animate: true
+    };
+
     const classes = style();
 
     let [textProps, setTextProps] = useState({text: "", x:"0", y:"0"});
@@ -27,16 +56,17 @@ const GraphView = ({nodes, links, height}) => {
     }
 
     return <ForceGraph zoom
-                       simulationOptions={{ width: "85%", height: height, animate: true}}
-                       labelOffset={{x(node){return -3;}, y(node){return 3;}}}
+                       simulationOptions={graphConfig}
+                       labelOffset={nodeLabelRelativePosition}
                        className={classes.fontNode}>
-        {nodes.map(node => <ForceGraphNode node={{ id: node.element, label: node.element }} fill={"#9c27b0"} showLabel />)}
+        {nodes.map(node => <ForceGraphNode node={createNodeView(node)} fill={"#9c27b0"} showLabel />)}
         {links.map(link => link.directed?
-            <ForceGraphArrowLink link={{source: link.initialVertex, target: link.finalVertex}}
-                                 onMouseEnter={event => linkEnter(event, link)}/> :
-            <ForceGraphLink link={{source: link.initialVertex, target: link.finalVertex}}
-                            onMouseEnter={event => linkEnter(event, link)}/>)}
-        <text className={classes.fontLink} zoomable x={textProps.x} y={textProps.y}>{textProps.text}</text>
+            <ForceGraphArrowLink link={createLinkView(link)} onMouseEnter={event => linkEnter(event, link)}/> :
+            <ForceGraphLink link={createLinkView(link)} onMouseEnter={event => linkEnter(event, link)}/>)}
+
+        <text className={classes.fontLink} zoomable x={textProps.x} y={textProps.y}>
+            {textProps.text}
+        </text>
     </ForceGraph>
 };
 
