@@ -30,7 +30,8 @@ const createNodeView = (node) => {
 const createLinkView = (link) => {
     return {
         source: link.initialVertex,
-        target: link.finalVertex
+        target: link.finalVertex,
+        strokeWidth: "0.3%",
     };
 };
 
@@ -45,7 +46,7 @@ const GraphView = ({nodes, links, height}) => {
 
     const theme = useTheme();
 
-    let [textProps, setTextProps] = useState({text: "", x:"0", y:"0"});
+    const [textProps, setTextProps] = useState({text: "", x:"0", y:"0"});
 
     const linkEnter = (event, link) => {
         event.preventDefault();
@@ -68,8 +69,7 @@ const GraphView = ({nodes, links, height}) => {
         options.height = pxToFloat(height);
         options.width = pxToFloat(width);
 
-        console.log("entro desgraça sem sentido");
-        console.log(forceGraph);
+        simulation.shouldRun = true;
 
         return updateSimulation(simulation, options);
     };
@@ -79,12 +79,12 @@ const GraphView = ({nodes, links, height}) => {
                        labelOffset={nodeLabelRelativePosition}
                        className={classes.fontNode}
                        updateSimulation={onUpdateSimulation}>
-        {nodes.map(node => <ForceGraphNode node={createNodeView(node)} fill={theme.palette.primary.main} showLabel />)}
+        {nodes.map(node => <ForceGraphNode node={createNodeView(node)} fill={theme.palette.primary.main} showLabel key={node.element}/>)}
         {links.map(link => link.directed?
-            <ForceGraphArrowLink link={createLinkView(link)} onMouseEnter={event => linkEnter(event, link)}/> :
-            <ForceGraphLink link={createLinkView(link)} onMouseEnter={event => linkEnter(event, link)}/>)}
+            <ForceGraphArrowLink link={createLinkView(link)} onMouseEnter={event => linkEnter(event, link)} key={link.id}/> :
+            <ForceGraphLink link={createLinkView(link)} onMouseEnter={event => linkEnter(event, link)} key={link.id}/>)}
 
-        <text className={classes.fontLink} zoomable x={textProps.x} y={textProps.y}>
+        <text className={classes.fontLink} zoomable={"true"} x={textProps.x} y={textProps.y}>
             {textProps.text}
         </text>
     </ForceGraph>

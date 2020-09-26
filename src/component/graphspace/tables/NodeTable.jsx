@@ -6,10 +6,11 @@ import React from "react";
 import {makeStyles, withStyles} from "@material-ui/core/styles";
 import TableCell from "@material-ui/core/TableCell";
 import Typography from "@material-ui/core/Typography";
+import TableRow from "@material-ui/core/TableRow";
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
-        backgroundColor: "#9c27b0",
+        backgroundColor: theme.palette.primary.main,
         color: theme.palette.common.white,
     },
     body: {
@@ -45,11 +46,13 @@ const NodeTable = ({nodes}) =>{
 
           <Table aria-label="customized table" size="small">
               <TableBody>
-                  {nodes.map((node) =>(
-                      <StyledTableCell align={"center"} component="th" scope="row">
-                          {node.element}
-                      </StyledTableCell>
-                  ))}
+                  <TableRow>
+                      {nodes.map((node) =>(
+                          <StyledTableCell align={"center"} component="th" scope="row" key={node.element}>
+                              {node.element}
+                          </StyledTableCell>
+                      ))}
+                  </TableRow>
               </TableBody>
           </Table>
       </TableContainer>

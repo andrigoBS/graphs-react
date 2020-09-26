@@ -42,7 +42,7 @@ const Matrix = ({heads, lines, data}) => {
                 <TableHead>
                     <TableRow>
                         <StyledTableCell>{":)"}</StyledTableCell>
-                        {heads.map(item => <StyledTableCell align="center">{item}</StyledTableCell>)}
+                        {heads.map(item => <StyledTableCell align="center" key={item}>{item}</StyledTableCell>)}
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -51,7 +51,7 @@ const Matrix = ({heads, lines, data}) => {
                             <StyledTableCell component="th" scope="row">
                                 {lines[index]}
                             </StyledTableCell>
-                            {row.map(value => <StyledTableCell align="center">{value}</StyledTableCell>)}
+                            {row.map(value => <StyledTableCell align="center" key={value}>{value}</StyledTableCell>)}
                         </StyledTableRow>
                     ))}
                 </TableBody>

@@ -5,7 +5,7 @@ import Collapse from '@material-ui/core/Collapse';
 import { CgMoreO } from "react-icons/cg";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
-import GraphView from "../graphview/GraphView";
+import GraphView from "./graphview/GraphView";
 import NodeTable from "./tables/NodeTable";
 import LinksTable from "./tables/LinksTable";
 
@@ -40,7 +40,7 @@ const GraphSpace = ({nodes, links}) =>{
                 </Button>
             </div>
             <Divider/>
-            <Collapse in={expanded} timeout="auto" unmountOnExit  addEndListener={""}>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
                     <br/>
                     <NodeTable nodes={nodes}/>

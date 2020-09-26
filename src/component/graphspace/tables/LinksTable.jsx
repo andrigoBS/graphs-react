@@ -28,6 +28,7 @@ const StyledTableRow = withStyles((theme) => ({
         },
     },
 }))(TableRow);
+
 const useStyles = makeStyles({
     table: {
         width: "90%",
@@ -63,7 +64,7 @@ const LinksTable = ({links}) =>{
               </TableHead>
               <TableBody>
                   {links.map((link)=>(
-                      <StyledTableRow>
+                      <StyledTableRow key={link.id}>
                           <StyledTableCell align={"center"} component="th" scope="row">
                               {link.directed? <HiOutlineArrowNarrowRight size={20}/> : <AiOutlineMinus size={20}/> }
                           </StyledTableCell>

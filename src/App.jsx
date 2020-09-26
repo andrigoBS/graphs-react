@@ -49,10 +49,10 @@ function App() {
     const update = () => {
         sessionStorage.setItem("graph", JSON.stringify(graph));
         setGraph(graph);
-        let graphViewProvisorio = graph.getVertexAndLinks();
-        setGraphView(graphViewProvisorio);
-        setVertexesNames(graphViewProvisorio.nodes.map((node) => node.element));
-        setLinksNames(graphViewProvisorio.links.map((links) => links.id));
+        let vertexAndLinks = graph.getVertexAndLinks();
+        setGraphView(vertexAndLinks);
+        setVertexesNames(vertexAndLinks.nodes.map((node) => node.element));
+        setLinksNames(vertexAndLinks.links.map((links) => links.id));
     };
 
   return (
@@ -81,8 +81,6 @@ function App() {
                   <Matrix heads={linksNames} lines={vertexesNames} data={graph.getIncidenceMatrix()}/>
               </Paper>}
           </div>
-
-
       </React.Fragment>
   );
 }
