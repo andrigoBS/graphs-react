@@ -32,9 +32,15 @@ function App() {
     const [showAdjacent, setShowAdjacent] = useState(true);
     const [showIncidence, setShowIncidence] = useState(true);
 
-    const update = () => {};
+    const update = () => {
+
+    };
 
     let graph = new Graph();
+
+    //sessionStorage.setItem("graph", JSON.stringify(graph));
+   // let reload = JSON.parse(sessionStorage.getItem("graph"));
+   // new Graph().vertexes = reload.vertexes;
 
     graph.addVertex("A");
     graph.addVertex("B");
