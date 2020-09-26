@@ -68,6 +68,9 @@ const GraphView = ({nodes, links, height}) => {
         options.height = pxToFloat(height);
         options.width = pxToFloat(width);
 
+        console.log("entro desgraça sem sentido");
+        console.log(forceGraph);
+
         return updateSimulation(simulation, options);
     };
 

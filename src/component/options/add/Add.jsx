@@ -54,6 +54,7 @@ const Add = ({graph, update}) =>{
         console.log(vertex);
         handleOnClickAdd("addVertex");
         graph.addVertex(vertex);
+        console.log(graph);
         update();
     };
 

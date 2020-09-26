@@ -5,7 +5,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Collapse from "@material-ui/core/Collapse";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import {HiOutlineArrowNarrowRight} from "react-icons/hi";
+import { AiOutlineMinus } from "react-icons/ai";
 
 const useStyles = makeStyles(theme =>({
     distance:{
@@ -64,7 +64,7 @@ const AddEdge = ({addEdge, handleOnClickAddEdge, onAddEdge}) =>{
         <div>
             <ListItem button onClick={handleOnClickAddEdge}>
                 <ListItemIcon>
-                    <HiOutlineArrowNarrowRight/>
+                    <AiOutlineMinus/>
                 </ListItemIcon>
                 <div className={styles.margins} align={"center"}>
                     <h1 className={addEdge ? styles.optionsFontOpen : styles.optionsFontClose}>Aresta</h1>

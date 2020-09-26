@@ -27,34 +27,33 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
+const getInitialStateGraph = () => {
+    let graph = new Graph();
+    let storage = sessionStorage.getItem("graph");
+    if(storage){
+        graph.vertexes = JSON.parse(storage).vertexes;
+    }
+
+    return graph;
+};
 function App() {
+
     let styles = useStyles();
     const [showAdjacent, setShowAdjacent] = useState(true);
     const [showIncidence, setShowIncidence] = useState(true);
+    const [graph, setGraph] = useState(getInitialStateGraph());
+    const [graphView, setGraphView] = useState(graph.getVertexAndLinks());
+    const [vertexesNames, setVertexesNames] = useState(graphView.nodes.map((node) => node.element));
+    const [linksNames, setLinksNames] = useState(graphView.links.map((links) => links.id));
 
     const update = () => {
-
+        sessionStorage.setItem("graph", JSON.stringify(graph));
+        setGraph(graph);
+        let graphViewProvisorio = graph.getVertexAndLinks();
+        setGraphView(graphViewProvisorio);
+        setVertexesNames(graphViewProvisorio.nodes.map((node) => node.element));
+        setLinksNames(graphViewProvisorio.links.map((links) => links.id));
     };
-
-    let graph = new Graph();
-
-    //sessionStorage.setItem("graph", JSON.stringify(graph));
-   // let reload = JSON.parse(sessionStorage.getItem("graph"));
-   // new Graph().vertexes = reload.vertexes;
-
-    graph.addVertex("A");
-    graph.addVertex("B");
-    graph.addVertex("C");
-    graph.addEdge("A","B",2,"AB");
-    graph.addEdge("A","C",6,"AC");
-    graph.addBow("C","B",5,"CB");
-    graph.addVertex("D");
-    graph.addBow("D","C",1,"DC");
-    graph.addBow("D","B",3,"DB");
-
-    let {links, nodes} = graph.getVertexAndLinks();
-    let vertexesNames = nodes.map((node) => node.element);
-    let linksNames = links.map((links) => links.id);
 
   return (
       <React.Fragment>
@@ -69,7 +68,7 @@ function App() {
           <div align={"center"} className={styles.size}>
               <Paper variant={"outlined"}>
                   <h1 className={styles.font}>Grafo</h1>
-                  <GraphSpace links={links} nodes={nodes}/>
+                  <GraphSpace links={graphView.links} nodes={graphView.nodes}/>
               </Paper>
 
               {showAdjacent && <Paper variant={"outlined"} className={styles.marginPaper}>
@@ -82,6 +81,8 @@ function App() {
                   <Matrix heads={linksNames} lines={vertexesNames} data={graph.getIncidenceMatrix()}/>
               </Paper>}
           </div>
+
+
       </React.Fragment>
   );
 }

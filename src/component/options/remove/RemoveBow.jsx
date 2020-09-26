@@ -5,7 +5,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Collapse from "@material-ui/core/Collapse";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { AiOutlineMinus } from "react-icons/ai";
+import {HiOutlineArrowNarrowRight} from "react-icons/hi";
 
 const useStyles = makeStyles(theme =>({
     distance:{
@@ -44,7 +44,7 @@ const RemoveBow = ({removeBow,handleOnClickRemoveBow}) =>{
         <div>
             <ListItem button onClick={handleOnClickRemoveBow}>
                 <ListItemIcon>
-                    <AiOutlineMinus/>
+                    <HiOutlineArrowNarrowRight/>
                 </ListItemIcon>
                 <div className={styles.margins} align={"center"}>
                     <h1 className={removeBow ? styles.optionsFontOpen : styles.optionsFontClose}>Arco</h1>

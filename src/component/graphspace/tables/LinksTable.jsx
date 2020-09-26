@@ -65,7 +65,7 @@ const LinksTable = ({links}) =>{
                   {links.map((link)=>(
                       <StyledTableRow>
                           <StyledTableCell align={"center"} component="th" scope="row">
-                              {link.directed? <AiOutlineMinus size={20}/> : <HiOutlineArrowNarrowRight size={20}/> }
+                              {link.directed? <HiOutlineArrowNarrowRight size={20}/> : <AiOutlineMinus size={20}/> }
                           </StyledTableCell>
                           <StyledTableCell align={"center"} component="th" scope="row">
                               {link.id}
