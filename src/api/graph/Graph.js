@@ -92,6 +92,55 @@ export default class Graph{
         return matrix;
     }
 
+    getMinTreePrim(){
+        let keys = Object.keys(this.vertexes);
+        let visitedVertexes = [];
+        visitedVertexes.push(keys[0]);
+
+        let notVisitedVertexes = [...keys];
+        notVisitedVertexes.splice(0,1);
+
+        let linksMinTree = [];
+
+        while (visitedVertexes.length < Object.keys(this.vertexes).length) {
+            let minWeight = Number.MAX_SAFE_INTEGER;
+            let saveMinLinks = {};
+
+            for(let j = 0; j < visitedVertexes.length; j++) {
+                if(Object.keys(this.vertexes[visitedVertexes[j]].nodes).length > 0){
+                    for(let k = 0; k < notVisitedVertexes.length; k++) {
+                        let link = this.vertexes[visitedVertexes[j]].nodes[notVisitedVertexes[k]];
+                        let weightJK = link? link.weight: undefined;
+                        if(weightJK && weightJK < minWeight){
+                            minWeight = weightJK;
+                            saveMinLinks = {j, k};
+                        }
+                    }
+                }
+            }
+
+            linksMinTree.push({initial: visitedVertexes[saveMinLinks.j], final: notVisitedVertexes[saveMinLinks.k]});
+            visitedVertexes.push(notVisitedVertexes[saveMinLinks.k]);
+            notVisitedVertexes.splice(saveMinLinks.k, 1);
+        }
+
+        let minTree =  new Graph();
+        let totalWeight = 0;
+
+        for(let link of linksMinTree){
+            if(link.initial){
+                if(!minTree.vertexes[link.initial]) minTree.addVertex(link.initial);
+                if(!minTree.vertexes[link.final]) minTree.addVertex(link.final);
+
+                let linkOriginal = this.vertexes[link.initial].nodes[link.final];
+                minTree.addBow(link.initial, link.final, linkOriginal.weight, linkOriginal.id);
+                totalWeight += parseInt(linkOriginal.weight);
+            }
+        }
+
+        return {minTree, totalWeight};
+    }
+
     getVertexAndLinks(){
         let verticesKeys = Object.keys(this.vertexes);
         let nodes = [];
@@ -132,7 +181,7 @@ class Node{
 
 const walkLinksId = (vertexes, id, callback) => {
     walkLinks(vertexes, (element, key, keyNodes) => {
-        if(vertexes[key].nodes[keyNodes].id === id){
+        if(vertexes[key] && vertexes[key].nodes[keyNodes].id === id){
             return callback(vertexes[key].nodes[keyNodes], key, keyNodes);
         }
     })

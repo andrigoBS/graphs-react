@@ -41,6 +41,7 @@ function App() {
     let styles = useStyles();
     const [showAdjacent, setShowAdjacent] = useState(true);
     const [showIncidence, setShowIncidence] = useState(true);
+    const [showMinTree, setShowMinTree] = useState(true);
     const [graph, setGraph] = useState(getInitialStateGraph());
     const [graphView, setGraphView] = useState(graph.getVertexAndLinks());
     const [vertexesNames, setVertexesNames] = useState(graphView.nodes.map((node) => node.element));
@@ -55,13 +56,16 @@ function App() {
         setLinksNames(vertexAndLinks.links.map((links) => links.id));
     };
 
+   let {minTree, totalWeight} = graph.getMinTreePrim();
+   minTree = minTree.getVertexAndLinks();
+
   return (
       <React.Fragment>
           <ToolBar>
               <List>
                   <Add graph={graph} update={update}/>
-                  <Remove/>
-                  <Show activeAdjacent={setShowAdjacent} activeIncidence={setShowIncidence}/>
+                  <Remove graph={graph} update={update}/>
+                  <Show/>
               </List>
           </ToolBar>
 
@@ -79,6 +83,11 @@ function App() {
               {showIncidence && <Paper variant={"outlined"} className={styles.marginPaper}>
                   <h1 className={styles.font}>Matriz de incidencia</h1>
                   <Matrix heads={linksNames} lines={vertexesNames} data={graph.getIncidenceMatrix()}/>
+              </Paper>}
+
+              {showMinTree && <Paper variant={"outlined"} className={styles.marginPaper}>
+                  <h1 className={styles.font}>Árvore minima</h1>
+                  <GraphSpace links={minTree.links} nodes={minTree.nodes} totalWeight={totalWeight}/>
               </Paper>}
           </div>
       </React.Fragment>

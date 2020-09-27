@@ -47,11 +47,11 @@ const Matrix = ({heads, lines, data}) => {
                 </TableHead>
                 <TableBody>
                     {data.map((row, index) => (
-                        <StyledTableRow key={lines[index]}>
+                        <StyledTableRow key={lines[index]+index+Math.random()}>
                             <StyledTableCell component="th" scope="row">
                                 {lines[index]}
                             </StyledTableCell>
-                            {row.map(value => <StyledTableCell align="center" key={value}>{value}</StyledTableCell>)}
+                            {row.map(value => <StyledTableCell align="center" key={lines[index]+Math.random()}>{value}</StyledTableCell>)}
                         </StyledTableRow>
                     ))}
                 </TableBody>

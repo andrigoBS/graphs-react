@@ -35,6 +35,30 @@ const createLinkView = (link) => {
     };
 };
 
+const onUpdateSimulation = (simulation, options) => {
+    const pxToFloat = (px) => {
+        return px.includes("px")? parseFloat(px.substring(0, px.length-2)) : px;
+    };
+
+    let forceGraph = document.getElementsByClassName("rv-force__svg")[0];
+    let {height, width} = getComputedStyle(forceGraph);
+
+    options.height = pxToFloat(height);
+    options.width = pxToFloat(width);
+
+    simulation.shouldRun = true;
+
+    return updateSimulation(simulation, options);
+};
+
+const zoomOptions = {
+    onZoom: (event, scale) => {
+
+    },
+    minScale: 4,
+    scale: 3
+}
+
 const GraphView = ({nodes, links, height}) => {
     const graphConfig = {
         width: "85%",
@@ -58,26 +82,11 @@ const GraphView = ({nodes, links, height}) => {
         setTextProps(newProps);
     };
 
-    const onUpdateSimulation = (simulation, options) => {
-        const pxToFloat = (px) => {
-            return px.includes("px")? parseFloat(px.substring(0, px.length-2)) : px;
-        };
-
-        let forceGraph = document.getElementsByClassName("rv-force__svg")[0];
-        let {height, width} = getComputedStyle(forceGraph);
-
-        options.height = pxToFloat(height);
-        options.width = pxToFloat(width);
-
-        simulation.shouldRun = true;
-
-        return updateSimulation(simulation, options);
-    };
-
     return <ForceGraph zoom
                        simulationOptions={graphConfig}
                        labelOffset={nodeLabelRelativePosition}
                        className={classes.fontNode}
+                       zoomOptions={zoomOptions}
                        updateSimulation={onUpdateSimulation}>
         {nodes.map(node => <ForceGraphNode node={createNodeView(node)} fill={theme.palette.primary.main} showLabel key={node.element}/>)}
         {links.map(link => link.directed?

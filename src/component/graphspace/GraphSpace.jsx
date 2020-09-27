@@ -8,6 +8,7 @@ import Divider from "@material-ui/core/Divider";
 import GraphView from "./graphview/GraphView";
 import NodeTable from "./tables/NodeTable";
 import LinksTable from "./tables/LinksTable";
+import {Typography} from "@material-ui/core";
 
 const useStyles = makeStyles(theme => ({
     buttonColor:{
@@ -22,7 +23,7 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const GraphSpace = ({nodes, links}) =>{
+const GraphSpace = ({nodes, links, totalWeight}) =>{
     let styles = useStyles();
 
     const [expanded, setExpanded] = React.useState(false);
@@ -45,6 +46,7 @@ const GraphSpace = ({nodes, links}) =>{
                     <br/>
                     <NodeTable nodes={nodes}/>
                     <LinksTable links={links}/>
+                    {totalWeight && <Typography>Peso Total: {totalWeight}</Typography>}
                 </CardContent>
             </Collapse>
         </React.Fragment>
