@@ -41,7 +41,7 @@ const NodeTable = ({nodes}) =>{
   return(
       <TableContainer component={Paper} className={classes.table}>
           <div className={classes.divStyle}>
-              <Typography className={classes.font}>Nodos</Typography>
+              <Typography className={classes.font}>Vértices</Typography>
           </div>
 
           <Table aria-label="customized table" size="small">

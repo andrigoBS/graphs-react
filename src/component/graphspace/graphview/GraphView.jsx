@@ -1,6 +1,7 @@
-import React, {useState} from 'react';
-import { ForceGraph, ForceGraphNode, ForceGraphLink, ForceGraphArrowLink, updateSimulation} from 'react-vis-force';
+import React, {useEffect, useState} from 'react';
+import {ForceGraph, ForceGraphNode, ForceGraphLink, ForceGraphArrowLink, updateSimulation} from 'react-vis-force';
 import {makeStyles, useTheme} from "@material-ui/core";
+import {createSimulation} from "react-vis-force/src/utils/d3-force";
 
 const style = makeStyles(theme => ({
     fontNode: {
@@ -12,65 +13,49 @@ const style = makeStyles(theme => ({
 }));
 
 const nodeLabelRelativePosition = {
-    x(node){
-        return -3;
-    },
-    y(node){
-        return 3;
+    x: (node) => -3,
+    y: (node) => 3
+};
+
+const createNodeView = (node) => ({
+    id: node.element,
+    label: node.element
+});
+
+const createLinkView = (link) => ({
+    source: link.initialVertex,
+    target: link.finalVertex,
+    strokeWidth: "0.3%",
+});
+
+const config = () => {
+    let rects = document.getElementsByTagName("rect");
+    for (let i = 0; i < rects.length; i++) {
+        rects[i].setAttribute("transform", "scale(1)");
+        console.log(rects[i].getAttribute("transform"));
     }
-};
-
-const createNodeView = (node) => {
-    return {
-        id: node.element,
-        label: node.element
-    };
-};
-
-const createLinkView = (link) => {
-    return {
-        source: link.initialVertex,
-        target: link.finalVertex,
-        strokeWidth: "0.3%",
-    };
-};
-
-const onUpdateSimulation = (simulation, options) => {
-    const pxToFloat = (px) => {
-        return px.includes("px")? parseFloat(px.substring(0, px.length-2)) : px;
-    };
-
-    let forceGraph = document.getElementsByClassName("rv-force__svg")[0];
-    let {height, width} = getComputedStyle(forceGraph);
-
-    options.height = pxToFloat(height);
-    options.width = pxToFloat(width);
-
-    simulation.shouldRun = true;
-
-    return updateSimulation(simulation, options);
-};
-
-const zoomOptions = {
-    onZoom: (event, scale) => {
-
-    },
-    minScale: 4,
-    scale: 3
+    let gs = document.getElementsByTagName("g");
+    for (let i = 0; i < gs.length; i++) {
+        let transform = gs[i].getAttribute("transform");
+        if(transform && transform.includes("matrix")){
+            gs[i].setAttribute("transform","matrix(4.5 0 0 4.5 -1200 -540)");
+            console.log(gs[i].getAttribute("transform"));
+        }
+    }
 }
 
 const GraphView = ({nodes, links, height}) => {
     const graphConfig = {
         width: "85%",
         height: height,
-        animate: true
+        //animate: true
     };
 
     const classes = style();
-
     const theme = useTheme();
 
     const [textProps, setTextProps] = useState({text: "", x:"0", y:"0"});
+    const [shouldUpdate, setShould] = useState(false);
 
     const linkEnter = (event, link) => {
         event.preventDefault();
@@ -82,17 +67,48 @@ const GraphView = ({nodes, links, height}) => {
         setTextProps(newProps);
     };
 
-    return <ForceGraph zoom
+    const onUpdateSimulation = (simulation, options) => {
+        const pxToFloat = (px) => {
+            return px.includes("px")? parseFloat(px.substring(0, px.length-2)) : px;
+        };
+
+        let forceGraph = document.getElementsByClassName("rv-force__svg")[0];
+        let {height, width} = getComputedStyle(forceGraph);
+
+        options.height = pxToFloat(height);
+        options.width = pxToFloat(width);
+
+        config();
+
+        setShould(false);
+
+        simulation.strength = options.strength;
+        simulation.shouldRun = true;
+
+        return shouldUpdate? createSimulation(options) : updateSimulation(simulation, options);
+    };
+
+    useEffect(() => setShould(true), [nodes, links, height]);
+
+    return <ForceGraph zoom showLabels
+                       ref={config}
                        simulationOptions={graphConfig}
                        labelOffset={nodeLabelRelativePosition}
                        className={classes.fontNode}
-                       zoomOptions={zoomOptions}
                        updateSimulation={onUpdateSimulation}>
-        {nodes.map(node => <ForceGraphNode node={createNodeView(node)} fill={theme.palette.primary.main} showLabel key={node.element}/>)}
+        {nodes.map(node => <ForceGraphNode node={createNodeView(node)}
+                                           fill={theme.palette.primary.main}
+                                           key={node.element}
+                                           showLabel zoomable={"true"}/>)}
         {links.map(link => link.directed?
-            <ForceGraphArrowLink link={createLinkView(link)} onMouseEnter={event => linkEnter(event, link)} key={link.id}/> :
-            <ForceGraphLink link={createLinkView(link)} onMouseEnter={event => linkEnter(event, link)} key={link.id}/>)}
-
+            <ForceGraphArrowLink link={createLinkView(link)}
+                                 onMouseEnter={event => linkEnter(event, link)}
+                                 key={link.id}
+                                 zoomable={"true"}/> :
+            <ForceGraphLink link={createLinkView(link)}
+                            onMouseEnter={event => linkEnter(event, link)}
+                            key={link.id}
+                            zoomable={"true"}/>)}
         <text className={classes.fontLink} zoomable={"true"} x={textProps.x} y={textProps.y}>
             {textProps.text}
         </text>

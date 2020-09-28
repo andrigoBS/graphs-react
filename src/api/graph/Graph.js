@@ -107,7 +107,7 @@ export default class Graph{
             let saveMinLinks = {};
 
             for(let j = 0; j < visitedVertexes.length; j++) {
-                if(Object.keys(this.vertexes[visitedVertexes[j]].nodes).length > 0){
+                if(this.vertexes[visitedVertexes[j]] && Object.keys(this.vertexes[visitedVertexes[j]].nodes).length > 0){
                     for(let k = 0; k < notVisitedVertexes.length; k++) {
                         let link = this.vertexes[visitedVertexes[j]].nodes[notVisitedVertexes[k]];
                         let weightJK = link? link.weight: undefined;
@@ -138,7 +138,7 @@ export default class Graph{
             }
         }
 
-        return {minTree, totalWeight};
+        return {minTree: minTree.getVertexAndLinks(), totalWeight};
     }
 
     getVertexAndLinks(){

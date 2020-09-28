@@ -58,7 +58,9 @@ const ToolBar = ({children}) =>{
                     paper: styles.drawerPaper,
                 }}>
                 <Toolbar/>
-                {children}
+                <List>
+                    {children}
+                </List>
             </Drawer>
         </React.Fragment>
     )
