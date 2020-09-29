@@ -28,17 +28,17 @@ const createLinkView = (link) => ({
     strokeWidth: "0.3%",
 });
 
-const config = () => {
+const config = (height, width) => {
     let rects = document.getElementsByTagName("rect");
     for (let i = 0; i < rects.length; i++) {
-        rects[i].setAttribute("transform", "scale(1)");
+        rects[i].setAttribute("transform", "scale(1.5)");
         console.log(rects[i].getAttribute("transform"));
     }
     let gs = document.getElementsByTagName("g");
     for (let i = 0; i < gs.length; i++) {
         let transform = gs[i].getAttribute("transform");
         if(transform && transform.includes("matrix")){
-            gs[i].setAttribute("transform","matrix(4.5 0 0 4.5 -1200 -540)");
+            gs[i].setAttribute("transform","matrix(4 0 0 4 "+width*-1.5+" "+height*-1.5+")");
             console.log(gs[i].getAttribute("transform"));
         }
     }
@@ -78,7 +78,7 @@ const GraphView = ({nodes, links, height}) => {
         options.height = pxToFloat(height);
         options.width = pxToFloat(width);
 
-        config();
+        config(options.height, options.width);
 
         setShould(false);
 
@@ -91,7 +91,6 @@ const GraphView = ({nodes, links, height}) => {
     useEffect(() => setShould(true), [nodes, links, height]);
 
     return <ForceGraph zoom showLabels
-                       ref={config}
                        simulationOptions={graphConfig}
                        labelOffset={nodeLabelRelativePosition}
                        className={classes.fontNode}

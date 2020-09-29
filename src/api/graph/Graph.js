@@ -141,6 +141,37 @@ export default class Graph{
         return {minTree: minTree.getVertexAndLinks(), totalWeight};
     }
 
+    getDepthSearch(startElement){
+        if(startElement && this.vertexes[startElement]){
+            let graph = new Graph();
+            this._privateBP(graph, startElement);
+            return graph.getVertexAndLinks();
+        }
+        return {links: [], nodes: []};
+    }
+
+    _privateBP(graph, current){
+        if(!graph.vertexes[current]) graph.addVertex(current);
+        let keys = Object.keys(this.vertexes[current].nodes);
+        for(let key of keys){
+            console.log(key);
+            if(!graph.vertexes[key]){
+                let link = this.vertexes[current].nodes[key];
+                graph.addBow(current, key, link.weight, link.id);
+                this._privateBP(graph, key);
+            }else{
+                if(!graph.vertexes[current].nodes[key]){
+                    let link = this.vertexes[current].nodes[key];
+                    graph.addBow(current, key, link.weight, link.id);
+                }
+            }
+        }
+    }
+
+    getWidthSearch(){
+        return {links: [], nodes: []};
+    }
+
     getVertexAndLinks(){
         let verticesKeys = Object.keys(this.vertexes);
         let nodes = [];
