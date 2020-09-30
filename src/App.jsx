@@ -73,10 +73,10 @@ function App() {
         }else if(type === "widthSearch") {
             setWidthSearch(graph.getWidthSearch(value));
         }
-    }
+    };
 
     let styles = useStyles();
-
+    graph.getComponents();
     return (
       <React.Fragment>
           <ToolBar>

@@ -62,7 +62,7 @@ const Add = ({graph, update}) =>{
         handleOnClickAdd(type);
         graph[type](link.initial, link.final, link.weight, link.name);
         update();
-    }
+    };
 
     return(
         <div>

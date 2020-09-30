@@ -21,7 +21,7 @@ const initState = (fieldsName) => {
         init[name] = "";
     });
     return init;
-}
+};
 
 const OptionTextField = ({onClickCall, fieldsName, fieldsLabel, buttonLabel}) =>{
     let styles = useStyles();
