@@ -154,22 +154,37 @@ export default class Graph{
         if(!graph.vertexes[current]) graph.addVertex(current);
         let keys = Object.keys(this.vertexes[current].nodes);
         for(let key of keys){
-            console.log(key);
             if(!graph.vertexes[key]){
+                graph.addVertex(key);
                 let link = this.vertexes[current].nodes[key];
                 graph.addBow(current, key, link.weight, link.id);
                 this._privateBP(graph, key);
-            }else{
-                if(!graph.vertexes[current].nodes[key]){
-                    let link = this.vertexes[current].nodes[key];
-                    graph.addBow(current, key, link.weight, link.id);
-                }
             }
         }
     }
 
     getWidthSearch(){
-        return {links: [], nodes: []};
+        let graph = new Graph();
+        let q = [];
+        if (Object.keys(this.vertexes)[0] !== undefined){
+            let first = Object.keys(this.vertexes)[0];
+            graph.addVertex(first);
+            q.push(first);
+            while(q.length !== 0){
+                let v = q.shift();
+                let keys = Object.keys(this.vertexes[v].nodes);
+                for(let w of keys) {
+                    if(!graph.vertexes[w]){
+                        graph.addVertex(w);
+                        let link = this.vertexes[v].nodes[w];
+                        graph.addBow(v, w, link.weight, link.id);
+                        q.push(w);
+                    }
+                }
+            }
+            return graph.getVertexAndLinks();
+        }
+      return {links: [], nodes: []}
     }
 
     getVertexAndLinks(){
@@ -192,6 +207,22 @@ export default class Graph{
             }
         });
         return {nodes, links};
+    }
+
+    getComponents(){
+        let vertexes = Object.keys(this.vertexes);
+        let targetPositiveVertex = []
+        let targetNegativeVertex = []
+        let i = 0;
+
+        while(vertexes.length !== 0){
+            targetNegativeVertex.push(vertexes[i])
+            targetPositiveVertex.push(vertexes[i])
+            while(targetPositiveVertex.includes()) {
+
+            }
+        }
+
     }
 }
 

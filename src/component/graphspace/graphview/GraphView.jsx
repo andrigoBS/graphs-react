@@ -32,14 +32,14 @@ const config = (height, width) => {
     let rects = document.getElementsByTagName("rect");
     for (let i = 0; i < rects.length; i++) {
         rects[i].setAttribute("transform", "scale(1.5)");
-        console.log(rects[i].getAttribute("transform"));
+        // console.log(rects[i].getAttribute("transform"));
     }
     let gs = document.getElementsByTagName("g");
     for (let i = 0; i < gs.length; i++) {
         let transform = gs[i].getAttribute("transform");
         if(transform && transform.includes("matrix")){
             gs[i].setAttribute("transform","matrix(4 0 0 4 "+width*-1.5+" "+height*-1.5+")");
-            console.log(gs[i].getAttribute("transform"));
+            // console.log(gs[i].getAttribute("transform"));
         }
     }
 }
