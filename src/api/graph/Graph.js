@@ -187,6 +187,86 @@ export default class Graph{
       return {links: [], nodes: []}
     }
 
+    getComponents(){
+        let graphList = [];
+        let vertexes = Object.keys(this.vertexes);
+        let targetPositiveVertex = [];
+        let targetNegativeVertex = [];
+        let i = 0;
+
+        while(vertexes.length !== 0) {
+            let newGraph = new Graph();
+            if (!targetNegativeVertex.includes(vertexes[i])){
+                targetNegativeVertex.push(vertexes[i]);
+            }
+
+            if (!targetPositiveVertex.includes(vertexes[i])){
+                targetPositiveVertex.push(vertexes[i]);
+            }
+
+            this._getSuccessors(targetPositiveVertex,vertexes);
+
+            this._getPredecessors(targetNegativeVertex,vertexes);
+
+            targetPositiveVertex.filter((current) => targetNegativeVertex.includes(current))
+                .forEach((current) => {
+                    let currentPositiveIndex = targetPositiveVertex.indexOf(current);
+                    targetPositiveVertex.splice(currentPositiveIndex, 1);
+
+                    let currentNegativeIndex = targetNegativeVertex.indexOf(current);
+                    targetNegativeVertex.splice(currentNegativeIndex, 1);
+
+                    let currentVertexIndex = vertexes.indexOf(current);
+                    vertexes.splice(currentVertexIndex, 1);
+
+                    newGraph.addVertex(current);
+                });
+
+            i++;
+
+            for (let j of Object.keys(newGraph.vertexes)) {
+                for (let k of Object.keys(newGraph.vertexes)) {
+                    let bow = this.vertexes[j] && this.vertexes[j].nodes[k];
+                    if(bow){
+                        newGraph.addBow(j, k, bow.weight, bow.id);
+                    }
+                }
+            }
+            graphList.push(newGraph.getVertexAndLinks());
+        }
+        return graphList;
+    }
+
+    _getPredecessors(targetNegativeVertex,vertexes){
+        let negatives = [];
+
+        for (let i = 0; i < vertexes.length; i++) {
+            let element = this.vertexes[targetNegativeVertex[targetNegativeVertex.length - 1]];
+            if (element && element.nodes[vertexes[i]] !== undefined
+                && !targetNegativeVertex.includes(vertexes[i])){
+                negatives.push(vertexes[i]);
+            }
+        }
+
+        for (let i = 0; i < negatives.length; i++) {
+            targetNegativeVertex.push(negatives[i]);
+            this._getPredecessors(targetNegativeVertex, vertexes);
+        }
+
+        return targetNegativeVertex;
+    }
+
+    _getSuccessors(targetPositiveVertex,vertexes){
+        for (let i = 0; i < vertexes.length; i++) {
+            if(this.vertexes[vertexes[i]].nodes[targetPositiveVertex[targetPositiveVertex.length - 1]] !== undefined &&
+                !targetPositiveVertex.includes(vertexes[i])){
+                targetPositiveVertex.push(vertexes[i]);
+                this._getSuccessors(targetPositiveVertex, vertexes);
+            }
+        }
+        return targetPositiveVertex;
+    }
+
     getVertexAndLinks(){
         let verticesKeys = Object.keys(this.vertexes);
         let nodes = [];
@@ -207,74 +287,6 @@ export default class Graph{
             }
         });
         return {nodes, links};
-    }
-
-    getComponents(){
-        let vertexes = Object.keys(this.vertexes);
-        let targetPositiveVertex = [];
-        let targetNegativeVertex = [];
-        let i = 0;
-
-        // while(vertexes.length !== 0){
-            targetNegativeVertex.push(vertexes[i]);
-            targetPositiveVertex.push(vertexes[i]);
-        console.log("targetPositive antes:",targetPositiveVertex);
-        this.isSuccessor(targetPositiveVertex);
-            console.log("targetPositive depois:",targetPositiveVertex);
-        console.log("targetNegative antes:",targetNegativeVertex);
-            this.isPredecessor(targetNegativeVertex);
-        console.log("targetNegative depois:",targetNegativeVertex);
-        for (let j = 0; j < targetPositiveVertex.length; j++) {
-            if (this.targetContains(targetNegativeVertex,targetPositiveVertex[i])){
-                
-            }
-        }
-
-        // }
-
-    }
-
-    targetContains(targetVertex, actualVertex){
-        for (let i = 0; i < targetVertex.length; i++) {
-            if (targetVertex[i] === actualVertex){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    isPredecessor(targetNegativeVertex){
-        let vertexes = Object.keys(this.vertexes);
-        let auxiliar = [];
-
-        for (let i = 0; i < vertexes.length; i++) {
-            if (this.vertexes[targetNegativeVertex[targetNegativeVertex.length - 1]].nodes[vertexes[i]] !== undefined
-                && !this.targetContains(targetNegativeVertex,vertexes[i])){
-                auxiliar.push(vertexes[i]);
-            }
-        }
-        if (auxiliar.length !== 0){
-            console.log("aux",auxiliar);
-            for (let i = 0; i < auxiliar.length; i++) {
-                targetNegativeVertex.push(auxiliar[i]);
-                this.isPredecessor(targetNegativeVertex);
-            }
-
-        }
-        return targetNegativeVertex;
-    }
-
-    isSuccessor(targetPositiveVertex){
-        let vertexes = Object.keys(this.vertexes);
-
-        for (let i = 0; i < vertexes.length; i++) {
-            if(this.vertexes[vertexes[i]].nodes[targetPositiveVertex[targetPositiveVertex.length - 1]] !== undefined &&
-                !this.targetContains(targetPositiveVertex,vertexes[i])){
-                targetPositiveVertex.push(vertexes[i]);
-                this.isSuccessor(targetPositiveVertex);
-            }
-        }
-        return targetPositiveVertex;
     }
 }
 
