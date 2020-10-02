@@ -1,3 +1,18 @@
+class Vertex{
+    constructor(element) {
+        this.element = element;
+        this.nodes = {};
+    }
+}
+
+class Node{
+    constructor(id, weight, finalVertex) {
+        this.id = id;
+        this.weight = weight;
+        this.finalVertex = finalVertex;
+    }
+}
+
 export default class Graph{
     constructor() {
         this.vertexes = {};
@@ -287,21 +302,6 @@ export default class Graph{
             }
         });
         return {nodes, links};
-    }
-}
-
-class Vertex{
-    constructor(element) {
-        this.element = element;
-        this.nodes = {};
-    }
-}
-
-class Node{
-    constructor(id, weight, finalVertex) {
-        this.id = id;
-        this.weight = weight;
-        this.finalVertex = finalVertex;
     }
 }
 
