@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import ToolBar from "./component/toolbar/ToolBar";
 import GraphSpace from "./component/graphspace/GraphSpace";
 import Graph from "./api/graph/Graph";
@@ -41,8 +41,8 @@ function App() {
             adjacent: false,
             incidence: false,
             prim: false,
-            depthSearch: undefined,
-            widthSearch: undefined,
+            depthSearch: false,
+            widthSearch: false,
             roy: false
         });
 
@@ -76,7 +76,6 @@ function App() {
     };
 
     let styles = useStyles();
-    graph.getComponents();
     return (
       <React.Fragment>
           <ToolBar>

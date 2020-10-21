@@ -156,16 +156,18 @@ export default class Graph{
         return {minTree: minTree.getVertexAndLinks(), totalWeight};
     }
 
-    getDepthSearch(startElement){
-        if(startElement && this.vertexes[startElement]){
+    getDepthSearch(element){
+        let startElement = Object.keys(this.vertexes)[0]
+        if(startElement !== undefined){
             let graph = new Graph();
-            this._privateBP(graph, startElement);
+            this._privateBP(graph, startElement, element);
             return graph.getVertexAndLinks();
         }
         return {links: [], nodes: []};
     }
 
-    _privateBP(graph, current){
+    _privateBP(graph, current, element){
+        if(current === element) return true;
         if(!graph.vertexes[current]) graph.addVertex(current);
         let keys = Object.keys(this.vertexes[current].nodes);
         for(let key of keys){
@@ -173,20 +175,21 @@ export default class Graph{
                 graph.addVertex(key);
                 let link = this.vertexes[current].nodes[key];
                 graph.addBow(current, key, link.weight, link.id);
-                this._privateBP(graph, key);
+                if(this._privateBP(graph, key)) break;
             }
         }
     }
 
-    getWidthSearch(){
+    getWidthSearch(element){
         let graph = new Graph();
         let q = [];
-        if (Object.keys(this.vertexes)[0] !== undefined){
-            let first = Object.keys(this.vertexes)[0];
-            graph.addVertex(first);
-            q.push(first);
+        let startElement = Object.keys(this.vertexes)[0];
+        if (startElement !== undefined){
+            graph.addVertex(startElement);
+            q.push(startElement);
             while(q.length !== 0){
                 let v = q.shift();
+                if(v === element) return graph.getVertexAndLinks();
                 let keys = Object.keys(this.vertexes[v].nodes);
                 for(let w of keys) {
                     if(!graph.vertexes[w]){
