@@ -5,7 +5,7 @@ import Divider from "@material-ui/core/Divider";
 import Option from "./option/Option";
 import OptionCheckBox from "./option/optionType/OptionCheckBox";
 import {SiMatrix} from "react-icons/si";
-import {ImTree, BiSearchAlt, BiNetworkChart} from "react-icons/all";
+import {ImTree, BiSearchAlt, BiNetworkChart, RiPaintBrushLine} from "react-icons/all";
 import OptionTextField from "./option/optionType/OptionTextFields";
 
 const useStyles = makeStyles(theme =>({
@@ -44,7 +44,8 @@ const Show = ({onChange, actives}) =>{
         matrixOptions: false,
         treeOptions: false,
         searchOptions: false,
-        componentOptions: false
+        componentOptions: false,
+        colorOptions: false
     });
 
     const handleOnClickShow = (name) => {
@@ -112,7 +113,20 @@ const Show = ({onChange, actives}) =>{
                                 names={["roy"]}
                                 onActive={onChange}/>
             </Option>
-            <Divider className={shows.componentOptions ? styles.marginTopOpen : styles.marginTopClose}/>
+            <Divider hidden={shows.colorOptions} className={shows.componentOptions ? styles.marginTopOpen : styles.marginTopClose}/>
+
+            <Divider hidden={!shows.colorOptions}
+                     className={shows.colorOptions ? shows.componentOptions ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
+            <Option open={shows.colorOptions}
+                    handleOnOpen={() => handleOnClickShow("colorOptions")}
+                    titleLabel={"Coloração"}
+                    icon={<RiPaintBrushLine/>}>
+                <OptionCheckBox actives={actives}
+                                labels={["Colorir com Welsh-Powell (Estrela)"]}
+                                names={["welshPowell"]}
+                                onActive={onChange}/>
+            </Option>
+            <Divider className={shows.colorOptions ? styles.marginTopOpen : styles.marginTopClose}/>
         </div>
     )
 };

@@ -44,7 +44,7 @@ const config = (height, width) => {
     }
 }
 
-const GraphView = ({nodes, links, height}) => {
+const GraphView = ({nodes, links, height, colors}) => {
     const graphConfig = {
         width: "85%",
         height: height,
@@ -53,6 +53,13 @@ const GraphView = ({nodes, links, height}) => {
 
     const classes = style();
     const theme = useTheme();
+
+    const defaultColors = [
+        theme.palette.primary.main,
+        theme.palette.secondary.main,
+        "#ff0000",
+        "#00ff00",
+        "#0000ff"];
 
     const [textProps, setTextProps] = useState({text: "", x:"0", y:"0"});
     const [shouldUpdate, setShould] = useState(false);
@@ -96,7 +103,7 @@ const GraphView = ({nodes, links, height}) => {
                        className={classes.fontNode}
                        updateSimulation={onUpdateSimulation}>
         {nodes.map(node => <ForceGraphNode node={createNodeView(node)}
-                                           fill={theme.palette.primary.main}
+                                           fill={colors? defaultColors[colors[node.element]] : defaultColors[0]}
                                            key={node.element}
                                            showLabel zoomable={"true"}/>)}
         {links.map(link => link.directed?

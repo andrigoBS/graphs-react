@@ -285,6 +285,49 @@ export default class Graph{
         return targetPositiveVertex;
     }
 
+    getWelshPowellColors(){
+        let sortedByAdjacentDegree = [];
+
+        for (let vertexKey in this.vertexes) {
+            sortedByAdjacentDegree.push({vertexKey, adjacentCount: Object.keys(this.vertexes[vertexKey].nodes).length});
+        }
+
+        sortedByAdjacentDegree.sort((a, b) => {
+            if (a.adjacentCount < b.adjacentCount) return 1;
+            return a.adjacentCount > b.adjacentCount? -1 : 0;
+        });
+
+        console.log("sorted", sortedByAdjacentDegree);
+
+        let colors = {};
+        let colorIndex = 0;
+
+        while (sortedByAdjacentDegree.length > 0){
+            colors[sortedByAdjacentDegree[0].vertexKey] = colorIndex;
+            sortedByAdjacentDegree.splice(0, 1);
+
+            for (let i = 0; i < sortedByAdjacentDegree.length; i++){
+                let item = sortedByAdjacentDegree[i];
+                let canPaint = true;
+                for (let colorKey in colors) {
+                    console.log(item.vertexKey, colorKey);
+                    if(colorIndex === colors[colorKey] && this.isAdjacent(item.vertexKey, colorKey)) {
+                        canPaint = false;
+                        break;
+                    }
+                }
+                if(canPaint){
+                    colors[item.vertexKey] = colorIndex;
+                    sortedByAdjacentDegree.splice(i, 1);
+                }
+            }
+
+            colorIndex++;
+        }
+
+        return colors;
+    }
+
     getVertexAndLinks(){
         let verticesKeys = Object.keys(this.vertexes);
         let nodes = [];
