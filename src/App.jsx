@@ -80,6 +80,8 @@ function App() {
     graph.addVertex("A");
     graph.addVertex("B");
     graph.addVertex("C");
+    graph.addVertex("D");
+    graph.addBow("A", "D",1);
     graph.addBow("A","B",3);
     graph.addBow("B","C",5);
     console.log(graph.getMinimumpath("A","C",2));

@@ -195,7 +195,7 @@ export default class Graph{
     // }
 
 
-    getMinimumpath(initialVertex, finalVertex,hValue){
+    getMinimumpath(initialVertex,finalVertex,hValue){
         // let lastHeadNode;
         //
         // let node;
@@ -213,33 +213,44 @@ export default class Graph{
             let currentNode = this.vertexes[initialVertex];
             let path = [currentNode];
             let isFinished = false;
+            let notGo = [];
 
             while (!isFinished) {
                 if (currentNode.element === finalVertex) {
                     return path;
                 }
+                if (currentNode.nodes !== undefined){
+                    let currentFs = [];
+                    let extraG = 0;
+                    for (let i = 0; i < path.length - 1; i++) {
+                        extraG = this.vertexes[path[i].element].nodes[path[i + 1].element].weight;
+                    }
+                    for (let nodeKey in currentNode.nodes) {
+                        if (!notGo.includes(nodeKey)){
+                            let g = currentNode.nodes[nodeKey].weight;
+                            g += extraG;
+                            let f = g + hValue[nodeKey];
+                            currentFs.push({vertex: nodeKey, valueF: f});
+                        }
 
-                let currentFs = [];
-                let extraG = 0;
-                for (let i = 0; i < path.length - 1; i++) {
-                    extraG = this.vertexes[path[i]].nodes[path + 1].weight;
-                }
-                for (let nodeKey in currentNode.nodes) {
-                    let g = currentNode.nodes[nodeKey].weight;
-                    g += extraG;
-                    let f = g + hValue[nodeKey];
-                    currentFs.push({vertex: nodeKey, valueF: f});
-                }
-                currentFs.sort((a, b) => {
-                    if (a.valueF < b.valueF) return -1;
-                    return a.valueF > b.valueF ? 1 : 0;
-                });
-                let min = currentFs[0];
+                    }
+                    currentFs.sort((a, b) => {
+                        if (a.valueF < b.valueF) return -1;
+                        return a.valueF > b.valueF ? 1 : 0;
+                    });
+                    let min = currentFs[0];
 
-                currentNode = this.vertexes[min.vertex];
-                path.push(min.vertex);
+                    currentNode = this.vertexes[min.vertex];
+                    path.push(currentNode);
+                }else {
+                    currentNode = path[path.length - 1];
+                    notGo.push(currentNode.element);
+                    path.pop();
+                }
+                return path;
+
             }
-            return path;
+
         }
         return "falhou";
     }
