@@ -37,7 +37,7 @@ const getInitialStateGraph = () => {
 };
 
 function exampleM2(){
-    const h = (vertex1, vertex2) => {
+    const tableH = (vertex1, vertex2) => {
         return Math.abs(vertex1.x - vertex2.x) +
                Math.abs(vertex1.y - vertex2.y);
     }
@@ -67,27 +67,101 @@ function exampleM2(){
     }
 
     graph.addEdge("A", "B",
-        h(vertexes["A"], vertexes["B"]) + 10,
+        tableH(vertexes["A"], vertexes["B"]) + 10,
         "AB");
     graph.addEdge("A", "N",
-        h(vertexes["A"], vertexes["N"]) + 10,
+        tableH(vertexes["A"], vertexes["N"]) + 10,
         "AN");
     graph.addEdge("A", "G",
-        h(vertexes["A"], vertexes["G"]) + 10,
+        tableH(vertexes["A"], vertexes["G"]) + 10,
         "AG");
 
     graph.addEdge("B", "E",
-        h(vertexes["B"], vertexes["E"]) + 10,
+        tableH(vertexes["B"], vertexes["E"]) + 10,
         "BE");
     graph.addEdge("B", "N",
-        h(vertexes["B"], vertexes["N"]) + 10,
+        tableH(vertexes["B"], vertexes["N"]) + 10,
         "BN");
     graph.addEdge("B", "F",
-        h(vertexes["B"], vertexes["F"]) + 10,
+        tableH(vertexes["B"], vertexes["F"]) + 10,
         "BF");
     graph.addEdge("B", "J",
-        h(vertexes["B"], vertexes["J"]) + 10,
+        tableH(vertexes["B"], vertexes["J"]) + 10,
         "BJ");
+
+    graph.addEdge("C", "G",
+        tableH(vertexes["C"], vertexes["G"]) + 10,
+        "CG");
+    graph.addEdge("C", "F",
+        tableH(vertexes["C"], vertexes["F"]) + 10,
+        "CF");
+
+    graph.addEdge("D", "K",
+        tableH(vertexes["D"], vertexes["K"]) + 10,
+        "DK");
+    graph.addEdge("D", "H",
+        tableH(vertexes["D"], vertexes["H"]) + 10,
+        "DH");
+    graph.addEdge("D", "L",
+        tableH(vertexes["D"], vertexes["L"]) + 10,
+        "DL");
+    graph.addEdge("D","O",
+        tableH(vertexes["D"],vertexes["O"]) + 10,
+        "DO");
+    graph.addEdge("D","J",
+        tableH(vertexes["D"],vertexes["J"]) + 10,
+        "DJ");
+
+    graph.addEdge("E","I",
+        tableH(vertexes["E"],vertexes["I"]) + 10,
+        "EI");
+
+    graph.addEdge("E","L",
+        tableH(vertexes["E"],vertexes["L"]) + 10,
+        "EL");
+
+    graph.addEdge("F","J",
+        tableH(vertexes["F"],vertexes["J"]) + 10,
+        "FJ");
+
+    graph.addEdge("F","N",
+        tableH(vertexes["F"],vertexes["N"]) + 10,
+        "FN");
+
+    graph.addEdge("G","N",
+        tableH(vertexes["G"],vertexes["N"]) + 10,
+        "GN");
+
+
+    graph.addEdge("H","I",
+        tableH(vertexes["H"],vertexes["I"]) + 10,
+        "HI");
+    graph.addEdge("H","L",
+        tableH(vertexes["H"],vertexes["L"]) + 10,
+        "HL");
+
+
+    graph.addEdge("I","M",
+        tableH(vertexes["I"],vertexes["M"]) + 10,
+        "IM");
+
+
+    graph.addEdge("J","O",
+        tableH(vertexes["J"],vertexes["O"]) + 10,
+        "JO");
+
+
+    graph.addEdge("K","M",
+        tableH(vertexes["K"],vertexes["M"]) + 10,
+        "KM");
+
+    graph.addEdge("L","O",
+        tableH(vertexes["L"],vertexes["O"]) + 10,
+        "LO");
+
+    const h = (name1, name2) => {
+        return tableH(vertexes[name1], vertexes[name2])
+    }
 
     return [graph, h];
 }
@@ -143,7 +217,7 @@ function App() {
     // graph.addBow("A","B",3);
     // graph.addBow("B","C",5);
     let [graphM2, h] = exampleM2();
-    console.log(graphM2.getMinimumpath("A","J", h));
+    console.log(graphM2.getMinimumpath("A","B", h));
 
     return (
       <React.Fragment>

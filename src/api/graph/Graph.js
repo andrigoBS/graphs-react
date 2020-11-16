@@ -216,27 +216,43 @@ export default class Graph{
         const g = (node, path) => {
             let sum = 0;
             for (let i = 0; i < path.length; i++) {
-                if(this.isAdjacent(path[i].element, node)){
-                    return sum + path[i].nodes[node].weight;
+                if(this.isAdjacent(path[i], node)){
+                    return sum + this.vertexes[path[i]].nodes[node].weight;
                 }else{
-                    sum += path[i].nodes[path[i + 1]].weight;
+                    sum += this.vertexes[path[i]].nodes[path[i + 1]].weight;
+                }
+            }
+        }
+        const pushAll = (dictionary, vector) => {
+            for (let elementKey in dictionary) {
+                if(!vector.includes(elementKey)){
+                    vector.push(elementKey);
                 }
             }
         }
 
-        let allNodes = [this.vertexes[initialVertex]];
-        let path = [this.vertexes[initialVertex]];
+        let allNodes = [initialVertex];
+        pushAll(this.vertexes[initialVertex].nodes, allNodes);
+        let path = [initialVertex];
 
-        while (allNodes.length !== 0){
+        while (allNodes.length <= Object.keys(this.vertexes).length){
             let fs = []
             allNodes.forEach((node) => {
-                let f = g(node, path) + h(initialVertex, node);
-                fs.push({vertex: node.element, f});
+                if(!path.includes(node)){
+                    let f = g(node, path) + h(initialVertex, node);
+                    fs.push({vertex: node, f});
+                }
             });
 
-            let min = minF();
+            let min = minF(fs);
+            console.log("fs", fs);
+            console.log("min", min);
             if(min.vertex === finalVertex) return path;
-            allNodes.push(this.vertexes[min.vertex].nodes);
+            pushAll(this.vertexes[min.vertex].nodes, allNodes);
+            path.push(min.vertex);
+
+            console.log("all", allNodes);
+            console.log("path", path);
         }
 
         // if (this.vertexes[finalVertex] !== undefined &&
