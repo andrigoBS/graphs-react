@@ -42,13 +42,13 @@ const config = (height, width) => {
             // console.log(gs[i].getAttribute("transform"));
         }
     }
-}
+};
 
 const GraphView = ({nodes, links, height}) => {
     const graphConfig = {
         width: "85%",
         height: height,
-        //animate: true
+        // animate: true
     };
 
     const classes = style();

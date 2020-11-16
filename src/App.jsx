@@ -77,6 +77,12 @@ function App() {
 
     let styles = useStyles();
     graph.getComponents();
+    graph.addVertex("A");
+    graph.addVertex("B");
+    graph.addVertex("C");
+    graph.addBow("A","B",3);
+    graph.addBow("B","C",5);
+    console.log(graph.getMinimumpath("A","C",2));
     return (
       <React.Fragment>
           <ToolBar>

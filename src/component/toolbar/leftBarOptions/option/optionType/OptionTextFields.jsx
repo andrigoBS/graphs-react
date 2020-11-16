@@ -3,6 +3,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 
+
 const useStyles = makeStyles(theme =>({
     distance:{
         marginTop:'12px',
@@ -25,7 +26,6 @@ const initState = (fieldsName) => {
 
 const OptionTextField = ({onClickCall, fieldsName, fieldsLabel, buttonLabel}) =>{
     let styles = useStyles();
-
     let [values, setValues] = useState(initState(fieldsName));
 
     const save = (event) => {
@@ -36,16 +36,19 @@ const OptionTextField = ({onClickCall, fieldsName, fieldsLabel, buttonLabel}) =>
     const onClickBt = (event) => {
         event.preventDefault();
         onClickCall(values);
+        let names = Object.keys(values);
+        setValues(initState(names))
     };
 
     return(
         <React.Fragment>
             <div>
-                {fieldsLabel.map((label, index) =>
+                {fieldsName.map((name, index) =>
                     <TextField
-                        key={fieldsName[index]}
-                        name={fieldsName[index]}
-                        label={label}
+                        value={values[name]}
+                        key={name}
+                        name={name}
+                        label={fieldsLabel[index]}
                         type="text"
                         variant="outlined"
                         size={"small"}

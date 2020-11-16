@@ -187,6 +187,68 @@ export default class Graph{
       return {links: [], nodes: []}
     }
 
+    // calculateManhattan(initialVertex,finalVertex,xValue,yValue){
+    //     let hValue = [];
+    //     for (let i = 0; i < xValue.length; i++) {
+    //         hValue.push(Math.abs(xValue[i] - xValue[]))
+    //     }
+    // }
+
+
+    getMinimumpath(initialVertex, finalVertex,hValue){
+        // let lastHeadNode;
+        //
+        // let node;
+        // let allNodes = [this.vertexes[initialVertex]];
+        //
+        // while (allNodes.length !== 0){
+        //     node = this.getTheBestNode()
+        //     if (node.value === finalVertex.value){
+        //
+        //     }
+        // }
+        if (this.vertexes[finalVertex] !== undefined &&
+            this.vertexes[initialVertex] !== undefined) {
+
+            let currentNode = this.vertexes[initialVertex];
+            let path = [currentNode];
+            let isFinished = false;
+
+            while (!isFinished) {
+                if (currentNode.element === finalVertex) {
+                    return path;
+                }
+
+                let currentFs = [];
+                let extraG = 0;
+                for (let i = 0; i < path.length - 1; i++) {
+                    extraG = this.vertexes[path[i]].nodes[path + 1].weight;
+                }
+                for (let nodeKey in currentNode.nodes) {
+                    let g = currentNode.nodes[nodeKey].weight;
+                    g += extraG;
+                    let f = g + hValue[nodeKey];
+                    currentFs.push({vertex: nodeKey, valueF: f});
+                }
+                currentFs.sort((a, b) => {
+                    if (a.valueF < b.valueF) return -1;
+                    return a.valueF > b.valueF ? 1 : 0;
+                });
+                let min = currentFs[0];
+
+                currentNode = this.vertexes[min.vertex];
+                path.push(min.vertex);
+            }
+            return path;
+        }
+        return "falhou";
+    }
+
+    getTheBestNode(allNodes){
+
+    }
+
+
     getComponents(){
         let graphList = [];
         let vertexes = Object.keys(this.vertexes);

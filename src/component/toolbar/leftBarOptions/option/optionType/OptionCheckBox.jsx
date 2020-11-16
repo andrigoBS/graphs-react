@@ -6,7 +6,7 @@ import FormGroup from "@material-ui/core/FormGroup";
 const OptionCheckBox = ({onActive, names, labels, actives}) => {
     const save = (event) => {
         onActive(event.target.checked, event.target.name);
-    }
+    };
 
     return <FormGroup>
         {names.map((name, index) =>
@@ -20,6 +20,6 @@ const OptionCheckBox = ({onActive, names, labels, actives}) => {
             />
         )}
     </FormGroup>
-}
+};
 
 export default OptionCheckBox;
