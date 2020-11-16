@@ -35,6 +35,63 @@ const getInitialStateGraph = () => {
 
     return graph;
 };
+
+function exampleM2(){
+    const h = (vertex1, vertex2) => {
+        return Math.abs(vertex1.x - vertex2.x) +
+               Math.abs(vertex1.y - vertex2.y);
+    }
+
+    let graph = new Graph();
+
+    let vertexes = {
+        A:{ x:950, y:231 },
+        B:{ x:607, y: 486 },
+        C:{ x:891, y: 762 },
+        D:{ x:15, y: 747 },
+        E:{ x:466, y: 419 },
+        F:{ x:615, y: 792 },
+        G:{ x:922, y: 738 },
+        H:{ x:176, y: 406 },
+        I:{ x:272, y: 199 },
+        J:{ x:410, y: 894 },
+        K:{ x:58, y: 353 },
+        L:{ x:199, y: 604 },
+        M:{ x:139, y: 203 },
+        N:{ x:846, y: 525 },
+        O:{ x:203, y: 672 }
+    };
+
+    for (let vertexKey in vertexes) {
+        graph.addVertex(vertexKey);
+    }
+
+    graph.addEdge("A", "B",
+        h(vertexes["A"], vertexes["B"]) + 10,
+        "AB");
+    graph.addEdge("A", "N",
+        h(vertexes["A"], vertexes["N"]) + 10,
+        "AN");
+    graph.addEdge("A", "G",
+        h(vertexes["A"], vertexes["G"]) + 10,
+        "AG");
+
+    graph.addEdge("B", "E",
+        h(vertexes["B"], vertexes["E"]) + 10,
+        "BE");
+    graph.addEdge("B", "N",
+        h(vertexes["B"], vertexes["N"]) + 10,
+        "BN");
+    graph.addEdge("B", "F",
+        h(vertexes["B"], vertexes["F"]) + 10,
+        "BF");
+    graph.addEdge("B", "J",
+        h(vertexes["B"], vertexes["J"]) + 10,
+        "BJ");
+
+    return [graph, h];
+}
+
 function App() {
     const [shows, setShows] = useState(
         {
@@ -77,14 +134,16 @@ function App() {
 
     let styles = useStyles();
     graph.getComponents();
-    graph.addVertex("A");
-    graph.addVertex("B");
-    graph.addVertex("C");
-    graph.addVertex("D");
-    graph.addBow("A", "D",1);
-    graph.addBow("A","B",3);
-    graph.addBow("B","C",5);
-    console.log(graph.getMinimumpath("A","C",2));
+    // graph.addVertex("A");
+    // graph.addVertex("B");
+    // graph.addVertex("C");
+    // graph.addVertex("D");
+    // graph.addBow("A", "D",1);
+    // graph.addBow("A","B",3);
+    // graph.addBow("B","C",5);
+    let [graphM2, h] = exampleM2();
+    console.log(graphM2.getMinimumpath("A","J", h));
+
     return (
       <React.Fragment>
           <ToolBar>
