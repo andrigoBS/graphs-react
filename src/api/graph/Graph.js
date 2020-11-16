@@ -1,3 +1,18 @@
+class Vertex{
+    constructor(element) {
+        this.element = element;
+        this.nodes = {};
+    }
+}
+
+class Node{
+    constructor(id, weight, finalVertex) {
+        this.id = id;
+        this.weight = weight;
+        this.finalVertex = finalVertex;
+    }
+}
+
 export default class Graph{
     constructor() {
         this.vertexes = {};
@@ -141,16 +156,18 @@ export default class Graph{
         return {minTree: minTree.getVertexAndLinks(), totalWeight};
     }
 
-    getDepthSearch(startElement){
-        if(startElement && this.vertexes[startElement]){
+    getDepthSearch(element){
+        let startElement = Object.keys(this.vertexes)[0]
+        if(startElement !== undefined){
             let graph = new Graph();
-            this._privateBP(graph, startElement);
+            this._privateBP(graph, startElement, element);
             return graph.getVertexAndLinks();
         }
         return {links: [], nodes: []};
     }
 
-    _privateBP(graph, current){
+    _privateBP(graph, current, element){
+        if(current === element) return true;
         if(!graph.vertexes[current]) graph.addVertex(current);
         let keys = Object.keys(this.vertexes[current].nodes);
         for(let key of keys){
@@ -158,20 +175,21 @@ export default class Graph{
                 graph.addVertex(key);
                 let link = this.vertexes[current].nodes[key];
                 graph.addBow(current, key, link.weight, link.id);
-                this._privateBP(graph, key);
+                if(this._privateBP(graph, key)) break;
             }
         }
     }
 
-    getWidthSearch(){
+    getWidthSearch(element){
         let graph = new Graph();
         let q = [];
-        if (Object.keys(this.vertexes)[0] !== undefined){
-            let first = Object.keys(this.vertexes)[0];
-            graph.addVertex(first);
-            q.push(first);
+        let startElement = Object.keys(this.vertexes)[0];
+        if (startElement !== undefined){
+            graph.addVertex(startElement);
+            q.push(startElement);
             while(q.length !== 0){
                 let v = q.shift();
+                if(v === element) return graph.getVertexAndLinks();
                 let keys = Object.keys(this.vertexes[v].nodes);
                 for(let w of keys) {
                     if(!graph.vertexes[w]){
@@ -186,14 +204,6 @@ export default class Graph{
         }
       return {links: [], nodes: []}
     }
-
-    // calculateManhattan(initialVertex,finalVertex,xValue,yValue){
-    //     let hValue = [];
-    //     for (let i = 0; i < xValue.length; i++) {
-    //         hValue.push(Math.abs(xValue[i] - xValue[]))
-    //     }
-    // }
-
 
     getMinimumpath(initialVertex, finalVertex, h){
         const minF = (fs) => {
@@ -228,10 +238,6 @@ export default class Graph{
             if(min.vertex === finalVertex) return path;
             allNodes.push(this.vertexes[min.vertex].nodes);
         }
-
-
-
-
 
         // if (this.vertexes[finalVertex] !== undefined &&
         //     this.vertexes[initialVertex] !== undefined) {
@@ -277,12 +283,6 @@ export default class Graph{
         //     }
         // }
         // return "falhou";
-    }
-
-
-
-    getTheBestNode(allNodes){
-
     }
 
 
@@ -366,6 +366,49 @@ export default class Graph{
         return targetPositiveVertex;
     }
 
+    getWelshPowellColors(){
+        let sortedByAdjacentDegree = [];
+
+        for (let vertexKey in this.vertexes) {
+            sortedByAdjacentDegree.push({vertexKey, adjacentCount: Object.keys(this.vertexes[vertexKey].nodes).length});
+        }
+
+        sortedByAdjacentDegree.sort((a, b) => {
+            if (a.adjacentCount < b.adjacentCount) return 1;
+            return a.adjacentCount > b.adjacentCount? -1 : 0;
+        });
+
+        //console.log("sorted", sortedByAdjacentDegree);
+
+        let colors = {};
+        let colorIndex = 0;
+
+        while (sortedByAdjacentDegree.length > 0){
+            colors[sortedByAdjacentDegree[0].vertexKey] = colorIndex;
+            sortedByAdjacentDegree.splice(0, 1);
+
+            for (let i = 0; i < sortedByAdjacentDegree.length; i++){
+                let item = sortedByAdjacentDegree[i];
+                let canPaint = true;
+                for (let colorKey in colors) {
+                    //console.log(item.vertexKey, colorKey);
+                    if(colorIndex === colors[colorKey] && this.isAdjacent(item.vertexKey, colorKey)) {
+                        canPaint = false;
+                        break;
+                    }
+                }
+                if(canPaint){
+                    colors[item.vertexKey] = colorIndex;
+                    sortedByAdjacentDegree.splice(i, 1);
+                }
+            }
+
+            colorIndex++;
+        }
+
+        return colors;
+    }
+
     getVertexAndLinks(){
         let verticesKeys = Object.keys(this.vertexes);
         let nodes = [];
@@ -386,21 +429,6 @@ export default class Graph{
             }
         });
         return {nodes, links};
-    }
-}
-
-class Vertex{
-    constructor(element) {
-        this.element = element;
-        this.nodes = {};
-    }
-}
-
-class Node{
-    constructor(id, weight, finalVertex) {
-        this.id = id;
-        this.weight = weight;
-        this.finalVertex = finalVertex;
     }
 }
 

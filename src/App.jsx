@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import ToolBar from "./component/toolbar/ToolBar";
 import GraphSpace from "./component/graphspace/GraphSpace";
 import Graph from "./api/graph/Graph";
@@ -98,9 +98,10 @@ function App() {
             adjacent: false,
             incidence: false,
             prim: false,
-            depthSearch: undefined,
-            widthSearch: undefined,
-            roy: false
+            depthSearch: false,
+            widthSearch: false,
+            roy: false,
+            welshPowell: false
         });
 
     const [graph, setGraph] = useState(getInitialStateGraph());
@@ -149,13 +150,14 @@ function App() {
           <ToolBar>
               <Add graph={graph} update={update}/>
               <Remove graph={graph} update={update}/>
-              <Show onChange={handlerShow} actives={shows}/>
+              <Show actives={shows} onChange={handlerShow}/>
           </ToolBar>
 
           <div align={"center"} className={styles.size}>
               <Paper variant={"outlined"} className={styles.marginPaper}>
                   <h1 className={styles.font}>Grafo</h1>
-                  <GraphSpace links={graphView.links} nodes={graphView.nodes}/>
+                  <GraphSpace links={graphView.links} nodes={graphView.nodes}
+                              colors={shows.welshPowell? graph.getWelshPowellColors(): undefined}/>
               </Paper>
 
               {shows.adjacent && <Paper variant={"outlined"} className={styles.marginPaper}>
