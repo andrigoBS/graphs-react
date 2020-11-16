@@ -174,8 +174,10 @@ function App() {
             prim: false,
             depthSearch: false,
             widthSearch: false,
+            aStar: false,
             roy: false,
-            welshPowell: false
+            welshPowell: false,
+            exampleM2: false,
         });
 
     const [graph, setGraph] = useState(getInitialStateGraph());
@@ -185,17 +187,21 @@ function App() {
     const [{minTree, totalWeight}, setMinTree] = useState(graph.getMinTreePrim());
     const [depthSearch, setDepthSearch] = useState(graph.getDepthSearch(shows.depthSearch));
     const [widthSearch, setWidthSearch] = useState(graph.getWidthSearch(shows.widthSearch));
+    const [h, setH] = useState({h: () => {}});
+    const [aStar, setAStar] = useState(graph.getVertexAndLinks());
 
-    const update = () => {
-        sessionStorage.setItem("graph", JSON.stringify(graph));
-        setGraph(graph);
-        let vertexAndLinks = graph.getVertexAndLinks();
+    const update = (newGraph) => {
+        let thisGraph =  (newGraph || graph);
+        sessionStorage.setItem("graph", JSON.stringify(thisGraph));
+        setGraph(thisGraph);
+        let vertexAndLinks = thisGraph.getVertexAndLinks();
         setGraphView(vertexAndLinks);
         setVertexesNames(vertexAndLinks.nodes.map((node) => node.element));
         setLinksNames(vertexAndLinks.links.map((links) => links.id));
-        if(shows.prim) setMinTree(graph.getMinTreePrim());
-        if(shows.depthSearch) setDepthSearch(graph.getDepthSearch(shows.depthSearch));
-        if(shows.widthSearch) setWidthSearch(graph.getWidthSearch(shows.widthSearch));
+        if(shows.prim) setMinTree(thisGraph.getMinTreePrim());
+        if(shows.depthSearch) setDepthSearch(thisGraph.getDepthSearch(shows.depthSearch));
+        if(shows.widthSearch) setWidthSearch(thisGraph.getWidthSearch(shows.widthSearch));
+        if(shows.aStar) setAStar(thisGraph.getMinimumpath(shows.aStar.start, shows.aStar.end))
     };
 
     const handlerShow = (value, type) => {
@@ -204,20 +210,16 @@ function App() {
             setDepthSearch(graph.getDepthSearch(value));
         }else if(type === "widthSearch") {
             setWidthSearch(graph.getWidthSearch(value));
+        }else if(type === "aStar"){
+            setAStar(graph.getMinimumpath(value.start, value.end, h.h));
+        }else if(type === "exampleM2"){
+            let [graphM2, h] = exampleM2();
+            setH({h: h});
+            update(graphM2);
         }
     };
 
     let styles = useStyles();
-    graph.getComponents();
-    // graph.addVertex("A");
-    // graph.addVertex("B");
-    // graph.addVertex("C");
-    // graph.addVertex("D");
-    // graph.addBow("A", "D",1);
-    // graph.addBow("A","B",3);
-    // graph.addBow("B","C",5);
-    let [graphM2, h] = exampleM2();
-    console.log(graphM2.getMinimumpath("A","B", h));
 
     return (
       <React.Fragment>
@@ -257,6 +259,11 @@ function App() {
               {shows.depthSearch && <Paper variant={"outlined"} className={styles.marginPaper}>
                   <h1 className={styles.font}>Busca em Profundidade</h1>
                   <GraphSpace links={depthSearch.links} nodes={depthSearch.nodes}/>
+              </Paper>}
+
+              {shows.aStar && <Paper variant={"outlined"} className={styles.marginPaper}>
+                  <h1 className={styles.font}>Busca A*</h1>
+                  <GraphSpace links={aStar.links} nodes={aStar.nodes}/>
               </Paper>}
 
               {shows.roy && <Paper variant={"outlined"} className={styles.marginPaper}>

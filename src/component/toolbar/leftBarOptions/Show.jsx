@@ -7,6 +7,7 @@ import OptionCheckBox from "./option/optionType/OptionCheckBox";
 import {SiMatrix} from "react-icons/si";
 import {ImTree, BiSearchAlt, BiNetworkChart, RiPaintBrushLine} from "react-icons/all";
 import OptionTextField from "./option/optionType/OptionTextFields";
+import {Typography} from "@material-ui/core";
 
 const useStyles = makeStyles(theme =>({
     marginTopClose:{
@@ -44,8 +45,10 @@ const Show = ({onChange, actives}) =>{
         matrixOptions: false,
         treeOptions: false,
         searchOptions: false,
+        searchAOptions: false,
         componentOptions: false,
-        colorOptions: false
+        colorOptions: false,
+        exampleOptions: false
     });
 
     const handleOnClickShow = (name) => {
@@ -100,7 +103,20 @@ const Show = ({onChange, actives}) =>{
                                  fieldsName={["depthSearch"]}
                                  onClickCall={({depthSearch}) => onChange(depthSearch, "depthSearch")}/>
             </Option>
-            <Divider hidden={shows.componentOptions} className={shows.searchOptions ? styles.marginTopOpen : styles.marginTopClose}/>
+            <Divider hidden={shows.searchAOptions} className={shows.searchOptions ? styles.marginTopOpen : styles.marginTopClose}/>
+
+            <Divider hidden={!shows.searchAOptions}
+                     className={shows.searchAOptions ? shows.searchOptions ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
+            <Option open={shows.searchAOptions}
+                    handleOnOpen={() => handleOnClickShow("searchAOptions")}
+                    titleLabel={"Buscas A*"}
+                    icon={<BiSearchAlt/>}>
+                <OptionTextField buttonLabel={"Buscar"}
+                                 fieldsLabel={["Inicio", "Fim"]}
+                                 fieldsName={["start", "end"]}
+                                 onClickCall={({start, end}) => onChange({start, end}, "aStar")}/>
+            </Option>
+            <Divider hidden={shows.componentOptions} className={shows.searchAOptions ? styles.marginTopOpen : styles.marginTopClose}/>
 
             <Divider hidden={!shows.componentOptions}
                      className={shows.componentOptions ? shows.searchOptions ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
@@ -124,6 +140,19 @@ const Show = ({onChange, actives}) =>{
                 <OptionCheckBox actives={actives}
                                 labels={["Colorir com Welsh-Powell (Estrela)"]}
                                 names={["welshPowell"]}
+                                onActive={onChange}/>
+            </Option>
+            <Divider hidden={shows.exampleOptions} className={shows.colorOptions ? styles.marginTopOpen : styles.marginTopClose}/>
+
+            <Divider hidden={!shows.exampleOptions}
+                     className={shows.exampleOptions ? shows.colorOptions ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
+            <Option open={shows.exampleOptions}
+                    handleOnOpen={() => handleOnClickShow("exampleOptions")}
+                    titleLabel={"Exemplos"}
+                    icon={<RiPaintBrushLine/>}>
+                <OptionCheckBox actives={actives}
+                                labels={["Exemplo Trabalho M2"]}
+                                names={["exampleM2"]}
                                 onActive={onChange}/>
             </Option>
             <Divider className={shows.colorOptions ? styles.marginTopOpen : styles.marginTopClose}/>
