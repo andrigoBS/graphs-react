@@ -263,6 +263,8 @@ function App() {
                   <h1 className={styles.font}>Componentes Fortemente Conexos - Roy</h1>
                   {graph.getComponents().map((component) => <GraphSpace links={component.links} nodes={component.nodes}/>)}
               </Paper>}
+
+
           </div>
       </React.Fragment>
     );
