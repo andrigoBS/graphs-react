@@ -201,7 +201,7 @@ function App() {
         if(shows.prim) setMinTree(thisGraph.getMinTreePrim());
         if(shows.depthSearch) setDepthSearch(thisGraph.getDepthSearch(shows.depthSearch));
         if(shows.widthSearch) setWidthSearch(thisGraph.getWidthSearch(shows.widthSearch));
-        if(shows.aStar) setAStar(thisGraph.getMinimumpath(shows.aStar.start, shows.aStar.end))
+        if(shows.aStar) setAStar(thisGraph.getMinimumPath(shows.aStar.start, shows.aStar.end))
     };
 
     const handlerShow = (value, type) => {
@@ -211,7 +211,7 @@ function App() {
         }else if(type === "widthSearch") {
             setWidthSearch(graph.getWidthSearch(value));
         }else if(type === "aStar"){
-            setAStar(graph.getMinimumpath(value.start, value.end, h.h));
+            setAStar(graph.getMinimumPath(value.start, value.end, h.h));
         }else if(type === "exampleM2"){
             let [graphM2, h] = exampleM2();
             setH({h: h});
