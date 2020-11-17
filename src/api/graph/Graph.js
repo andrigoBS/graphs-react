@@ -230,21 +230,6 @@ export default class Graph{
                 }
             }
         }
-        const getGraph = (vertexesNames) => {
-            let graph = new Graph();
-            vertexesNames.forEach((vertexName) => {
-                graph.addVertex(vertexName);
-            });
-
-            vertexesNames.forEach((vertexNameI) => {
-                vertexesNames.forEach((vertexNameJ) => {
-                    let original = this.vertexes[vertexNameI].nodes[vertexNameJ];
-                    graph.addBow(vertexNameI, vertexNameJ, original.weight, original.id);
-                });
-            });
-
-            return graph;
-        }
 
         let allNodes = [initialVertex];
         pushAll(this.vertexes[initialVertex].nodes, allNodes);
@@ -262,7 +247,7 @@ export default class Graph{
             let min = minF(fs);
             console.log("fs", fs);
             console.log("min", min);
-            if(min.vertex === finalVertex) return getGraph(path).getVertexAndLinks();
+            if(min.vertex === finalVertex) return path;
             pushAll(this.vertexes[min.vertex].nodes, allNodes);
             path.push(min.vertex);
 
