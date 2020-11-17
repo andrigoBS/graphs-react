@@ -205,7 +205,7 @@ export default class Graph{
       return {links: [], nodes: []}
     }
 
-    getMinimumpath(initialVertex, finalVertex, h){
+    getMinimumPath(initialVertex, finalVertex, h){
         const minF = (fs) => {
             let min = fs[0];
             fs.forEach((current) => {
