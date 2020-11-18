@@ -275,8 +275,8 @@ export default class Graph{
             console.log("fs", fs);
             console.log("min", min);
 
+            if(min.vertex === finalVertex) return getGraph(min.pathR).getVertexAndLinks();
             path.push(min.vertex)
-            if(min.vertex === finalVertex) return getGraph(path).getVertexAndLinks();
 
             pushAll(this.vertexes[min.vertex].nodes, allNodes);
 
