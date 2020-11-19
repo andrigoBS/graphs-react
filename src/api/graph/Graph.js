@@ -209,10 +209,15 @@ export default class Graph{
         const minF = (fs) => {
             let min = fs[0];
             fs.forEach((current) => {
+                console.log("current " + current.vertex)
                if(current.f < min.f) min = current;
             });
+
+            console.log("MinF fs = " + min)
             return min;
         }
+
+
         const g = (node, path) => {
             let sum = 0;
             for (let i = 0; i < path.length; i++) {
@@ -223,12 +228,28 @@ export default class Graph{
                 }
             }
         }
+
         const pushAll = (dictionary, vector) => {
             for (let elementKey in dictionary) {
                 if(!vector.includes(elementKey)){
                     vector.push(elementKey);
                 }
             }
+        }
+
+        const getGraph = (path) => {
+            let graph = new Graph();
+
+            path.forEach(element => {
+               graph.addVertex(element);
+            });
+
+            for (let i = 0; i < path.length - 1; i++) {
+                let original = this.vertexes[path[i]].nodes[path[i + 1]];
+                graph.addBow(path[i], path[i + 1], original.weight, original.id);
+            }
+
+            return graph;
         }
 
         let allNodes = [initialVertex];
@@ -247,9 +268,10 @@ export default class Graph{
             let min = minF(fs);
             console.log("fs", fs);
             console.log("min", min);
-            if(min.vertex === finalVertex) return path;
-            pushAll(this.vertexes[min.vertex].nodes, allNodes);
             path.push(min.vertex);
+            if(min.vertex === finalVertex) return getGraph(path).getVertexAndLinks();
+
+            pushAll(this.vertexes[min.vertex].nodes, allNodes);
 
             console.log("all", allNodes);
             console.log("path", path);

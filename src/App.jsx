@@ -37,13 +37,6 @@ const getInitialStateGraph = () => {
 };
 
 function exampleM2(){
-    const tableH = (vertex1, vertex2) => {
-        return Math.abs(vertex1.x - vertex2.x) +
-               Math.abs(vertex1.y - vertex2.y);
-    }
-
-    let graph = new Graph();
-
     let vertexes = {
         A:{ x:950, y:231 },
         B:{ x:607, y: 486 },
@@ -61,6 +54,17 @@ function exampleM2(){
         N:{ x:846, y: 525 },
         O:{ x:203, y: 672 }
     };
+
+    const tableH = (vertex1, vertex2) => {
+        return Math.abs(vertex1.x - vertex2.x) +
+            Math.abs(vertex1.y - vertex2.y);
+    }
+
+    const h = (name1, name2) => {
+        return tableH(vertexes[name1], vertexes[name2])
+    }
+
+    let graph = new Graph(h);
 
     for (let vertexKey in vertexes) {
         graph.addVertex(vertexKey);
@@ -159,11 +163,7 @@ function exampleM2(){
         tableH(vertexes["L"],vertexes["O"]) + 10,
         "LO");
 
-    const h = (name1, name2) => {
-        return tableH(vertexes[name1], vertexes[name2])
-    }
-
-    return [graph, h];
+    return graph;
 }
 
 function App() {
@@ -187,7 +187,6 @@ function App() {
     const [{minTree, totalWeight}, setMinTree] = useState(graph.getMinTreePrim());
     const [depthSearch, setDepthSearch] = useState(graph.getDepthSearch(shows.depthSearch));
     const [widthSearch, setWidthSearch] = useState(graph.getWidthSearch(shows.widthSearch));
-    const [h, setH] = useState({h: () => {}});
     const [aStar, setAStar] = useState(graph.getVertexAndLinks());
 
     const update = (newGraph) => {
@@ -211,11 +210,9 @@ function App() {
         }else if(type === "widthSearch") {
             setWidthSearch(graph.getWidthSearch(value));
         }else if(type === "aStar"){
-            setAStar(graph.getMinimumPath(value.start, value.end, h.h));
+            setAStar(graph.getMinimumPath(value.start, value.end));
         }else if(type === "exampleM2"){
-            let [graphM2, h] = exampleM2();
-            setH({h: h});
-            update(graphM2);
+            update(exampleM2());
         }
     };
 
