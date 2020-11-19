@@ -207,78 +207,96 @@ export default class Graph{
     }
 
     getMinimumPath(initialVertex, finalVertex){
-        const pushAll = (dictionary, vector) => {
-            for (let elementKey in dictionary) {
+        const pushAll = (dictionaryOfVertex, vector) => {
+            for (let elementKey in dictionaryOfVertex) {
                 if(!vector.includes(elementKey)){
                     vector.push(elementKey);
                 }
             }
         }
 
-        const getGraph = (path) => {
+        const getGraph = (finalPath) => {
             let graph = new Graph();
 
-            path.forEach(element => {
+            finalPath.forEach(element => {
                graph.addVertex(element);
             });
 
-            for (let i = 0; i < path.length - 1; i++) {
-                let original = this.vertexes[path[i]].nodes[path[i + 1]];
-                graph.addBow(path[i], path[i + 1], original.weight, original.id);
+            for (let i = 0; i < finalPath.length - 1; i++) {
+                let original = this.vertexes[finalPath[i]].nodes[finalPath[i + 1]];
+                graph.addBow(finalPath[i], finalPath[i + 1], original.weight, original.id);
             }
 
             return graph;
         }
 
-        const minF = (fs) => {
-            let min = fs[0];
-            fs.forEach((current) => {
+        const minF = (fsResults) => {
+            let min = fsResults[0];
+            fsResults.forEach((current) => {
                 if(current.f < min.f) min = current;
             });
             return min;
         }
 
+        const getPath = (elementOfNodeAll, pathAll) => {
+            let elementPath = [pathAll[0]];
 
-        const getPathAndG = (node, path) => {
-            let pathR = [path[0]];
-            let sum = 0;
+            for (let i = 0; i < pathAll.length; i++) {
+                if(this.isAdjacent(pathAll[i], elementOfNodeAll)){
 
-            for (let i = 0; i < path.length; i++) {
-                if(this.isAdjacent(path[i], node)){
-                    pathR.push(node);
-                    return [sum + this.vertexes[path[i]].nodes[node].weight, pathR];
+                    elementPath.push(elementOfNodeAll);
+                    return elementPath;
                 }else{
-                    if(path.length < i + 1) return ["err","err"];
-                    pathR.push(path[i + 1]);
-                    sum += this.vertexes[path[i]].nodes[path[i + 1]].weight;
+                    if(pathAll.length < i + 1) return ["err","err"];
+
+                    elementPath.push(pathAll[i + 1]);
                 }
             }
+        }
+
+
+        const getSumG = (elementPath) => {
+            let pathWeightSum = 0;
+
+            for (let i = 0; i < elementPath.length - 1; i++) {
+                pathWeightSum += this.vertexes[elementPath[i]].nodes[elementPath[i + 1]].weight;
+            }
+
+            return pathWeightSum;
         }
 
         let allNodes = [initialVertex];
         pushAll(this.vertexes[initialVertex].nodes, allNodes);
         let path = [initialVertex];
+        let deletedVertex = [initialVertex];
 
         while (allNodes.length <= Object.keys(this.vertexes).length){
-            let fs = []
-            allNodes.forEach((node) => {
-                if(!path.includes(node)){
-                    let [g, pathR] = getPathAndG(node, path);
-                    console.log("g Path",g, pathR);
-                    console.log(this.h(initialVertex, node));
-                    let f = g + this.h(initialVertex, node);
-                    fs.push({vertex: node, f, pathR});
+            let fsResults = []
+
+            allNodes.forEach((vertex) => {
+                if(!deletedVertex.includes(vertex)){
+                    let pathOfCurrentVertex = getPath(vertex, path);
+                    let pathSumG = getSumG(pathOfCurrentVertex);
+
+                    console.log("pathSumG Path", pathSumG, pathOfCurrentVertex);
+                    console.log("comparação de path (pathAll, vertexPath)", path, pathOfCurrentVertex);
+                    console.log(this.h(initialVertex, vertex));
+
+                    let resultSumF = pathSumG + this.h(initialVertex, vertex);
+                    fsResults.push({vertex, f: resultSumF, path: pathOfCurrentVertex});
                 }
             });
 
-            let min = minF(fs);
-            console.log("fs", fs);
-            console.log("min", min);
+            let minCurrentPath = minF(fsResults);
+            console.log("fsResults", fsResults);
+            console.log("minCurrentPath", minCurrentPath);
 
-            if(min.vertex === finalVertex) return getGraph(min.pathR).getVertexAndLinks();
-            path.push(min.vertex)
+            if(minCurrentPath.vertex === finalVertex) return getGraph(minCurrentPath.path).getVertexAndLinks();
 
-            pushAll(this.vertexes[min.vertex].nodes, allNodes);
+            path = minCurrentPath.path;
+            deletedVertex.push(minCurrentPath.vertex);
+
+            pushAll(this.vertexes[minCurrentPath.vertex].nodes, allNodes);
 
             console.log("all", allNodes);
             console.log("path", path);
