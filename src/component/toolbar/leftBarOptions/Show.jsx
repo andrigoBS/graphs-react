@@ -1,37 +1,13 @@
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
-import Divider from "@material-ui/core/Divider";
 import Option from "./option/Option";
 import OptionCheckBox from "./option/optionType/OptionCheckBox";
 import {SiMatrix} from "react-icons/si";
-import {ImTree, BiSearchAlt, BiNetworkChart, RiPaintBrushLine} from "react-icons/all";
+import {ImTree, BiSearchAlt, BiNetworkChart, RiPaintBrushLine, TiFlowParallel, GiTeacher} from "react-icons/all";
 import OptionTextField from "./option/optionType/OptionTextFields";
-import {Typography} from "@material-ui/core";
 
 const useStyles = makeStyles(theme =>({
-    marginTopClose:{
-        marginTop:'-14px'
-    },
-
-    marginTopSecondOpen:{
-        marginTop:'-15px',
-        backgroundColor: theme.palette.primary.main,
-    },
-
-    marginTopOpen:{
-        marginTop:'20px',
-        backgroundColor: theme.palette.primary.main,
-    },
-
-    colorOpen:{
-        backgroundColor: theme.palette.primary.main,
-    },
-
-    colorClose:{
-        backgroundColor:'#e1e1e1'
-    },
-
     partsFont:{
         fontFamily: "Helvetica",
         color:'#858585',
@@ -48,7 +24,8 @@ const Show = ({onChange, actives}) =>{
         searchAOptions: false,
         componentOptions: false,
         colorOptions: false,
-        exampleOptions: false
+        exampleOptions: false,
+        flowOptions: false
     });
 
     const handleOnClickShow = (name) => {
@@ -63,8 +40,8 @@ const Show = ({onChange, actives}) =>{
                 <h5 className={styles.partsFont}>EXIBIR</h5>
             </ListItem>
 
-            <Divider className={shows.matrixOptions ? styles.colorOpen :styles.colorClose}/>
             <Option open={shows.matrixOptions}
+                    openNext={shows.treeOptions}
                     handleOnOpen={() => handleOnClickShow("matrixOptions")}
                     titleLabel={"Matrizes"}
                     icon={<SiMatrix/>}>
@@ -73,11 +50,10 @@ const Show = ({onChange, actives}) =>{
                                 names={["adjacent", "incidence"]}
                                 onActive={onChange}/>
             </Option>
-            <Divider hidden={shows.treeOptions} className={shows.matrixOptions ? styles.marginTopOpen : styles.marginTopClose}/>
 
-            <Divider hidden={!shows.treeOptions}
-                     className={shows.treeOptions ? shows.matrixOptions ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
             <Option open={shows.treeOptions}
+                    openPreview={shows.matrixOptions}
+                    openNext={shows.searchOptions}
                     handleOnOpen={() => handleOnClickShow("treeOptions")}
                     titleLabel={"AGM"}
                     icon={<ImTree/>}>
@@ -86,11 +62,10 @@ const Show = ({onChange, actives}) =>{
                                 names={["prim"]}
                                 onActive={onChange}/>
             </Option>
-            <Divider hidden={shows.searchOptions} className={shows.treeOptions ? styles.marginTopOpen : styles.marginTopClose}/>
 
-            <Divider hidden={!shows.searchOptions}
-                     className={shows.searchOptions ? shows.treeOptions ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
             <Option open={shows.searchOptions}
+                    openPreview={shows.treeOptions}
+                    openNext={shows.searchAOptions}
                     handleOnOpen={() => handleOnClickShow("searchOptions")}
                     titleLabel={"Buscas"}
                     icon={<BiSearchAlt/>}>
@@ -103,11 +78,10 @@ const Show = ({onChange, actives}) =>{
                                  fieldsName={["depthSearch"]}
                                  onClickCall={({depthSearch}) => onChange(depthSearch, "depthSearch")}/>
             </Option>
-            <Divider hidden={shows.searchAOptions} className={shows.searchOptions ? styles.marginTopOpen : styles.marginTopClose}/>
 
-            <Divider hidden={!shows.searchAOptions}
-                     className={shows.searchAOptions ? shows.searchOptions ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
             <Option open={shows.searchAOptions}
+                    openPreview={shows.searchOptions}
+                    openNext={shows.componentOptions}
                     handleOnOpen={() => handleOnClickShow("searchAOptions")}
                     titleLabel={"Buscas A*"}
                     icon={<BiSearchAlt/>}>
@@ -116,11 +90,10 @@ const Show = ({onChange, actives}) =>{
                                  fieldsName={["start", "end"]}
                                  onClickCall={({start, end}) => onChange({start, end}, "aStar")}/>
             </Option>
-            <Divider hidden={shows.componentOptions} className={shows.searchAOptions ? styles.marginTopOpen : styles.marginTopClose}/>
 
-            <Divider hidden={!shows.componentOptions}
-                     className={shows.componentOptions ? shows.searchOptions ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
             <Option open={shows.componentOptions}
+                    openPreview={shows.searchAOptions}
+                    openNext={shows.colorOptions}
                     handleOnOpen={() => handleOnClickShow("componentOptions")}
                     titleLabel={"Componentes"}
                     icon={<BiNetworkChart/>}>
@@ -129,11 +102,10 @@ const Show = ({onChange, actives}) =>{
                                 names={["roy"]}
                                 onActive={onChange}/>
             </Option>
-            <Divider hidden={shows.colorOptions} className={shows.componentOptions ? styles.marginTopOpen : styles.marginTopClose}/>
 
-            <Divider hidden={!shows.colorOptions}
-                     className={shows.colorOptions ? shows.componentOptions ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
             <Option open={shows.colorOptions}
+                    openPreview={shows.componentOptions}
+                    openNext={shows.flowOptions}
                     handleOnOpen={() => handleOnClickShow("colorOptions")}
                     titleLabel={"Coloração"}
                     icon={<RiPaintBrushLine/>}>
@@ -142,21 +114,31 @@ const Show = ({onChange, actives}) =>{
                                 names={["welshPowell"]}
                                 onActive={onChange}/>
             </Option>
-            <Divider hidden={shows.exampleOptions} className={shows.colorOptions ? styles.marginTopOpen : styles.marginTopClose}/>
 
-            <Divider hidden={!shows.exampleOptions}
-                     className={shows.exampleOptions ? shows.colorOptions ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
+            <Option open={shows.flowOptions}
+                    openPreview={shows.colorOptions}
+                    openNext={shows.exampleOptions}
+                    handleOnOpen={() => handleOnClickShow("flowOptions")}
+                    titleLabel={"Ford e Fulkerson"}
+                    icon={<TiFlowParallel/>}>
+                <OptionTextField buttonLabel={"Calcular"}
+                                 fieldsLabel={["Inicio", "Fim"]}
+                                 fieldsName={["start", "end"]}
+                                 onClickCall={({start, end}) => onChange({start, end}, "fordFulkerson")}/>
+            </Option>
+
             <Option open={shows.exampleOptions}
+                    openPreview={shows.flowOptions}
                     handleOnOpen={() => handleOnClickShow("exampleOptions")}
                     titleLabel={"Exemplos"}
-                    icon={<RiPaintBrushLine/>}>
+                    icon={<GiTeacher/>}>
                 <OptionCheckBox actives={actives}
                                 labels={["Exemplo Trabalho M2"]}
                                 names={["exampleM2"]}
                                 onActive={onChange}/>
             </Option>
-            <Divider className={shows.colorOptions ? styles.marginTopOpen : styles.marginTopClose}/>
         </div>
     )
 };
+
 export default Show;

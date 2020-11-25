@@ -1,7 +1,6 @@
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
-import Divider from "@material-ui/core/Divider";
 import OptionTextField from "./option/optionType/OptionTextFields";
 import {BiCircle} from "react-icons/bi";
 import {AiOutlineMinus} from "react-icons/ai";
@@ -9,37 +8,11 @@ import {HiOutlineArrowNarrowRight} from "react-icons/hi";
 import Option from "./option/Option";
 
 const useStyles = makeStyles(theme =>({
-    marginTopClose:{
-        marginTop:'-14px'
-    },
-
-    marginTopSecondOpen:{
-        marginTop:'-15px',
-        backgroundColor:theme.palette.primary.main,
-    },
-
-
-    marginTopOpen:{
-        marginTop:'20px',
-        backgroundColor:theme.palette.primary.main,
-    },
-
-
-    colorOpen:{
-        backgroundColor:theme.palette.primary.main,
-    },
-
-    colorClose:{
-        backgroundColor:'#e1e1e1'
-    },
-
-
     partsFont:{
         fontFamily: "Helvetica",
         color:'#858585',
         fontSize: 13
     },
-
 }));
 
 
@@ -70,8 +43,8 @@ const Add = ({graph, update}) =>{
                 <h5 className={styles.partsFont}>ADICIONAR</h5>
             </ListItem>
 
-            <Divider className={adds.addVertex ? styles.colorOpen :styles.colorClose}/>
             <Option open={adds.addVertex}
+                    openNext={adds.addEdge}
                     handleOnOpen={() => handleOnClickAdd("addVertex")}
                     titleLabel={"Vértice"}
                     icon={<BiCircle/>}>
@@ -80,11 +53,10 @@ const Add = ({graph, update}) =>{
                                  fieldsName={["name"]}
                                  buttonLabel={"Adicionar"}/>
             </Option>
-            <Divider hidden={adds.addEdge} className={adds.addVertex? styles.marginTopOpen : styles.marginTopClose}/>
 
-            <Divider hidden={!adds.addEdge}
-                     className={adds.addEdge ? adds.addVertex ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
             <Option open={adds.addEdge}
+                    openPreview={adds.addVertex}
+                    openNext={adds.addBow}
                     handleOnOpen={() => handleOnClickAdd("addEdge")}
                     titleLabel={"Aresta"}
                     icon={<AiOutlineMinus/>}>
@@ -93,11 +65,9 @@ const Add = ({graph, update}) =>{
                                  fieldsName={["name", "initial", "final", "weight"]}
                                  buttonLabel={"Adicionar"}/>
             </Option>
-            <Divider hidden={adds.addBow} className={adds.addEdge ? styles.marginTopOpen : styles.marginTopClose}/>
 
-            <Divider hidden={!adds.addBow}
-                     className={adds.addBow ? adds.addEdge ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
             <Option open={adds.addBow}
+                    openPreview={adds.addEdge}
                     handleOnOpen={() => handleOnClickAdd("addBow")}
                     titleLabel={"Arco"}
                     icon={<HiOutlineArrowNarrowRight/>}>
@@ -106,7 +76,6 @@ const Add = ({graph, update}) =>{
                                  fieldsName={["name", "initial", "final", "weight"]}
                                  buttonLabel={"Adicionar"}/>
             </Option>
-            <Divider className={adds.addBow ? styles.marginTopOpen : styles.marginTopClose}/>
         </div>
     )
 };

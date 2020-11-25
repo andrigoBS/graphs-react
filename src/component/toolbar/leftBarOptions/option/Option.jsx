@@ -3,6 +3,7 @@ import {makeStyles} from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import Collapse from "@material-ui/core/Collapse";
+import Divider from "@material-ui/core/Divider";
 
 const useStyles = makeStyles(theme =>({
     optionsFontClose:{
@@ -24,13 +25,38 @@ const useStyles = makeStyles(theme =>({
         marginBottom:'-10px',
         marginLeft:'-15px'
     },
+
+    marginTopOpen:{
+        marginTop:'20px',
+        backgroundColor: theme.palette.primary.main,
+    },
+
+    marginTopSecondOpen:{
+        marginTop:'-15px',
+        backgroundColor: theme.palette.primary.main,
+    },
+
+    marginTopClose:{
+        marginTop:'-14px'
+    },
+
+    colorOpen:{
+        backgroundColor: theme.palette.primary.main,
+    },
+
+    colorClose:{
+        backgroundColor:'#e1e1e1'
+    },
 }));
 
-const Option = ({open, handleOnOpen, titleLabel, icon, children}) =>{
+const Option = ({open, openPreview, openNext, handleOnOpen, titleLabel, icon, children}) =>{
     let styles = useStyles();
 
     return(
         <div>
+            {openPreview === undefined && <Divider className={open ? styles.colorOpen : styles.colorClose}/>}
+            {openPreview !== undefined && <Divider hidden={!open}
+                     className={open ? openPreview ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>}
             <ListItem button onClick={handleOnOpen}>
                 <ListItemIcon>
                     {icon}
@@ -45,6 +71,7 @@ const Option = ({open, handleOnOpen, titleLabel, icon, children}) =>{
                     {children}
                 </Collapse>
             </ListItem>
+            <Divider hidden={openNext} className={open ? styles.marginTopOpen : styles.marginTopClose}/>
         </div>
     )
 };

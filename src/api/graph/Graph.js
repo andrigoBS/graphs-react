@@ -427,6 +427,10 @@ export default class Graph{
         return colors;
     }
 
+    getFordFulkerson(start, end){
+        return 121;
+    }
+
     getVertexAndLinks(){
         let verticesKeys = Object.keys(this.vertexes);
         let nodes = [];

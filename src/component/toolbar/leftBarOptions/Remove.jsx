@@ -1,7 +1,6 @@
 import React from "react";
 import {makeStyles} from "@material-ui/core/styles";
 import ListItem from "@material-ui/core/ListItem";
-import Divider from "@material-ui/core/Divider";
 import {BiCircle} from "react-icons/bi";
 import OptionTextField from "./option/optionType/OptionTextFields";
 import Option from "./option/Option";
@@ -9,24 +8,6 @@ import {AiOutlineMinus} from "react-icons/ai";
 import {HiOutlineArrowNarrowRight} from "react-icons/hi";
 
 const useStyles = makeStyles(theme =>({
-    marginTopClose:{
-        marginTop:'-14px'
-    },
-
-    marginTopSecondOpen:{
-        marginTop:'-15px',
-        backgroundColor: theme.palette.primary.main,
-    },
-
-    marginTopOpen:{
-        marginTop:'20px',
-        backgroundColor: theme.palette.primary.main,
-    },
-
-    colorOpen:{
-        backgroundColor: theme.palette.primary.main,
-    },
-
     partsFont:{
         fontFamily: "Helvetica",
         color:'#858585',
@@ -56,8 +37,8 @@ const Remove = ({graph, update}) =>{
                 <h5 className={styles.partsFont}>REMOVER</h5>
             </ListItem>
 
-            <Divider className={removes.removeVertex ? styles.colorOpen : ""}/>
             <Option open={removes.removeVertex}
+                    openNext={removes.removeEdge}
                     handleOnOpen={() => handleOnClickRemove("removeVertex")}
                     titleLabel={"Vértice"}
                     icon={<BiCircle/>}>
@@ -66,10 +47,10 @@ const Remove = ({graph, update}) =>{
                                  fieldsName={["name"]}
                                  buttonLabel={"Remover"}/>
             </Option>
-            <Divider hidden={removes.removeEdge} className={removes.removeVertex ? styles.marginTopOpen : styles.marginTopClose}/>
 
-            <Divider hidden={!removes.removeEdge} className={removes.removeEdge ? removes.removeVertex ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
             <Option open={removes.removeEdge}
+                    openPreview={removes.removeVertex}
+                    openNext={removes.removeBow}
                     handleOnOpen={() => handleOnClickRemove("removeEdge")}
                     titleLabel={"Aresta"}
                     icon={<AiOutlineMinus/>}>
@@ -78,10 +59,9 @@ const Remove = ({graph, update}) =>{
                                  fieldsName={["name"]}
                                  buttonLabel={"Remover"}/>
             </Option>
-            <Divider hidden={removes.removeBow} className={removes.removeEdge ? styles.marginTopOpen : styles.marginTopClose}/>
 
-            <Divider hidden={!removes.removeBow} className={removes.removeBow ? removes.removeEdge ? styles.marginTopOpen  : styles.marginTopSecondOpen : styles.marginTopClose}/>
             <Option open={removes.removeBow}
+                    openPreview={removes.removeEdge}
                     handleOnOpen={() => handleOnClickRemove("removeBow")}
                     titleLabel={"Arco"}
                     icon={<HiOutlineArrowNarrowRight/>}>
@@ -90,7 +70,6 @@ const Remove = ({graph, update}) =>{
                                  fieldsName={["name"]}
                                  buttonLabel={"Remover"}/>
             </Option>
-            <Divider className={removes.removeBow ? styles.marginTopOpen : styles.marginTopClose}/>
         </div>
     )
 };

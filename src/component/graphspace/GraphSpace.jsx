@@ -33,7 +33,7 @@ const GraphSpace = ({nodes, links, totalWeight, colors}) =>{
     };
     return(
         <React.Fragment>
-            <GraphView links={links} nodes={nodes} height={"300px"} colors={colors}/>
+            <GraphView links={links} nodes={nodes} height={"400px"} colors={colors}/>
             <Divider/>
             <div className={styles.divPosition} align={"right"}>
                 <Button className={styles.buttonColor} onClick={handleExpandClick} startIcon={ <CgMoreO />}>
