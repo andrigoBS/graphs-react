@@ -56,7 +56,7 @@ function App() {
     const [linksNames, setLinksNames] = useState(graphView.links.map((links) => links.id));
     const [{minTree, totalWeight}, setMinTree] = useState(graph.getMinTreePrim());
     const [depthSearch, setDepthSearch] = useState(graph.getDepthSearch(shows.depthSearch));
-    const [widthSearch, setWidthSearch] = useState(graph.getWidthSearch(shows.widthSearch));
+    const [widthSearch, setWidthSearch] = useState(graph.getWidthSearchFordFulkerson(shows.widthSearch));
     const [aStar, setAStar] = useState(graph.getVertexAndLinks());
 
     const update = (newGraph) => {
@@ -69,7 +69,7 @@ function App() {
         setLinksNames(vertexAndLinks.links.map((links) => links.id));
         if(shows.prim) setMinTree(thisGraph.getMinTreePrim());
         if(shows.depthSearch) setDepthSearch(thisGraph.getDepthSearch(shows.depthSearch));
-        if(shows.widthSearch) setWidthSearch(thisGraph.getWidthSearch(shows.widthSearch));
+        if(shows.widthSearch) setWidthSearch(thisGraph.getWidthSearchFordFulkerson(shows.widthSearch));
         if(shows.aStar) setAStar(thisGraph.getMinimumPath(shows.aStar.start, shows.aStar.end));
     };
 

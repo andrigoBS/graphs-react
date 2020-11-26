@@ -1,3 +1,6 @@
+import {useState} from "react";
+import link from "react-vis-force/src/propTypes/link";
+
 class Vertex{
     constructor(element) {
         this.element = element;
@@ -277,19 +280,13 @@ export default class Graph{
                 if(!deletedVertex.includes(vertex)){
                     let pathOfCurrentVertex = getPath(vertex, path);
                     let pathSumG = getSumG(pathOfCurrentVertex);
-
-                    console.log("pathSumG Path", pathSumG, pathOfCurrentVertex);
-                    console.log("comparação de path (pathAll, vertexPath)", path, pathOfCurrentVertex);
-                    console.log(this.h(initialVertex, vertex));
-
                     let resultSumF = pathSumG + this.h(initialVertex, vertex);
+
                     fsResults.push({vertex, f: resultSumF, path: pathOfCurrentVertex});
                 }
             });
 
             let minCurrentPath = minF(fsResults);
-            console.log("fsResults", fsResults);
-            console.log("minCurrentPath", minCurrentPath);
 
             if(minCurrentPath.vertex === finalVertex) return getGraph(minCurrentPath.path).getVertexAndLinks();
 
@@ -297,9 +294,6 @@ export default class Graph{
             deletedVertex.push(minCurrentPath.vertex);
 
             pushAll(this.vertexes[minCurrentPath.vertex].nodes, allNodes);
-
-            console.log("all", allNodes);
-            console.log("path", path);
         }
     }
 
@@ -427,8 +421,120 @@ export default class Graph{
         return colors;
     }
 
+    // getFordFulkerson(start, end){
+    //     return 121;
+    // }
+
+    _verifyIfHaveEndAndStartConnection(start, end, links){
+        let haveStart = false;
+        let haveEnd = false;
+
+
+        for (let i = 0; i < links.length; i++) {
+            if (links[i].initialVertex === start.toString()){
+                haveStart = true;
+                break;
+            }else {
+                if (links[i].finalVertex === start.toString()){
+                    haveStart = true;
+                    break;
+                }
+            }
+        }
+
+        for (let i = 0; i < links.length; i++) {
+            if (links[i].initialVertex === end.toString()){
+                haveEnd = true;
+                break;
+            }else {
+                if (links[i].finalVertex === end.toString()){
+                    haveEnd = true;
+                    break;
+                }
+            }
+        }
+
+        return haveEnd && haveStart;
+    }
+
     getFordFulkerson(start, end){
-        return 121;
+        let end1 = 1;
+        let start1 = 0;
+        const [widthSearch, setWidthSearch] = useState(this.getWidthSearchFordFulkerson(start1));
+        console.log("LINKS ", widthSearch.links);
+        console.log("NODES ", widthSearch.nodes)
+        let maxFlow = 0;
+        let links = widthSearch.links;
+
+        let minorFlow = widthSearch.links[0].weight;
+        let currentLinkWeight;
+
+        for (let i = 1; i < widthSearch.links.length; i++) {
+            currentLinkWeight = widthSearch.links[i].weight;
+            console.log("currentLinkWeight " ,currentLinkWeight)
+            if (minorFlow < currentLinkWeight){
+                minorFlow = currentLinkWeight;
+            }
+        }
+
+        maxFlow += minorFlow;
+        console.log("Peso minimo", minorFlow);
+
+        let lastCurrentVertex;
+        for (let i = 0; i < links.length; i++) {
+             lastCurrentVertex = links[i];
+             if (lastCurrentVertex.initialVertex === end1.toString()){
+                 links.splice(i,1);
+                 break;
+             }
+        }
+
+
+
+        let currentVertex;
+        // while (lastCurrentVertex !== start1.toString()){
+        //     for (let i = 0; i < links.length; i++) {
+        //         currentVertex = links[i];
+        //         if (lastCurrentVertex.finalVertex === currentVertex.initialVertex){
+        //             console.log("lastCurrent ", lastCurrentVertex.finalVertex);
+        //             console.log("currentVertex ", currentVertex.initialVertex)
+        //             lastCurrentVertex = currentVertex.finalVertex;
+        //             links.slice(i,1);
+        //             break;
+        //         }
+        //     }
+        //
+        //     console.log("lastCurrent ", lastCurrentVertex);
+        // }
+
+
+        console.log(this._verifyIfHaveEndAndStartConnection(start1,end1,widthSearch.links));
+
+    }
+
+    getWidthSearchFordFulkerson(element){
+        let graph = new Graph();
+        let q = [];
+        let startElement = Object.keys(this.vertexes)[0];
+        if (startElement !== undefined){
+            graph.addVertex(startElement);
+            q.push(startElement);
+            while(q.length !== 0){
+                let v = q.shift();
+                if(v === element) return graph.getVertexAndLinks();
+                let keys = Object.keys(this.vertexes[v].nodes);
+                for(let w of keys) {
+                    if(!graph.vertexes[w]){
+                        graph.addVertex(w);
+                        let link = this.vertexes[v].nodes[w];
+                        graph.addBow(w,v, link.weight, link.id);
+                        q.push(w);
+                    }
+                }
+            }
+            return graph.getVertexAndLinks();
+        }
+        return {links: [], nodes: []}
     }
 
     getVertexAndLinks(){
