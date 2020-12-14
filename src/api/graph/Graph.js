@@ -421,10 +421,6 @@ export default class Graph{
         return colors;
     }
 
-    // getFordFulkerson(start, end){
-    //     return 121;
-    // }
-
     _verifyIfHaveEndAndStartConnection(start, end, links){
         let haveStart = false;
         let haveEnd = false;
