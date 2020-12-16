@@ -51,25 +51,25 @@ function App() {
         });
 
     const [graph, setGraph] = useState(getInitialStateGraph());
-    const [graphView, setGraphView] = useState(graph.getVertexAndLinks());
+    const [graphView, setGraphView] = useState(graph.getVertexesAndLinks());
     const [vertexesNames, setVertexesNames] = useState(graphView.nodes.map((node) => node.element));
     const [linksNames, setLinksNames] = useState(graphView.links.map((links) => links.id));
     const [{minTree, totalWeight}, setMinTree] = useState(graph.getMinTreePrim());
     const [depthSearch, setDepthSearch] = useState(graph.getDepthSearch(shows.depthSearch));
-    const [widthSearch, setWidthSearch] = useState(graph.getWidthSearchFordFulkerson(shows.widthSearch));
-    const [aStar, setAStar] = useState(graph.getVertexAndLinks());
+    const [widthSearch, setWidthSearch] = useState(graph.getWidthSearch(shows.widthSearch));
+    const [aStar, setAStar] = useState(graph.getVertexesAndLinks());
 
     const update = (newGraph) => {
         let thisGraph =  (newGraph || graph);
         sessionStorage.setItem("graph", JSON.stringify(thisGraph));
         setGraph(thisGraph);
-        let vertexAndLinks = thisGraph.getVertexAndLinks();
+        let vertexAndLinks = thisGraph.getVertexesAndLinks();
         setGraphView(vertexAndLinks);
         setVertexesNames(vertexAndLinks.nodes.map((node) => node.element));
         setLinksNames(vertexAndLinks.links.map((links) => links.id));
         if(shows.prim) setMinTree(thisGraph.getMinTreePrim());
         if(shows.depthSearch) setDepthSearch(thisGraph.getDepthSearch(shows.depthSearch));
-        if(shows.widthSearch) setWidthSearch(thisGraph.getWidthSearchFordFulkerson(shows.widthSearch));
+        if(shows.widthSearch) setWidthSearch(thisGraph.getWidthSearch(shows.widthSearch));
         if(shows.aStar) setAStar(thisGraph.getMinimumPath(shows.aStar.start, shows.aStar.end));
     };
 

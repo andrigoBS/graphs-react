@@ -1,6 +1,3 @@
-import {useState} from "react";
-import link from "react-vis-force/src/propTypes/link";
-
 class Vertex{
     constructor(element) {
         this.element = element;
@@ -157,7 +154,7 @@ export default class Graph{
             }
         }
 
-        return {minTree: minTree.getVertexAndLinks(), totalWeight};
+        return {minTree: minTree.getVertexesAndLinks(), totalWeight};
     }
 
     getDepthSearch(element){
@@ -165,7 +162,7 @@ export default class Graph{
         if(startElement !== undefined){
             let graph = new Graph();
             this._privateBP(graph, startElement, element);
-            return graph.getVertexAndLinks();
+            return graph.getVertexesAndLinks();
         }
         return {links: [], nodes: []};
     }
@@ -193,7 +190,7 @@ export default class Graph{
             q.push(startElement);
             while(q.length !== 0){
                 let v = q.shift();
-                if(v === element) return graph.getVertexAndLinks();
+                if(v === element) return graph.getVertexesAndLinks();
                 let keys = Object.keys(this.vertexes[v].nodes);
                 for(let w of keys) {
                     if(!graph.vertexes[w]){
@@ -204,7 +201,7 @@ export default class Graph{
                     }
                 }
             }
-            return graph.getVertexAndLinks();
+            return graph.getVertexesAndLinks();
         }
       return {links: [], nodes: []}
     }
@@ -288,7 +285,7 @@ export default class Graph{
 
             let minCurrentPath = minF(fsResults);
 
-            if(minCurrentPath.vertex === finalVertex) return getGraph(minCurrentPath.path).getVertexAndLinks();
+            if(minCurrentPath.vertex === finalVertex) return getGraph(minCurrentPath.path).getVertexesAndLinks();
 
             path = minCurrentPath.path;
             deletedVertex.push(minCurrentPath.vertex);
@@ -343,7 +340,7 @@ export default class Graph{
                     }
                 }
             }
-            graphList.push(newGraph.getVertexAndLinks());
+            graphList.push(newGraph.getVertexesAndLinks());
         }
         return graphList;
     }
@@ -421,103 +418,86 @@ export default class Graph{
         return colors;
     }
 
-    _verifyIfHaveEndAndStartConnection(start, end, links){
-        let haveStart = false;
-        let haveEnd = false;
-
-
-        for (let i = 0; i < links.length; i++) {
-            if (links[i].initialVertex === start.toString()){
-                haveStart = true;
-                break;
-            }else {
-                if (links[i].finalVertex === start.toString()){
-                    haveStart = true;
-                    break;
-                }
-            }
-        }
-
-        for (let i = 0; i < links.length; i++) {
-            if (links[i].initialVertex === end.toString()){
-                haveEnd = true;
-                break;
-            }else {
-                if (links[i].finalVertex === end.toString()){
-                    haveEnd = true;
-                    break;
-                }
-            }
-        }
-
-        return haveEnd && haveStart;
-    }
-
-    getFordFulkerson(start, end){
-        let end1 = 1;
-        let start1 = 0;
-        const [widthSearch, setWidthSearch] = useState(this.getWidthSearchFordFulkerson(start1));
-        console.log("LINKS ", widthSearch.links);
-        console.log("NODES ", widthSearch.nodes)
+    getFordFulkerson(start, end) {
         let maxFlow = 0;
-        let links = widthSearch.links;
-
-        let minorFlow = widthSearch.links[0].weight;
-        let currentLinkWeight;
-
-        for (let i = 1; i < widthSearch.links.length; i++) {
-            currentLinkWeight = widthSearch.links[i].weight;
-            console.log("currentLinkWeight " ,currentLinkWeight)
-            if (minorFlow < currentLinkWeight){
-                minorFlow = currentLinkWeight;
-            }
-        }
-
-        maxFlow += minorFlow;
-        console.log("Peso minimo", minorFlow);
-
+        let haveToContinue = true;
         let lastCurrentVertex;
-        for (let i = 0; i < links.length; i++) {
-             lastCurrentVertex = links[i];
-             if (lastCurrentVertex.initialVertex === end1.toString()){
-                 links.splice(i,1);
-                 break;
-             }
-        }
-
-
-
         let currentVertex;
-        // while (lastCurrentVertex !== start1.toString()){
-        //     for (let i = 0; i < links.length; i++) {
-        //         currentVertex = links[i];
-        //         if (lastCurrentVertex.finalVertex === currentVertex.initialVertex){
-        //             console.log("lastCurrent ", lastCurrentVertex.finalVertex);
-        //             console.log("currentVertex ", currentVertex.initialVertex)
-        //             lastCurrentVertex = currentVertex.finalVertex;
-        //             links.slice(i,1);
-        //             break;
-        //         }
-        //     }
-        //
-        //     console.log("lastCurrent ", lastCurrentVertex);
-        // }
+        let current_graph = new Graph();
+        current_graph.vertexes = JSON.parse(JSON.stringify(this.vertexes));
 
+        while (haveToContinue) {
+            let {links, nodes} = current_graph.getWidthSearchFordFulkerson(start, end);
+            console.log("testeeeeeeeeeee", nodes)
+            // if(nodes.filter((node) => node.element === start1).length === 0){
+            //     break;
+            // }
+            if(!links || links.length === 0) break;
 
-        console.log(this._verifyIfHaveEndAndStartConnection(start1,end1,widthSearch.links));
+            let minorFlow = parseInt(links[0].weight);
+            let currentLinkWeight;
 
+            for (let i = 1; i < links.length; i++) {
+                currentLinkWeight = parseInt(links[i].weight);
+                if (currentLinkWeight < minorFlow) {
+                    minorFlow = currentLinkWeight;
+                }
+            }
+
+            maxFlow += minorFlow;
+            console.log("Peso minimo", minorFlow);
+            for (let i = 0; i < links.length; i++) {
+                lastCurrentVertex = links[i];
+                if (lastCurrentVertex.initialVertex === end) {
+                    // links.splice(i,1);
+                    break;
+                }
+            }
+
+            while (lastCurrentVertex.finalVertex !== start) {
+                for (let i = 1; i < links.length; i++) {
+                    currentVertex = links[i];
+                    console.log("lastCurrent ", lastCurrentVertex);
+                    console.log("currentVertex ", currentVertex);
+                    if (lastCurrentVertex.finalVertex === currentVertex.initialVertex) {
+                        lastCurrentVertex = currentVertex;
+                        let weight = parseInt(links[i].weight) - minorFlow;
+                        links[i].weight = weight;
+                        current_graph.vertexes[links[i].finalVertex].nodes[links[i].initialVertex].weight = weight;
+                        // links.slice(i,1);
+                        break;
+                    }
+                }
+
+                console.log("lastCurrent ", lastCurrentVertex);
+                console.log("stat", start.toString(), start);
+            }
+
+            links.forEach((link) => {
+                console.log("for do kct")
+                if(parseInt(link.weight) === 0){
+                    console.log("pirulito q bate bate")
+                    current_graph.removeEdge(link.id);
+                }
+            });
+
+            console.log("maxFlow", maxFlow);
+
+            // if (this._verifyIfHaveEndAndStartConnection(start1, end1, current_graph.getVertexAndLinks().links)) {
+            //     haveTocontinue = false;
+            // }
+        }
     }
 
-    getWidthSearchFordFulkerson(element){
+    getWidthSearchFordFulkerson(element, startElement){
         let graph = new Graph();
         let q = [];
-        let startElement = Object.keys(this.vertexes)[0];
-        if (startElement !== undefined){
+        if (startElement && element){
             graph.addVertex(startElement);
             q.push(startElement);
             while(q.length !== 0){
                 let v = q.shift();
-                if(v === element) return graph.getVertexAndLinks();
+                if(v === element) return graph.getVertexesAndLinks();
                 let keys = Object.keys(this.vertexes[v].nodes);
                 for(let w of keys) {
                     if(!graph.vertexes[w]){
@@ -528,18 +508,13 @@ export default class Graph{
                     }
                 }
             }
-            return graph.getVertexAndLinks();
+            return graph.getVertexesAndLinks();
         }
         return {links: [], nodes: []}
     }
 
-    getVertexAndLinks(){
-        let verticesKeys = Object.keys(this.vertexes);
-        let nodes = [];
-        for (let i = 0; i < verticesKeys.length; i++){
-            let node = this.vertexes[verticesKeys[i]];
-            nodes[i] = {element: node.element};
-        }
+    getVertexesAndLinks(){
+        let nodes = this.getVertexes();
         let links = [];
         let ids = [];
         walkLinks(this.vertexes, (element, key, keyNodes) => {
@@ -553,6 +528,16 @@ export default class Graph{
             }
         });
         return {nodes, links};
+    }
+
+    getVertexes(){
+        let verticesKeys = Object.keys(this.vertexes);
+        let nodes = [];
+        for (let i = 0; i < verticesKeys.length; i++){
+            let node = this.vertexes[verticesKeys[i]];
+            nodes[i] = {element: node.element};
+        }
+        return nodes;
     }
 }
 
