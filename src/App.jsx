@@ -63,7 +63,7 @@ function App() {
     const [depthSearch, setDepthSearch] = useState(graph.getDepthSearch(shows.depthSearch));
     const [widthSearch, setWidthSearch] = useState(graph.getWidthSearch(shows.widthSearch));
     const [aStar, setAStar] = useState(graph.getVertexesAndLinks());
-
+    const [genetic, setGenetic] = useState(new GeneticSolution(graph, '', 0, 0, 0));
 
     const update = (newGraph) => {
         let thisGraph =  (newGraph || graph);
@@ -77,6 +77,12 @@ function App() {
         if(shows.depthSearch) setDepthSearch(thisGraph.getDepthSearch(shows.depthSearch));
         if(shows.widthSearch) setWidthSearch(thisGraph.getWidthSearch(shows.widthSearch));
         if(shows.aStar) setAStar(thisGraph.getMinimumPath(shows.aStar.start, shows.aStar.end));
+        if(shows.genetic) setGenetic(new GeneticSolution(graph,
+                                                         shows.genetic.start,
+                                                         shows.genetic.populationSize,
+                                                         shows.genetic.mutationRate,
+                                                         shows.genetic.crossingRate)
+                                                  .start(shows.genetic.amountGeneration));
     };
 
     const handlerShow = (value, type) => {
@@ -87,10 +93,6 @@ function App() {
             update();
         }
     };
-
-    if(graphView.links.length > 1 ){
-        console.log(new GeneticSolution(graph, "1", 100, 0.5, 60).start(20));
-    }
 
     let styles = useStyles();
 
@@ -137,12 +139,7 @@ function App() {
               </PatternPart>
 
               <PatternPart title={"Algoritmo Genético"} show={shows.genetic}>
-                    <GeneticPrincipalSpace populationSize={shows.genetic.populationSize}
-                                           amountGeneration={shows.genetic.amountGeneration}
-                                           crossingRate={shows.genetic.crossingRate}
-                                           mutationRate={shows.genetic.mutationRate}
-                                           handlerShow={handlerShow}
-                    />
+                    <GeneticPrincipalSpace genetic={genetic} handlerShow={handlerShow}/>
               </PatternPart>
 
               <PatternPart show={shows.generation} title={"Histórico da geração " + shows.generation.generation}>

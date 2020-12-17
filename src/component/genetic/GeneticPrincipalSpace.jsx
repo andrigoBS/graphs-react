@@ -26,21 +26,9 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const GeneticPrincipalSpace = ({populationSize, crossingRate, mutationRate, amountGeneration, handlerShow}) =>{
+const GeneticPrincipalSpace = ({genetic, handlerShow}) =>{
     let styles = useStyles();
-    const object = [
-        {
-            generation: 0,
-            individuals: [{
-                fitness: 12
-            }]
-        },
-        {
-            generation: 1,
-            individuals: [{
-                fitness: 45
-            }]
-        }]
+    const object = genetic.history;
 
     const [expanded, setExpanded] = React.useState(false);
 
@@ -70,10 +58,10 @@ const GeneticPrincipalSpace = ({populationSize, crossingRate, mutationRate, amou
                             "Quantidade de gerações",
                             "População final"
                         ]}
-                        body={[populationSize,
-                            crossingRate,
-                            mutationRate,
-                            amountGeneration,
+                        body={[genetic.populationSize,
+                            genetic.crossoverPercent,
+                            genetic.mutationPercent,
+                            genetic.finalEpoch,
                             ""
                         ]}
                     />

@@ -137,10 +137,10 @@ const Show = ({onChange, actives}) =>{
                     titleLabel={"Algoritmo genético"}
             >
                 <OptionTextField buttonLabel={"Gerar"}
-                                 fieldsLabel={["Tamanho da população", "Taxa de cruzamento", "Taxa de mutação", "Quantidade de gerações"]}
-                                 fieldsName={["populationSize", "crossingRate", "mutationRate", "amountGeneration"]}
-                                 onClickCall={({populationSize, crossingRate, mutationRate, amountGeneration}) =>
-                                     onChange({populationSize, crossingRate, mutationRate, amountGeneration}, "genetic")}/>
+                                 fieldsLabel={["Inicio", "Tamanho da população", "Taxa de cruzamento", "Taxa de mutação", "Quantidade de gerações"]}
+                                 fieldsName={["start", "populationSize", "crossingRate", "mutationRate", "amountGeneration"]}
+                                 onClickCall={({start, populationSize, crossingRate, mutationRate, amountGeneration}) =>
+                                      onChange({start, populationSize, crossingRate, mutationRate, amountGeneration}, "genetic")}/>
             </Option>
 
 

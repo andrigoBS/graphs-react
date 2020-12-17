@@ -37,8 +37,8 @@ export default class GeneticSolution{
 
     nextEpoch(){
         this.history.push({
-            epoch: this.epoch,
-            population: this.population,
+            generation: this.epoch,
+            individuals: this.population,
             best: this.best
         });
 
@@ -105,6 +105,7 @@ class Individual{
         this.chromosome = new Graph();
         this.geneLength = geneLength;
         this.createdEpoch = createdEpoch;
+        this.fitness = 0;
     }
 
     randomStart(graph, nodes, start){
@@ -147,6 +148,8 @@ class Individual{
             }
             this.chromosome.addBow(crossover[index - 1], crossover[index], weight, id);
         }
+
+        this.fitness = this.chromosome.getTotalWeight();
     }
 
     crossoverCreate(parent2){
@@ -207,8 +210,8 @@ class Individual{
     }
 
     fitnessCompare(individual){
-        let thisSum = this.chromosome.getTotalWeight();
-        let individualSum = individual.chromosome.getTotalWeight();
+        let thisSum = this.getFitness();
+        let individualSum = individual.getFitness();
 
         let thisNodes = this.chromosome.getVertexesWithoutInaccessible();
         if(thisNodes[0] !== thisNodes[thisNodes.length-1]){
@@ -222,6 +225,10 @@ class Individual{
         if(thisSum < individualSum) return -1;
         if(thisSum > individualSum) return 1;
         return 0;
+    }
+
+    getFitness(){
+        return this.fitness;
     }
 }
 
