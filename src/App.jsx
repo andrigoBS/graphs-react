@@ -12,6 +12,7 @@ import Show from "./component/toolbar/leftBarOptions/Show";
 import GeneticPrincipalSpace from "./component/genetic/GeneticPrincipalSpace";
 import GeneticSecondSpace from "./component/genetic/GenericSecondSpace";
 import GeneticSolution from "./api/graph/GeneticSolution";
+import Testing from "./api/graph/Testing";
 
 const useStyles = makeStyles(theme => ({
     size:{
@@ -63,7 +64,6 @@ function App() {
     const [depthSearch, setDepthSearch] = useState(graph.getDepthSearch(shows.depthSearch));
     const [widthSearch, setWidthSearch] = useState(graph.getWidthSearch(shows.widthSearch));
     const [aStar, setAStar] = useState(graph.getVertexesAndLinks());
-    const [genetic, setGenetic] = useState(new GeneticSolution(graph, '', 0, 0, 0).start(0));
 
     const update = (newGraph) => {
         let thisGraph =  (newGraph || graph);
@@ -77,12 +77,6 @@ function App() {
         if(shows.depthSearch) setDepthSearch(thisGraph.getDepthSearch(shows.depthSearch));
         if(shows.widthSearch) setWidthSearch(thisGraph.getWidthSearch(shows.widthSearch));
         if(shows.aStar) setAStar(thisGraph.getMinimumPath(shows.aStar.start, shows.aStar.end));
-        if(shows.genetic) setGenetic(new GeneticSolution(graph,
-                                                         shows.genetic.start,
-                                                         shows.genetic.populationSize,
-                                                         shows.genetic.mutationRate,
-                                                         shows.genetic.crossingRate)
-                                                  .start(shows.genetic.amountGeneration));
     };
 
     const handlerShow = (value, type) => {
@@ -93,6 +87,9 @@ function App() {
             update();
         }
     };
+
+    // let test =  new Testing();
+    // test.teste();
 
     let styles = useStyles();
 
@@ -139,7 +136,12 @@ function App() {
               </PatternPart>
 
               <PatternPart title={"Algoritmo Genético"} show={shows.genetic}>
-                    <GeneticPrincipalSpace genetic={genetic} handlerShow={handlerShow}/>
+                    <GeneticPrincipalSpace genetic={new GeneticSolution(graph,
+                        shows.genetic.start,
+                        shows.genetic.populationSize,
+                        shows.genetic.mutationRate,
+                        shows.genetic.crossingRate)
+                        .start(shows.genetic.amountGeneration)} handlerShow={handlerShow}/>
               </PatternPart>
 
               <PatternPart show={shows.generation} title={"Histórico da geração " + shows.generation.generation}>

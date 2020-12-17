@@ -29,8 +29,9 @@ const useStyles = makeStyles(theme => ({
 
 const GeneticPrincipalSpace = ({genetic, handlerShow}) =>{
     let styles = useStyles();
+    console.log(genetic);
     const object = genetic.history;
-    let {nodes, links} = genetic.result.chromosome.getVertexesAndLinks();
+    //let {nodes, links} = genetic.result.getVertexesAndLinks();
 
     const [expanded, setExpanded] = React.useState(false);
 
@@ -42,7 +43,7 @@ const GeneticPrincipalSpace = ({genetic, handlerShow}) =>{
 
             <Divider/>
             <div className={styles.divPosition} align={"right"}>
-                <GraphView links={links} nodes={nodes} height={"400px"}/>
+                {/*<GraphView links={links} nodes={nodes} height={"400px"}/>*/}
                 <Button className={styles.buttonColor} onClick={handleExpandClick} startIcon={ <CgMoreO />}>
                     {expanded ?"Ocultar detalhes"  : "Exibir detalhes"}
                 </Button>

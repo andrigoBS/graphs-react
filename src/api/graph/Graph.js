@@ -428,7 +428,7 @@ export default class Graph{
 
         while (haveToContinue) {
             let {links, nodes} = current_graph.getWidthSearchFordFulkerson(start, end);
-            console.log("testeeeeeeeeeee", nodes)
+            //console.log("testeeeeeeeeeee", nodes)
             // if(nodes.filter((node) => node.element === start1).length === 0){
             //     break;
             // }
@@ -530,27 +530,14 @@ export default class Graph{
         return {nodes, links};
     }
 
-    getVertexes(){
+    getVertexes() {
         let verticesKeys = Object.keys(this.vertexes);
         let nodes = [];
-        for (let i = 0; i < verticesKeys.length; i++){
+        for (let i = 0; i < verticesKeys.length; i++) {
             let node = this.vertexes[verticesKeys[i]];
             nodes[i] = {element: node.element};
         }
         return nodes;
-    }
-
-    getTotalWeight(){
-        let ids = [];
-        let sum = 0;
-        walkLinks(this.vertexes, (link, keyNode1, keyNode2) => {
-            if(!ids.includes(link.id)){
-                ids.push(link.id);
-                sum += link.weight;
-            }
-        });
-
-        return sum;
     }
 
     getVertexesWithoutInaccessible(){
