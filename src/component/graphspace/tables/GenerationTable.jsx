@@ -46,9 +46,10 @@ const useStyles = makeStyles({
 const GenerationTable = ({header,object,tableTitle, hidden, handlerShow}) =>{
     let classes = useStyles();
 
-    let handleOnClick = () =>{
-        handlerShow(object,"generation");
+    let handleOnClick = (index) =>{
+        handlerShow(object[index], "generation");
     }
+
     return(
         <TableContainer component={Paper} className={classes.table}>
             <div className={classes.divStyle} hidden={hidden}>
@@ -64,8 +65,8 @@ const GenerationTable = ({header,object,tableTitle, hidden, handlerShow}) =>{
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {object.map((currentObject)=>(
-                        <StyledTableRow onClick={handleOnClick()}>
+                    {object.map((currentObject, index)=>(
+                        <StyledTableRow onClick={() => handleOnClick(index)}>
                             <StyledTableCell align={"center"} component="th" scope="row">
                                 {currentObject.generation}
                             </StyledTableCell>
