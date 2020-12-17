@@ -63,7 +63,7 @@ function App() {
     const [depthSearch, setDepthSearch] = useState(graph.getDepthSearch(shows.depthSearch));
     const [widthSearch, setWidthSearch] = useState(graph.getWidthSearch(shows.widthSearch));
     const [aStar, setAStar] = useState(graph.getVertexesAndLinks());
-    const [genetic, setGenetic] = useState(new GeneticSolution(graph, '', 0, 0, 0));
+    const [genetic, setGenetic] = useState(new GeneticSolution(graph, '', 0, 0, 0).start(0));
 
     const update = (newGraph) => {
         let thisGraph =  (newGraph || graph);

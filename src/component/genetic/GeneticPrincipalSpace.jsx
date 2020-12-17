@@ -59,11 +59,11 @@ const GeneticPrincipalSpace = ({genetic, handlerShow}) =>{
                             "População final"
                         ]}
                         body={[genetic.populationSize,
-                            genetic.crossoverPercent,
-                            genetic.mutationPercent,
-                            genetic.finalEpoch,
-                            ""
-                        ]}
+                               genetic.crossoverPercent,
+                               genetic.mutationPercent,
+                               genetic.finalEpoch,
+                               ""
+                              ]}
                     />
 
                     <FlexTable

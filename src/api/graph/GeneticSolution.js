@@ -167,6 +167,9 @@ class Individual{
             nodes2[i] = chromosome2[i];
         }
 
+        nodes1 = chromosome1;
+        nodes2 = chromosome2;
+
 
         // let indexGene2 = indexEnd;
         // for(let i = indexEnd; i < this.geneLength; i++){
