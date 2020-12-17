@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import FlexTable from "../graphspace/tables/FlexTable";
 import GenerationTable from "../graphspace/tables/GenerationTable";
+import GraphView from "../graphspace/graphview/GraphView";
 // import GraphView from "../graphspace/graphview/GraphView";
 // import NodeTable from "../graphspace/tables/NodeTable";
 // import LinksTable from "../graphspace/tables/LinksTable";
@@ -29,6 +30,7 @@ const useStyles = makeStyles(theme => ({
 const GeneticPrincipalSpace = ({genetic, handlerShow}) =>{
     let styles = useStyles();
     const object = genetic.history;
+    let {nodes, links} = genetic.result.chromosome.getVertexesAndLinks();
 
     const [expanded, setExpanded] = React.useState(false);
 
@@ -40,7 +42,7 @@ const GeneticPrincipalSpace = ({genetic, handlerShow}) =>{
 
             <Divider/>
             <div className={styles.divPosition} align={"right"}>
-
+                <GraphView links={links} nodes={nodes} height={"400px"}/>
                 <Button className={styles.buttonColor} onClick={handleExpandClick} startIcon={ <CgMoreO />}>
                     {expanded ?"Ocultar detalhes"  : "Exibir detalhes"}
                 </Button>
