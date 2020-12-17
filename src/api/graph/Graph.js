@@ -539,6 +539,19 @@ export default class Graph{
         }
         return nodes;
     }
+
+    getTotalWeight(){
+        let ids = [];
+        let sum = 0;
+        walkLinks(this.vertexes, (link, keyNode1, keyNode2) => {
+            if(!ids.includes(link.id)){
+                ids.push(link.id);
+                sum += link.weight;
+            }
+        });
+
+        return sum;
+    }
 }
 
 const walkLinksId = (vertexes, id, callback) => {
