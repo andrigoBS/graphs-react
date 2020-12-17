@@ -21,7 +21,7 @@ export default class GeneticSolution{
 
     nextEpoch(){
         //cruzamento
-        //mutação
+        //cruzamento com mutação
         //seleção
         this.epoch++;
     }
@@ -54,8 +54,14 @@ class Individual{
 
     crossoverStart(parent1, parent2){
         let nodes = [];
+
         let indexStart = this._randomInNodesLength();
         let indexEnd = this._randomInNodesLength();
+
+        let chromosome1 = parent1.chromosome.getVertexes();
+        let chromosome2 = parent2.chromosome.getVertexes();
+
+
     }
 
     setChromosome(crossover, graph){
