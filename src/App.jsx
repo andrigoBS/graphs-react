@@ -11,6 +11,7 @@ import Remove from "./component/toolbar/leftBarOptions/Remove";
 import Show from "./component/toolbar/leftBarOptions/Show";
 import GeneticPrincipalSpace from "./component/genetic/GeneticPrincipalSpace";
 import GeneticSecondSpace from "./component/genetic/GenericSecondSpace";
+import GeneticSolution from "./api/graph/GeneticSolution";
 
 const useStyles = makeStyles(theme => ({
     size:{
@@ -86,6 +87,10 @@ function App() {
             update();
         }
     };
+
+    if(graphView.links.length > 1 ){
+        console.log(new GeneticSolution(graph, "1", 100, 0.5, 60).start(20));
+    }
 
     let styles = useStyles();
 

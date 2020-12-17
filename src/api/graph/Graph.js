@@ -552,6 +552,25 @@ export default class Graph{
 
         return sum;
     }
+
+    getVertexesWithoutInaccessible(){
+        let nodes = [];
+
+        for (let vertexesKey in this.vertexes) {
+            let reverse = false;
+            for (let vertexesKey2 in this.vertexes) {
+                if(this.vertexes[vertexesKey2].nodes[vertexesKey]) {
+                    reverse = true;
+                    break;
+                }
+            }
+            if(this.vertexes[vertexesKey].nodes.length > 0 || reverse){
+                nodes.push(this.vertexes[vertexesKey].element);
+            }
+        }
+
+        return nodes;
+    }
 }
 
 const walkLinksId = (vertexes, id, callback) => {

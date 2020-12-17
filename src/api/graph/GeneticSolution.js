@@ -1,9 +1,9 @@
 import Graph from "./Graph";
 
 export default class GeneticSolution{
-    constructor(graph, start, populationSize, mutationPercent, crossoverPercent) {
+    constructor(graph, startElement, populationSize, mutationPercent, crossoverPercent) {
         this.graph = graph;
-        this.start = start;
+        this.startElement = startElement;
         this.history = [];
         this.population = [];
         this.populationSize = populationSize;
@@ -11,18 +11,24 @@ export default class GeneticSolution{
         this.crossoverPercent = crossoverPercent
         this.epoch = 0;
 
-        let nodes = graph.getVertexes();
+        let nodes = graph.getVertexesWithoutInaccessible();
 
         this.geneLength = nodes.length;
+        if(this.geneLength < 2) return;
 
         for (let i = 0; i < populationSize; i++) {
             let individual = new Individual(this.geneLength, this.epoch);
-            individual.randomStart(graph, nodes, start);
+            individual.randomStart(graph, nodes, startElement);
             this.population.push(individual);
         }
+
+        this.population.sort((a, b) => a.fitnessCompare(b));
+
+        this.best = this.population[0];
     }
 
     start(epoch){
+        if(this.geneLength < 2) return;
         for (let i = 0; i < epoch; i++) {
             this.nextEpoch();
         }
@@ -32,7 +38,8 @@ export default class GeneticSolution{
     nextEpoch(){
         this.history.push({
             epoch: this.epoch,
-            population: this.population
+            population: this.population,
+            best: this.best
         });
 
         for (let i = 0; i < this.population.length; i++) {
@@ -47,12 +54,16 @@ export default class GeneticSolution{
                         child1.setChromosome(node1, this.graph);
                     }
 
+                    console.log("parent1", node1);
+
                     let child2 = new Individual(this.geneLength, this.epoch);
                     if(randomTrueFalsePercent(this.mutationPercent)){
                         child2.setChromosomeWithMutation(node2, this.graph);
                     }else{
                         child2.setChromosome(node2, this.graph);
                     }
+
+                    console.log("parent2", node2);
 
                     this.population.push(child1);
                     this.population.push(child2);
@@ -70,14 +81,17 @@ export default class GeneticSolution{
 
         this.population = newPopulation;
 
+        this.best = this.population[0];
+
         this.epoch++;
     }
 
     getInfo(){
         return {
+            result: this.best,
             info: this.history,
             finalEpoch: this.epoch,
-            start: this.start,
+            start: this.startElement,
             graph: this.graph,
             populationSize: this.populationSize,
             mutationPercent: this.mutationPercent,
@@ -105,6 +119,8 @@ class Individual{
         }
         added.push(start);
 
+        console.log("random", added);
+
         this.setChromosome(added, graph);
     }
 
@@ -123,6 +139,7 @@ class Individual{
             this.chromosome.addVertex(crossover[index]);
             let weight = Number.MAX_SAFE_INTEGER;
             let id = crossover[index - 1] + crossover[index];
+            console.log(crossover[index - 1])
             let link = graph.vertexes[crossover[index - 1]].nodes[crossover[index]];
             if(link){
                 weight = link.weight;
@@ -139,33 +156,52 @@ class Individual{
         let indexStart = randomInLimit(this.geneLength);
         let indexEnd = randomInLimit(this.geneLength);
 
-        let chromosome1 = this.chromosome.getVertexes();
-        let chromosome2 = parent2.chromosome.getVertexes();
+        let chromosome1 = this.chromosome.getVertexesWithoutInaccessible();
+        let chromosome2 = parent2.chromosome.getVertexesWithoutInaccessible();
 
         for (let i = indexStart; i < indexEnd; i++) {
             nodes1[i] = chromosome1[i];
             nodes2[i] = chromosome2[i];
         }
 
-        let indexGene2 = indexEnd;
-        for(let i = indexEnd; i < this.geneLength; i++){
-            let gene = chromosome2[indexGene2];
-            if(!nodes1.includes(gene)){
-                nodes1[i] = gene;
-            }
-            indexGene2++;
-            if(indexGene2 >= this.geneLength) indexGene2 = 0;
-        }
 
-        let indexGene1 = indexEnd;
-        for(let i = indexEnd; i < this.geneLength; i++){
-            let gene = chromosome1[indexGene1];
-            if(!nodes2.includes(gene)){
-                nodes2[i] = gene;
-            }
-            indexGene1++;
-            if(indexGene1 >= this.geneLength) indexGene1 = 0;
-        }
+        // let indexGene2 = indexEnd;
+        // for(let i = indexEnd; i < this.geneLength; i++){
+        //     let gene = chromosome2[indexGene2];
+        //     if(!nodes1.includes(gene)){
+        //         nodes1[i] = gene;
+        //     }
+        //     indexGene2++;
+        //     if(indexGene2 >= this.geneLength) indexGene2 = 0;
+        // }
+        //
+        // for(let i = 0; i < indexStart; i++){
+        //     let gene = chromosome2[indexGene2];
+        //     if(!nodes1.includes(gene)){
+        //         nodes1[i] = gene;
+        //     }
+        //     indexGene2++;
+        //     if(indexGene2 >= this.geneLength) indexGene2 = 0;
+        // }
+        //
+        // let indexGene1 = indexEnd;
+        // for(let i = indexEnd; i < this.geneLength; i++){
+        //     let gene = chromosome1[indexGene1];
+        //     if(!nodes2.includes(gene)){
+        //         nodes2[i] = gene;
+        //     }
+        //     indexGene1++;
+        //     if(indexGene1 >= this.geneLength) indexGene1 = 0;
+        // }
+        //
+        // for(let i = 0; i < indexStart; i++){
+        //     let gene = chromosome1[indexGene1];
+        //     if(!nodes2.includes(gene)){
+        //         nodes2[i] = gene;
+        //     }
+        //     indexGene1++;
+        //     if(indexGene1 >= this.geneLength) indexGene1 = 0;
+        // }
 
         return[nodes1, nodes2];
     }
@@ -174,11 +210,11 @@ class Individual{
         let thisSum = this.chromosome.getTotalWeight();
         let individualSum = individual.chromosome.getTotalWeight();
 
-        let thisNodes = this.chromosome.getVertexes();
+        let thisNodes = this.chromosome.getVertexesWithoutInaccessible();
         if(thisNodes[0] !== thisNodes[thisNodes.length-1]){
             thisSum += Number.MAX_SAFE_INTEGER;
         }
-        let individualNodes = individual.chromosome.getVertexes();
+        let individualNodes = individual.chromosome.getVertexesWithoutInaccessible();
         if(individualNodes[0] !== individualNodes[individualNodes.length-1]){
             individualSum += Number.MAX_SAFE_INTEGER;
         }
