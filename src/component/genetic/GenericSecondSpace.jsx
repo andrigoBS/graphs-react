@@ -7,6 +7,7 @@ import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import FlexTable from "../graphspace/tables/FlexTable";
 import GenerationTable from "../graphspace/tables/GenerationTable";
+import IndividualTable from "../graphspace/tables/IndividualTable";
 // import GraphView from "../graphspace/graphview/GraphView";
 // import NodeTable from "../graphspace/tables/NodeTable";
 // import LinksTable from "../graphspace/tables/LinksTable";
@@ -28,7 +29,6 @@ const useStyles = makeStyles(theme => ({
 
 const GeneticSecondSpace = ({generationObject}) =>{
     let styles = useStyles();
-    const object = [{generation: 0}, {generation: 1}]
 
     const [expanded, setExpanded] = React.useState(false);
 
@@ -56,12 +56,12 @@ const GeneticSecondSpace = ({generationObject}) =>{
                         body={["",""]}
                     />
 
-                    {/*<GenerationTable*/}
-                    {/*    tableTitle={"Histórico de gerações"}*/}
-                    {/*    hidden={false}*/}
-                    {/*    header={["Gerações"]}*/}
-                    {/*    object={object}*/}
-                    {/*/>*/}
+                    <IndividualTable
+                        tableTitle={"Histórico de individuos"}
+                        hidden={false}
+                        header={["Aptidão"]}
+                        object={generationObject}
+                    />
                 </CardContent>
             </Collapse>
         </React.Fragment>

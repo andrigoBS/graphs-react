@@ -28,7 +28,19 @@ const useStyles = makeStyles(theme => ({
 
 const GeneticPrincipalSpace = ({populationSize, crossingRate, mutationRate, amountGeneration, handlerShow}) =>{
     let styles = useStyles();
-    const object = [{generation: 0}, {generation: 1}]
+    const object = [
+        {
+            generation: 0,
+            individuals: [{
+                fitness: 12
+            }]
+        },
+        {
+            generation: 1,
+            individuals: [{
+                fitness: 45
+            }]
+        }]
 
     const [expanded, setExpanded] = React.useState(false);
 

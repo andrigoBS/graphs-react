@@ -145,7 +145,7 @@ function App() {
                     />
               </PatternPart>
 
-              <PatternPart show={shows.generation} title={"Histórico da geração"}>
+              <PatternPart show={shows.generation} title={"Histórico da geração " + shows.generation.generation}>
                   <GeneticSecondSpace generationObject={shows.generation} />
               </PatternPart>
 
