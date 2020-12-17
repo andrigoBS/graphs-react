@@ -6,6 +6,7 @@ import OptionCheckBox from "./option/optionType/OptionCheckBox";
 import {SiMatrix} from "react-icons/si";
 import {ImTree, BiSearchAlt, BiNetworkChart, RiPaintBrushLine, TiFlowParallel, GiTeacher} from "react-icons/all";
 import OptionTextField from "./option/optionType/OptionTextFields";
+import { FcBiotech } from "react-icons/fc";
 
 const useStyles = makeStyles(theme =>({
     partsFont:{
@@ -25,7 +26,8 @@ const Show = ({onChange, actives}) =>{
         componentOptions: false,
         colorOptions: false,
         exampleOptions: false,
-        flowOptions: false
+        flowOptions: false,
+        geneticOptions: false
     });
 
     const handleOnClickShow = (name) => {
@@ -117,7 +119,7 @@ const Show = ({onChange, actives}) =>{
 
             <Option open={shows.flowOptions}
                     openPreview={shows.colorOptions}
-                    openNext={shows.exampleOptions}
+                    openNext={shows.geneticOptions}
                     handleOnOpen={() => handleOnClickShow("flowOptions")}
                     titleLabel={"Ford e Fulkerson"}
                     icon={<TiFlowParallel/>}>
@@ -127,8 +129,23 @@ const Show = ({onChange, actives}) =>{
                                  onClickCall={({start, end}) => onChange({start, end}, "fordFulkerson")}/>
             </Option>
 
-            <Option open={shows.exampleOptions}
+            <Option open={shows.geneticOptions}
                     openPreview={shows.flowOptions}
+                    openNext={shows.exampleOptions}
+                    icon={<FcBiotech/>}
+                    handleOnOpen={() => handleOnClickShow("geneticOptions")}
+                    titleLabel={"Algoritmo genético"}
+            >
+                <OptionTextField buttonLabel={"Gerar"}
+                                 fieldsLabel={["Tamanho da população", "Taxa de cruzamento", "Taxa de mutação", "Quantidade de gerações"]}
+                                 fieldsName={["populationSize", "crossingRate", "mutationRate", "amountGeneration"]}
+                                 onClickCall={({populationSize, crossingRate, mutationRate, amountGeneration}) =>
+                                     onChange({populationSize, crossingRate, mutationRate, amountGeneration}, "genetic")}/>
+            </Option>
+
+
+            <Option open={shows.exampleOptions}
+                    openPreview={shows.geneticOptions}
                     handleOnOpen={() => handleOnClickShow("exampleOptions")}
                     titleLabel={"Exemplos"}
                     icon={<GiTeacher/>}>

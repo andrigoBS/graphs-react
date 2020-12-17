@@ -9,6 +9,8 @@ import {makeStyles} from "@material-ui/core/styles";
 import Add from "./component/toolbar/leftBarOptions/Add";
 import Remove from "./component/toolbar/leftBarOptions/Remove";
 import Show from "./component/toolbar/leftBarOptions/Show";
+import GeneticPrincipalSpace from "./component/genetic/GeneticPrincipalSpace";
+import GeneticSecondSpace from "./component/genetic/GenericSecondSpace";
 
 const useStyles = makeStyles(theme => ({
     size:{
@@ -48,6 +50,8 @@ function App() {
             welshPowell: false,
             exampleM2: false,
             fordFulkerson: false,
+            genetic: false,
+            generation: false
         });
 
     const [graph, setGraph] = useState(getInitialStateGraph());
@@ -58,6 +62,7 @@ function App() {
     const [depthSearch, setDepthSearch] = useState(graph.getDepthSearch(shows.depthSearch));
     const [widthSearch, setWidthSearch] = useState(graph.getWidthSearch(shows.widthSearch));
     const [aStar, setAStar] = useState(graph.getVertexesAndLinks());
+
 
     const update = (newGraph) => {
         let thisGraph =  (newGraph || graph);
@@ -124,6 +129,19 @@ function App() {
 
               <PatternPart title={"Componentes Fortemente Conexos - Roy"} show={shows.roy}>
                   {graph.getComponents().map((component) => <GraphSpace links={component.links} nodes={component.nodes}/>)}
+              </PatternPart>
+
+              <PatternPart title={"Algoritmo Genético"} show={shows.genetic}>
+                    <GeneticPrincipalSpace populationSize={shows.genetic.populationSize}
+                                           amountGeneration={shows.genetic.amountGeneration}
+                                           crossingRate={shows.genetic.crossingRate}
+                                           mutationRate={shows.genetic.mutationRate}
+                                           handlerShow={handlerShow}
+                    />
+              </PatternPart>
+
+              <PatternPart show={shows.generation} title={"Histórico da geração"}>
+                  <GeneticSecondSpace generationObject={shows.generation} />
               </PatternPart>
 
               <PatternPart title={"Fluxo de rede - Ford e Fulkerson"} show={shows.fordFulkerson}>
